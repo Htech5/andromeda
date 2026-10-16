@@ -25,10 +25,6 @@ export default function Footer() {
               <dt className="footer__heading mono accent">Berdiri</dt>
               <dd className="mono">{site.founded}</dd>
             </div>
-            <div>
-              <dt className="footer__heading mono accent">Agenda</dt>
-              <dd className="mono">KSTI 2026 — Surabaya, November 2026</dd>
-            </div>
           </dl>
 
           <div className="footer__actions">

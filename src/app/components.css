@@ -463,7 +463,12 @@
 
 /* ---------- footer ---------- */
 
+/* Fills the screen at full scroll, so the last thing on it is the footer and
+   not a band of empty page above it. */
 .footer {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
   padding-block: clamp(4rem, 10vw, 7rem) 0;
   margin-top: clamp(4rem, 9vw, 7rem);
 }
@@ -474,7 +479,9 @@
 
 
 .footer__inner {
+  flex: 1;
   display: grid;
+  align-content: center;
   gap: clamp(2.5rem, 6vw, 4rem);
 }
 

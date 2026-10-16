@@ -77,7 +77,7 @@ export default function Navbar() {
               </a>
             ))}
             <Link href="/sponsorship" className="nav__cta mono">
-              Jadi sponsor
+              Support Us
             </Link>
           </nav>
         </div>

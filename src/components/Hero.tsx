@@ -27,7 +27,7 @@ export default function Hero() {
               Lihat robotnya
             </a>
             <a className="cta" href="/sponsorship">
-              Jadi sponsor
+              Support Us
             </a>
           </div>
         </div>
