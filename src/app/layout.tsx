@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Oxanium, JetBrains_Mono } from "next/font/google";
+import SmoothScroll from "@/components/SmoothScroll";
 import { site } from "@/data/site";
+import "lenis/dist/lenis.css";
 import "./globals.css";
 import "./components.css";
 
@@ -70,6 +72,7 @@ export default function RootLayout({
           } as React.CSSProperties
         }
       >
+        <SmoothScroll />
         {children}
       </body>
     </html>
