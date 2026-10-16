@@ -31,8 +31,9 @@ export default function Sponsorship() {
         <Reveal delay={90}>
           <div className="prospectus__contact">
             <p className="prospectus__label mono accent">Divisi Sponsorship</p>
-            <a className="cta cta--solid" href={`mailto:${site.email}`}>
-              Minta proposal
+            <a className="cta cta--solid" href={site.proposal} download>
+              Unduh proposal
+              <span className="cta__meta mono">PDF · 13 MB</span>
             </a>
             <a className="cta" href={`https://wa.me/${site.phoneHref}`}>
               WhatsApp tim

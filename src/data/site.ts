@@ -10,6 +10,7 @@ export const site = {
   email: "undip.ews.andromeda@gmail.com",
   phone: "+62 895-6201-31429",
   phoneHref: "62895620131429",
+  proposal: "/proposal-sponsorship-andromeda-2026.pdf",
   affiliation: "URDC — Universitas Diponegoro",
   founded: 2011,
   hq: [

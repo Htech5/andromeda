@@ -1189,3 +1189,9 @@
     grid-template-columns: 1.4fr 1fr;
   }
 }
+
+.cta__meta {
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  opacity: 0.65;
+}
