@@ -44,27 +44,25 @@ export default function Footer() {
               referrerPolicy="no-referrer-when-downgrade"
             />
           </div>
-
-          <div className="footer__col">
-            <p className="footer__heading mono accent">Social</p>
-            {/* Icons only: the label stays for screen readers and tooltips. */}
-            <ul className="footer__socials">
-              {site.socials.map((social) => (
-                <li key={social.label}>
-                  <a
-                    className="footer__social"
-                    href={social.href}
-                    aria-label={social.label}
-                    title={social.label}
-                  >
-                    <NavIcon name={social.icon} className="footer__glyph" />
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
         </div>
       </div>
+
+      {/* Icons only, centred right above the copyright rule. The label stays
+          for screen readers and tooltips. */}
+      <ul className="footer__socials shell">
+        {site.socials.map((social) => (
+          <li key={social.label}>
+            <a
+              className="footer__social"
+              href={social.href}
+              aria-label={social.label}
+              title={social.label}
+            >
+              <NavIcon name={social.icon} className="footer__glyph" />
+            </a>
+          </li>
+        ))}
+      </ul>
 
       <div className="footer__base shell mono">
         <span>
