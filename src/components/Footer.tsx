@@ -1,3 +1,4 @@
+import Image from "next/image";
 import NavIcon from "./NavIcon";
 import { navLinks, site } from "@/data/site";
 
@@ -6,7 +7,13 @@ export default function Footer() {
     <footer className="footer onDark" id="contact">
       <div className="footer__inner shell">
         <div className="footer__brand">
-          <p className="footer__mark">{site.wordmark}</p>
+          <Image
+            className="footer__mark"
+            src="/wordmark.png"
+            alt={site.wordmark}
+            width={332}
+            height={72}
+          />
           <p className="footer__affiliation mono">{site.affiliation}</p>
 
           <dl className="footer__contact">
@@ -14,7 +21,25 @@ export default function Footer() {
               <dt className="footer__heading mono accent">Platform</dt>
               <dd className="mono">{site.platform}</dd>
             </div>
+            <div>
+              <dt className="footer__heading mono accent">Berdiri</dt>
+              <dd className="mono">{site.founded}</dd>
+            </div>
+            <div>
+              <dt className="footer__heading mono accent">Agenda</dt>
+              <dd className="mono">KSTI 2026 — Surabaya, November 2026</dd>
+            </div>
           </dl>
+
+          <div className="footer__actions">
+            <a className="cta cta--solid" href="/sponsorship">
+              Paket kemitraan
+            </a>
+            <a className="cta" href={site.proposal} download>
+              Unduh proposal
+              <span className="cta__meta mono">PDF · 13 MB</span>
+            </a>
+          </div>
         </div>
 
         <div className="footer__cols">
