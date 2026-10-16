@@ -404,6 +404,17 @@
 
 /* ---------- partners ---------- */
 
+/* Centred wall, and a long run-out before the footer so the logos are not
+   read as part of it. */
+.section--sponsors {
+  padding-bottom: clamp(7rem, 16vw, 12rem);
+}
+
+.section--sponsors .sectionHead {
+  justify-content: center;
+  text-align: center;
+}
+
 .partners {
   display: grid;
   gap: clamp(2.5rem, 6vw, 4rem);
