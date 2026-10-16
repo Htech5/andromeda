@@ -834,6 +834,9 @@
 .matrixWrap {
   margin-top: clamp(1.75rem, 3.5vw, 2.75rem);
   overflow-x: auto;
+  /* Without paint containment the table's min-width leaks into the document's
+     scroll width, so the page lays out wider than the viewport on mobile. */
+  contain: paint;
   border-top: var(--rule);
 }
 
