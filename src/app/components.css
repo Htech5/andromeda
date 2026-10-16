@@ -560,15 +560,12 @@
 .statsRow {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  gap: clamp(1.5rem, 5vw, 2.5rem);
   margin: 0 0 clamp(1.5rem, 3vw, 2.25rem);
-  border-top: var(--rule-faint);
-  border-left: var(--rule-faint);
 }
 
 .statsRow__cell {
-  padding: 1rem 1.25rem;
-  border-right: var(--rule-faint);
-  border-bottom: var(--rule-faint);
+  padding: 0;
 }
 
 .statsRow__value {
