@@ -1,35 +1,8 @@
-import AsciiRobot from "./AsciiRobot";
 import { navLinks, site } from "@/data/site";
 
 export default function Footer() {
   return (
     <footer className="footer onDark" id="contact">
-      <div className="shell">
-        <section className="ctaPanel">
-          <div className="ctaPanel__text">
-            <h2 className="ctaPanel__title">Dukung Andromeda ke KSTI 2026</h2>
-            <p className="ctaPanel__sub">
-              Paket kemitraan, jadwal uji, dan dokumentasi robot dibahas
-              langsung dengan divisi sponsorship.
-            </p>
-            <div className="hero__actions">
-              <a className="cta cta--solid" href={`mailto:${site.email}`}>
-                Kirim email
-              </a>
-              <a
-                className="cta"
-                href={`https://wa.me/${site.phoneHref}`}
-              >
-                WhatsApp tim
-              </a>
-            </div>
-          </div>
-          <div className="ctaPanel__art" aria-hidden="true">
-            <AsciiRobot />
-          </div>
-        </section>
-      </div>
-
       <div className="footer__inner shell">
         <div className="footer__brand">
           <p className="footer__mark">{site.wordmark}</p>
