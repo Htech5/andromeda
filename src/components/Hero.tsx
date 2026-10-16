@@ -26,7 +26,7 @@ export default function Hero() {
             <a className="cta cta--solid" href="#robot">
               Lihat robotnya
             </a>
-            <a className="cta" href="#sponsorship">
+            <a className="cta" href="/sponsorship">
               Jadi sponsor
             </a>
           </div>

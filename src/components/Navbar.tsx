@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Dock from "./Dock";
 import NavIcon from "./NavIcon";
@@ -10,6 +12,9 @@ export default function Navbar() {
   const [pill, setPill] = useState(false);
   const [active, setActive] = useState("");
   const sentinel = useRef<HTMLDivElement>(null);
+  // Sections only exist on the home page; elsewhere the links route back to it.
+  const onHome = usePathname() === "/";
+  const hrefFor = (hash: string) => (onHome ? hash : `/${hash}`);
 
   useEffect(() => {
     const el = sentinel.current;
@@ -23,7 +28,7 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    if (typeof IntersectionObserver === "undefined") return;
+    if (!onHome || typeof IntersectionObserver === "undefined") return;
 
     const targets = navLinks
       .map((link) => document.querySelector(link.href))
@@ -43,7 +48,7 @@ export default function Navbar() {
 
     targets.forEach((target) => observer.observe(target));
     return () => observer.disconnect();
-  }, []);
+  }, [onHome]);
 
   return (
     <>
@@ -51,7 +56,7 @@ export default function Navbar() {
 
       <header className={`nav onDark ${pill ? "nav--pill" : ""}`}>
         <div className="nav__inner shell">
-          <a href="#top" className="nav__mark">
+          <Link href="/" className="nav__mark">
             <Image
               src="/wordmark.png"
               alt={site.wordmark}
@@ -59,17 +64,21 @@ export default function Navbar() {
               height={72}
               priority
             />
-          </a>
+          </Link>
 
           <nav className="nav__links" aria-label="Navigasi utama">
             {navLinks.map((link) => (
-              <a key={link.href} href={link.href} className="nav__link mono">
+              <a
+                key={link.href}
+                href={hrefFor(link.href)}
+                className="nav__link mono"
+              >
                 {link.label}
               </a>
             ))}
-            <a href="#sponsorship" className="nav__cta mono">
+            <Link href="/sponsorship" className="nav__cta mono">
               Jadi sponsor
-            </a>
+            </Link>
           </nav>
         </div>
       </header>
@@ -83,6 +92,10 @@ export default function Navbar() {
             active: active === link.href,
             className: active === link.href ? "dock-item--here" : undefined,
             onClick: () => {
+              if (!onHome) {
+                window.location.href = hrefFor(link.href);
+                return;
+              }
               document
                 .querySelector(link.href)
                 ?.scrollIntoView({ behavior: "smooth" });

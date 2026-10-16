@@ -41,7 +41,8 @@ export default function Footer() {
             <ul className="footer__list">
               {navLinks.map((link) => (
                 <li key={link.href}>
-                  <a className="footer__link" href={link.href}>
+                  {/* Absolute so the links also work from sub-pages. */}
+                  <a className="footer__link" href={`/${link.href}`}>
                     {link.label}
                   </a>
                 </li>

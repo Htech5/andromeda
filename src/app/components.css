@@ -397,16 +397,17 @@
 
 
 
+/* Sub-pages open under the fixed nav, so the first section clears it. */
+.subpage {
+  padding-top: 4.5rem;
+}
+
 /* ---------- partners ---------- */
 
 .partners {
   display: grid;
-  border-radius: calc(var(--radius) * 2);
   gap: clamp(2.5rem, 6vw, 4rem);
-  background: var(--surface);
   color: var(--ink);
-  border: var(--rule-faint);
-  padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1.5rem, 4vw, 3rem);
 }
 
 .partners__label {

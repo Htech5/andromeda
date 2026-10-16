@@ -13,8 +13,8 @@ export default function Partners() {
   const filled = groups.filter((group) => group.items.length > 0);
 
   return (
-    <section className="section shell" id="partners">
-      <SectionHead title="Didukung oleh" />
+    <section className="section shell" id="sponsorship">
+      <SectionHead title="Our sponsor" />
 
       {filled.length === 0 ? (
         <Reveal>
@@ -31,9 +31,12 @@ export default function Partners() {
         <div className="partners">
           {filled.map((group) => (
             <div className="partners__group" key={group.label}>
-              <p className="partners__label mono">
-                <span className="accent">/</span> {group.label}
-              </p>
+              {/* One group needs no label: the section heading already says it. */}
+              {filled.length > 1 && (
+                <p className="partners__label mono">
+                  <span className="accent">/</span> {group.label}
+                </p>
+              )}
               <ul className="partners__wall">
                 {group.items.map((partner, i) => (
                   <Reveal as="li" key={partner.name} delay={i * 50}>
