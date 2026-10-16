@@ -29,7 +29,7 @@ export default function Footer() {
 
           <div className="footer__actions">
             <a className="cta cta--solid" href="/sponsorship">
-              Paket kemitraan
+              Support us
             </a>
             <a className="cta" href={site.proposal} download>
               Unduh proposal

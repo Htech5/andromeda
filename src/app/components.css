@@ -453,6 +453,12 @@
   object-fit: contain;
 }
 
+.partners__join {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(2.5rem, 6vw, 4rem);
+}
+
 .partners__name {
   font-family: var(--font-mono);
   font-size: 0.85rem;
@@ -729,7 +735,21 @@
 }
 
 .robotShot {
+  position: relative;
   margin: 0;
+}
+
+/* Sits in the middle of the silhouette, which is dark enough to carry it. */
+.robotShot__soon {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--color-white);
+  font-size: clamp(0.9rem, 2.6vw, 1.5rem);
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  pointer-events: none;
 }
 
 

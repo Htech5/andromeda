@@ -65,6 +65,14 @@ export default function Partners() {
           ))}
         </div>
       )}
+
+      <Reveal delay={120}>
+        <div className="partners__join">
+          <a className="cta cta--solid" href="/sponsorship">
+            Join us
+          </a>
+        </div>
+      </Reveal>
     </section>
   );
 }

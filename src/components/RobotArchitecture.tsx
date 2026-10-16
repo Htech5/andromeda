@@ -18,6 +18,7 @@ export default function RobotArchitecture() {
               height={1200}
               sizes="(min-width: 900px) 60vw, 90vw"
             />
+            <figcaption className="robotShot__soon mono">See you soon</figcaption>
           </figure>
         </Reveal>
 
