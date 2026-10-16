@@ -158,6 +158,18 @@
   .dockHost {
     display: none;
   }
+
+  /* Scrolled state: the wordmark drops out and the pill shrinks to the links,
+     centred. Below 900px the links are hidden, so the mark has to stay. */
+  .nav--pill .nav__mark {
+    display: none;
+  }
+
+  .nav--pill .nav__inner {
+    width: fit-content;
+    margin-inline: auto;
+    justify-content: center;
+  }
 }
 
 /* ---------- hero ---------- */
