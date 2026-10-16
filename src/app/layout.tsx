@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Oxanium, JetBrains_Mono } from "next/font/google";
+import BootScreen from "@/components/BootScreen";
 import SmoothScroll from "@/components/SmoothScroll";
 import { site } from "@/data/site";
 import "lenis/dist/lenis.css";
@@ -24,7 +25,15 @@ export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: `${site.wordmark} — UNDIP SAR Team`,
   description: site.description,
-  keywords: ["KRSRI", "robot SAR", "legged robot", "robotika", site.name],
+  keywords: [
+    "KSTI 2026",
+    "KRSRI",
+    "robot SAR",
+    "legged robot",
+    "hexapod",
+    "Undip",
+    site.name,
+  ],
   openGraph: {
     type: "website",
     url: site.url,
@@ -72,6 +81,7 @@ export default function RootLayout({
           } as React.CSSProperties
         }
       >
+        <BootScreen />
         <SmoothScroll />
         {children}
       </body>

@@ -4,36 +4,59 @@ export type Subsystem = {
   body: string;
 };
 
-/** Deskripsi struktural saja. Jangan mengklaim kemampuan yang belum diuji. */
+export type Spec = {
+  group: string;
+  value: string;
+};
+
+/** M31 Enterprise 2026/2027. Sumber: proposal sponsorship, halaman spesifikasi robot. */
+export const robot = {
+  model: "M31 ENTERPRISE",
+  generation: "2026 / 2027 MODEL",
+  dimensions: "± 30 × 30 × 30 cm",
+  weight: "± 3,7 kg",
+} as const;
+
+export const specs: Spec[] = [
+  { group: "Compute", value: "NVIDIA Jetson Orin Nano Super" },
+  { group: "Control", value: "Dual STM32H7 minimal system" },
+  { group: "Aktuator", value: "DYNAMIXEL seri XC, XL, AX, MX" },
+  { group: "Sensor utama", value: "Intel RealSense D455" },
+  { group: "Sensor jarak", value: "ST VL53L7CX" },
+  { group: "Persepsi", value: "Instance segmentation YOLOv11" },
+  { group: "Dimensi", value: robot.dimensions },
+  { group: "Bobot", value: robot.weight },
+];
+
 export const subsystems: Subsystem[] = [
   {
-    id: "chassis",
-    label: "Chassis",
-    body: "Rangka utama yang menahan beban dan menyatukan titik pasang kaki.",
+    id: "vision",
+    label: "Edge Vision",
+    body: "Instance segmentation YOLOv11 berjalan langsung di robot untuk membedakan korban asli dari dummy.",
   },
   {
-    id: "legs",
-    label: "Kaki & Sendi",
-    body: "Konfigurasi berkaki dengan sendi bertingkat untuk melewati permukaan tidak rata.",
+    id: "compute",
+    label: "Komputasi",
+    body: "Jetson Orin Nano Super menangani inferensi dan pemetaan; dua STM32H7 menjalankan kendali gerak real-time.",
+  },
+  {
+    id: "sensing",
+    label: "Sensor Fusion",
+    body: "RealSense D455 memberi kedalaman dan citra, VL53L7CX menambah pembacaan jarak multi-zona.",
   },
   {
     id: "actuation",
     label: "Aktuator",
-    body: "Penggerak sendi beserta mekanisme transmisi gerak.",
+    body: "Sendi kaki memakai DYNAMIXEL seri XC, XL, AX, dan MX dari ROBOTIS.",
   },
   {
-    id: "sensing",
-    label: "Sensor",
-    body: "Perangkat persepsi untuk observasi lingkungan dan umpan balik gerak.",
+    id: "chassis",
+    label: "Rangka",
+    body: "Dimensi ringkas 30 cm kubik, bobot 3,7 kg, dioptimalkan untuk gerak dan fleksibilitas di arena.",
   },
   {
-    id: "compute",
-    label: "Komputer Kontrol",
-    body: "Unit kontrol dan driver yang menjalankan logika gerak robot.",
-  },
-  {
-    id: "power",
-    label: "Daya & Komunikasi",
-    body: "Sumber daya, distribusi tegangan, dan kanal komunikasi operator.",
+    id: "autonomy",
+    label: "Otonomi",
+    body: "Arsitektur pengenalan objek, pemetaan, dan kendali berbasis sensor fusion tanpa kendali operator.",
   },
 ];

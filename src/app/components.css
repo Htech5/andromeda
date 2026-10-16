@@ -8,8 +8,10 @@
 }
 
 .nav {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 100;
   background: var(--color-black);
   border-bottom: var(--rule-faint);
@@ -40,7 +42,7 @@
 .nav--pill .nav__inner {
   min-height: 3.75rem;
   background: var(--color-black);
-  border-color: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 59, 51, 0.38);
   border-radius: 999px;
   padding-inline: clamp(1.25rem, 3vw, 2rem);
   max-width: min(var(--page-max), calc(100vw - 2 * var(--gutter)));
@@ -92,14 +94,16 @@
 
 .nav__cta {
   padding: 0.6rem 1.1rem;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: var(--color-red);
+  border: 1px solid var(--color-red);
   border-radius: var(--radius);
   transition: background 0.3s var(--ease), color 0.3s var(--ease),
     border-radius 0.3s var(--ease);
 }
 
 .nav__cta:hover {
-  background: var(--color-red);
+  background: transparent;
+  color: var(--color-red);
 }
 
 .nav--pill .nav__cta {
@@ -162,25 +166,53 @@
 /* ---------- hero ---------- */
 
 .hero {
-  min-height: calc(100dvh - 4.5rem);
+  /* The nav is fixed, so the hero runs the full viewport and clears it with
+     padding instead of losing height to it. */
+  min-height: 100dvh;
+  position: relative;
+  overflow: hidden;
   padding-inline: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding-top: clamp(2rem, 6vh, 4.5rem);
-  padding-bottom: 1.5rem;
+  padding-top: calc(4.5rem + clamp(0.75rem, 3vh, 2rem));
+  padding-bottom: 1.25rem;
 }
 
 .hero__inner {
+  position: relative;
+  z-index: 1;
   display: grid;
-  gap: clamp(2rem, 5vw, 4rem);
   align-items: center;
   flex: 1;
 }
 
-.hero__kicker {
-  color: var(--ink-2);
-  margin-bottom: 1.25rem;
+.hero__art {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0.38;
+}
+
+/* Scrim rides above the art and below the copy, so the headline stays legible. */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    var(--color-black) 14%,
+    rgba(18, 18, 18, 0.6) 46%,
+    rgba(18, 18, 18, 0.1) 76%
+  );
+}
+
+.hero__text {
+  max-width: 34rem;
 }
 
 .hero__title {
@@ -191,7 +223,7 @@
 .hero__tagline {
   margin-top: 1rem;
   padding-top: 1rem;
-  border-top: var(--rule-faint);
+  border-top: 2px solid var(--color-red);
   display: inline-block;
   color: var(--ink);
 }
@@ -203,31 +235,15 @@
   margin-top: clamp(1.5rem, 4vw, 2.5rem);
 }
 
-.hero__meta {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  color: var(--ink-3);
-  padding-top: 1.25rem;
-  border-top: var(--rule-faint);
-}
-
-.hero__rule {
-  flex: 1;
-  height: 1px;
-  background: var(--color-red);
-}
-
 .hero__text {
   animation: rise 0.8s var(--ease) both;
 }
 
 @media (min-width: 1000px) {
-  .hero__inner {
-    grid-template-columns: 0.85fr 1.15fr;
-  }
-  .hero__meta span:last-child {
-    text-align: right;
+  .hero__art {
+    justify-content: flex-end;
+    padding-right: var(--gutter);
+    opacity: 0.62;
   }
 }
 
@@ -236,6 +252,18 @@
 .ascii {
   margin: 0;
   min-width: 0;
+}
+
+.ascii--bin {
+  position: relative;
+}
+
+/* The ones ride on top of the zeros, same grid, same metrics. */
+.ascii__art--one {
+  position: absolute;
+  inset: 0;
+  color: var(--color-red);
+  animation: none;
 }
 
 .ascii__art {
@@ -250,11 +278,15 @@
   animation: wipe 0.9s var(--ease) both 0.15s;
 }
 
-.ascii__label {
-  margin-top: 1.25rem;
-  padding-top: 1rem;
-  border-top: var(--rule-faint);
-  color: var(--ink-3);
+/* 96 columns by 50 lines of binary. JetBrains Mono advances 0.6em per cell;
+   0.61 leaves slack in case the webfont fails and a wider fallback steps in. */
+.ascii__art--bin {
+  /* Grow until the viewport width or the hero height stops it, whichever
+     comes first. 8rem covers the hero's own top and bottom padding. */
+  font-size: min(calc(100vw / (96 * 0.61)), calc((100dvh - 8rem) / 50));
+  line-height: 1;
+  letter-spacing: 0;
+  overflow: hidden;
 }
 
 @keyframes wipe {
@@ -276,42 +308,6 @@
   to {
     opacity: 1;
     transform: none;
-  }
-}
-
-/* ---------- marquee ---------- */
-
-.marquee {
-  overflow: hidden;
-  border-block: var(--rule-faint);
-  padding-block: 0.9rem;
-}
-
-.marquee__track {
-  display: flex;
-  width: max-content;
-  animation: slide 38s linear infinite;
-}
-
-.marquee__item {
-  padding-right: 3rem;
-  color: var(--ink-2);
-  white-space: nowrap;
-}
-
-.marquee__star {
-  padding-left: 3rem;
-}
-
-@keyframes slide {
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .marquee__track {
-    animation: none;
   }
 }
 
@@ -357,54 +353,7 @@
   margin-top: clamp(2.5rem, 6vw, 4.5rem);
 }
 
-/* ---------- blueprint ---------- */
-
-.blueprint {
-  width: 100%;
-  height: auto;
-}
-
-.blueprint__label {
-  font-family: var(--font-mono);
-  font-size: 15px;
-  letter-spacing: 0.18em;
-}
-
-.reveal .draw path,
-.reveal .draw rect,
-.reveal .draw circle {
-  stroke-dasharray: 900;
-  stroke-dashoffset: 900;
-}
-
-.reveal.is-visible .draw path,
-.reveal.is-visible .draw rect,
-.reveal.is-visible .draw circle {
-  animation: draw 1.1s var(--ease) both;
-}
-
-.reveal.is-visible .blueprint__accent path,
-.reveal.is-visible .blueprint__accent rect,
-.reveal.is-visible .blueprint__accent circle {
-  animation-delay: 0.3s;
-}
-
-@keyframes draw {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .reveal .draw path,
-  .reveal .draw rect,
-  .reveal .draw circle {
-    stroke-dasharray: none;
-    stroke-dashoffset: 0;
-  }
-}
-
-/* ---------- parts list ---------- */
+/* ---------- robot render block below ---------- */
 
 .partsList {
   list-style: none;
@@ -485,9 +434,9 @@
 
 .teamGrid {
   display: grid;
-  gap: clamp(2rem, 4vw, 3.5rem);
+  gap: clamp(1.5rem, 2.5vw, 2.5rem);
   border-top: var(--rule-faint);
-  padding-top: clamp(1.5rem, 3vw, 2.5rem);
+  padding-top: clamp(1.25rem, 2vw, 1.75rem);
 }
 
 .teamGrid__division {
@@ -517,7 +466,7 @@
 
 .phases {
   list-style: none;
-  margin: clamp(3rem, 7vw, 5rem) 0 0;
+  margin: clamp(1.75rem, 3.5vw, 2.75rem) 0 0;
   padding: 0;
   display: grid;
   border-top: var(--rule-faint);
@@ -527,7 +476,7 @@
   display: grid;
   grid-template-columns: 3rem 1fr;
   gap: 0.35rem 1.25rem;
-  padding-block: 1.5rem;
+  padding-block: 1rem;
   border-bottom: var(--rule-faint);
 }
 
@@ -728,5 +677,336 @@
   .footer__inner {
     grid-template-columns: 1.1fr 1fr;
     align-items: start;
+  }
+}
+
+/* ---------- dense data blocks ---------- */
+
+.hero__lede {
+  margin-top: 1.25rem;
+  color: var(--ink-2);
+  max-width: 46ch;
+}
+
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  margin: 0 0 clamp(1.5rem, 3vw, 2.25rem);
+  border-top: var(--rule-faint);
+  border-left: var(--rule-faint);
+}
+
+.statsRow__cell {
+  padding: 1rem 1.25rem;
+  border-right: var(--rule-faint);
+  border-bottom: var(--rule-faint);
+}
+
+.statsRow__value {
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  line-height: 1;
+  color: var(--ink);
+}
+
+.statsRow__label {
+  margin: 0.4rem 0 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.specGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  margin: 0 0 clamp(1.5rem, 3vw, 2.25rem);
+  border-top: var(--rule-faint);
+  border-left: var(--rule-faint);
+}
+
+.specGrid__cell {
+  padding: 0.8rem 1rem;
+  border-right: var(--rule-faint);
+  border-bottom: var(--rule-faint);
+}
+
+.specGrid__key {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.specGrid__value {
+  margin: 0.3rem 0 0;
+  font-size: 0.92rem;
+  color: var(--ink);
+}
+
+.factRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  gap: 0;
+  margin: 0;
+  border-top: var(--rule-faint);
+}
+
+.factRow > div {
+  padding: 0.75rem 0;
+  border-bottom: var(--rule-faint);
+}
+
+.factRow dt {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.factRow dd {
+  margin: 0.3rem 0 0;
+  font-size: 1.05rem;
+  color: var(--ink);
+}
+
+.defList--tight .defList__row {
+  padding-block: 0.75rem;
+}
+
+.teamGrid__body {
+  margin: 0 0 0.75rem;
+  color: var(--ink-2);
+  font-size: 0.95rem;
+}
+
+.teamGrid--two {
+  grid-template-columns: 1fr;
+}
+
+/* ---------- sponsorship ---------- */
+
+.budget {
+  margin: 0;
+  border-top: var(--rule-faint);
+}
+
+.budget__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-block: 0.7rem;
+  border-bottom: var(--rule-faint);
+}
+
+.budget__row dt,
+.budget__row dd {
+  margin: 0;
+}
+
+.budget__row--total {
+  border-bottom: var(--rule);
+}
+
+.budget__row--total dt,
+.budget__row--total dd {
+  font-size: 1.05rem;
+}
+
+.matrixWrap {
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
+  overflow-x: auto;
+}
+
+.matrix {
+  width: 100%;
+  min-width: 46rem;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.matrix th,
+.matrix td {
+  padding: 0.6rem 0.75rem;
+  border-bottom: var(--rule-faint);
+  text-align: center;
+}
+
+.matrix thead th {
+  border-bottom: var(--rule);
+  vertical-align: bottom;
+}
+
+.matrix tbody th {
+  text-align: left;
+  font-weight: 500;
+  color: var(--ink-2);
+}
+
+.matrix__tier {
+  display: block;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.matrix__price {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.78rem;
+  color: var(--ink-3);
+}
+
+/* Marks are drawn, not typed: no glyph font dependency, no emoji. */
+.matrix__yes,
+.matrix__no {
+  display: inline-block;
+  width: 0.85rem;
+  height: 0.85rem;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.matrix__yes {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23121212' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 8.8l3.6 3.6L13.5 4'/%3E%3C/svg%3E");
+}
+
+.matrix__no {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23d92b22' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M3.5 3.5l9 9M12.5 3.5l-9 9'/%3E%3C/svg%3E");
+}
+
+.noteLine {
+  margin: 1rem 0 0;
+  font-size: 0.82rem;
+  color: var(--ink-3);
+}
+
+@media (min-width: 700px) {
+  .statsRow {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (min-width: 850px) {
+  .teamGrid--two {
+    grid-template-columns: 1fr 1fr 1.1fr;
+  }
+}
+
+/* ---------- robot renders ---------- */
+
+.robotShot img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.robotShot {
+  margin: 0;
+}
+
+.robotShot figcaption {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: var(--rule-faint);
+  font-size: 0.78rem;
+  color: var(--ink-3);
+}
+
+/* ---------- boot screen ---------- */
+
+.boot {
+  display: none;
+}
+
+/* Without JS nothing would ever hide this, so it only exists once JS is on. */
+.js .boot {
+  --color-red: #ff3b33;
+  --ink-3: rgba(255, 255, 255, 0.4);
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--color-black);
+  color: rgba(255, 255, 255, 0.92);
+  transition: opacity 0.5s var(--ease);
+}
+
+.boot--leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Twice the width, panned by half: the streaks repeat seamlessly. */
+.boot__wind {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0 72px,
+    rgba(255, 255, 255, 0.07) 72px 74px,
+    transparent 74px 128px,
+    rgba(255, 59, 51, 0.16) 128px 129px
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 22%,
+    #000 78%,
+    transparent
+  );
+  animation: windPan 0.65s linear infinite;
+}
+
+.boot__runner {
+  position: relative;
+  width: min(46vw, 34rem);
+  transform-origin: center bottom;
+  animation: charge 2.1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+/* The hero sizes its grid against the hero itself; here it has to fit a box. */
+.boot__runner .ascii__art--bin {
+  font-size: min(
+    calc(46vw / (96 * 0.61)),
+    calc(34rem / (96 * 0.61)),
+    calc(62dvh / 50)
+  );
+}
+
+.boot__label {
+  position: absolute;
+  bottom: clamp(2rem, 8vh, 5rem);
+  font-size: 0.72rem;
+  letter-spacing: 0.3em;
+  color: var(--ink-3);
+}
+
+@keyframes windPan {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Lean into the run, then straighten as it lands on the right. */
+@keyframes charge {
+  0% {
+    transform: translateX(-62%) skewX(-9deg);
+  }
+  55% {
+    transform: translateX(10%) skewX(-5deg);
+  }
+  100% {
+    transform: translateX(62%) skewX(-9deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boot__wind,
+  .boot__runner {
+    animation: none;
   }
 }

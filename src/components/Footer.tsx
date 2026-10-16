@@ -7,17 +7,25 @@ export default function Footer() {
       <div className="shell">
         <section className="ctaPanel">
           <div className="ctaPanel__text">
-            <h2 className="ctaPanel__title">Lihat robotnya bekerja</h2>
+            <h2 className="ctaPanel__title">Dukung Andromeda ke KSTI 2026</h2>
             <p className="ctaPanel__sub">
-              Jadwal uji, dokumentasi, dan peluang dukungan dibahas langsung
-              dengan tim.
+              Paket kemitraan, jadwal uji, dan dokumentasi robot dibahas
+              langsung dengan divisi sponsorship.
             </p>
-            <a className="cta cta--solid" href={`mailto:${site.email}`}>
-              Hubungi tim
-            </a>
+            <div className="hero__actions">
+              <a className="cta cta--solid" href={`mailto:${site.email}`}>
+                Kirim email
+              </a>
+              <a
+                className="cta"
+                href={`https://wa.me/${site.phoneHref}`}
+              >
+                WhatsApp tim
+              </a>
+            </div>
           </div>
           <div className="ctaPanel__art" aria-hidden="true">
-            <AsciiRobot bare />
+            <AsciiRobot />
           </div>
         </section>
       </div>
@@ -33,6 +41,17 @@ export default function Footer() {
               <dd>
                 <a className="inlineLink" href={`mailto:${site.email}`}>
                   {site.email}
+                </a>
+              </dd>
+            </div>
+            <div>
+              <dt className="footer__heading mono accent">WhatsApp</dt>
+              <dd>
+                <a
+                  className="inlineLink mono"
+                  href={`https://wa.me/${site.phoneHref}`}
+                >
+                  {site.phone}
                 </a>
               </dd>
             </div>

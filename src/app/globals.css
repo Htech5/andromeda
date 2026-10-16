@@ -18,12 +18,12 @@
   --radius: 12px;
   --page-max: 1400px;
   --gutter: clamp(1.25rem, 5vw, 6rem);
-  --section-y: clamp(5.5rem, 13vh, 10rem);
+  --section-y: clamp(3.25rem, 6vh, 5rem);
 
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Dark bands: hero, marquee, footer. Same tokens, inverted values. */
+/* Dark bands: hero and footer. Same tokens, inverted values. */
 .onDark {
   --color-red: #ff3b33;
   --bg: var(--color-black);
@@ -137,8 +137,8 @@ svg {
 .sectionHead {
   display: flex;
   align-items: baseline;
-  gap: clamp(1rem, 3vw, 3rem);
-  margin-bottom: clamp(2rem, 5vw, 4rem);
+  gap: clamp(0.75rem, 2vw, 2rem);
+  margin-bottom: clamp(1.25rem, 2.5vw, 2rem);
   flex-wrap: wrap;
 }
 
@@ -150,12 +150,12 @@ svg {
 }
 
 .sectionTitle {
-  font-size: clamp(2rem, 6vw, 4.25rem);
+  font-size: clamp(1.9rem, 4.6vw, 3.4rem);
 }
 
 .editorial {
   display: grid;
-  gap: clamp(2rem, 5vw, 4.5rem);
+  gap: clamp(1.5rem, 3vw, 3rem);
 }
 
 @media (min-width: 900px) {

@@ -5,7 +5,7 @@ import { achievements } from "@/data/achievements";
 export default function Achievements() {
   return (
     <section className="section shell" id="achievements">
-      <SectionHead index="04 / ACHIEVEMENTS" title="Record of work" />
+      <SectionHead index="06 / REKAM JEJAK" title="Catatan kontes" />
 
       {achievements.length === 0 ? (
         <Reveal>
