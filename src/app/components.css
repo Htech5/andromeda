@@ -557,6 +557,11 @@
   font-size: 0.95rem;
 }
 
+/* Stands alone between two sections, so it gets its own breathing room. */
+.section--stats {
+  padding-block: calc(var(--section-y) * 1.9);
+}
+
 .statsRow {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -569,7 +574,8 @@
 }
 
 .statsRow__value {
-  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-size: clamp(2.75rem, 11vw, 5.5rem);
+  letter-spacing: -0.04em;
   line-height: 1;
   color: var(--ink);
 }

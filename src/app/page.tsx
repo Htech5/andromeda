@@ -20,7 +20,7 @@ export default function Page() {
         <Hero />
         <MissionProfile />
         <RobotArchitecture />
-        <section className="section shell" id="team">
+        <section className="section section--stats shell" id="team">
           <StatsRow />
         </section>
         <Achievements />

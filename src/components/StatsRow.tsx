@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Reveal from "./Reveal";
 import { stats } from "@/data/team";
 
 const DURATION = 1400;
@@ -66,8 +67,8 @@ export default function StatsRow() {
 
   return (
     <dl className="statsRow" ref={ref}>
-      {stats.map((item) => (
-        <div className="statsRow__cell" key={item.label}>
+      {stats.map((item, i) => (
+        <Reveal className="statsRow__cell" delay={i * 140} key={item.label}>
           <dt
             className="statsRow__value mono"
             data-count={item.value}
@@ -77,7 +78,7 @@ export default function StatsRow() {
             {item.suffix}
           </dt>
           <dd className="statsRow__label mono">{item.label}</dd>
-        </div>
+        </Reveal>
       ))}
     </dl>
   );
