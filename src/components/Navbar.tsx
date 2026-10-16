@@ -81,10 +81,10 @@ export default function Navbar() {
               <a
                 href={link.href}
                 className="dock__item"
+                aria-label={link.label}
                 aria-current={active === link.href ? "true" : undefined}
               >
                 <NavIcon name={link.icon} />
-                <span className="dock__label mono">{link.label}</span>
               </a>
             </li>
           ))}

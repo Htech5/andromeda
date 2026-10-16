@@ -1,7 +1,13 @@
-/** Line glyphs for the mobile dock. Drawn here, so no icon dependency. */
+/**
+ * Line glyphs for the mobile dock. Drawn here, so no icon dependency.
+ *
+ * `robot` is the M31 seen from above, traced to the real silhouette: oval body,
+ * six legs, sensor box on the right. A trace of the CAD mesh turns to mush at
+ * 26px, so it is redrawn as strokes that stay crisp at any size.
+ */
 const PATHS: Record<string, string> = {
   robot:
-    "M12 3.2v2.6M7.4 5.8h9.2a2 2 0 0 1 2 2v7.4a2 2 0 0 1-2 2H7.4a2 2 0 0 1-2-2V7.8a2 2 0 0 1 2-2M9.4 10.2v1.8M14.6 10.2v1.8M9.6 14.4h4.8M4 10.4H2.6M20 10.4h1.4M8.4 17.2v3.6M15.6 17.2v3.6",
+    "M17.4 12a6 4.5 0 0 1-12 0 6 4.5 0 0 1 12 0M19.2 10.3h2.3v3.4h-2.3M6.9 8.8 4.3 6.2M3.3 7.2l2-2M11.4 7.5v-3M10.1 4h2.6M15.9 8.8l2.6-2.6M17.5 5.2l2 2M6.9 15.2l-2.6 2.6M3.3 16.8l2 2M11.4 16.5v3M10.1 20h2.6M15.9 15.2l2.6 2.6M17.5 18.8l2-2",
   team: "M9 11.4a3 3 0 1 0 0-6 3 3 0 0 0 0 6M3.4 19.6a5.6 5.6 0 0 1 11.2 0M15.8 5.8a3 3 0 0 1 0 5.6M17.2 14.6a5.6 5.6 0 0 1 3.4 5",
   award:
     "M12 14.2a4.6 4.6 0 1 0 0-9.2 4.6 4.6 0 0 0 0 9.2M8.6 13.4 7 21l5-2.6L17 21l-1.6-7.6",
