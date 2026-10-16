@@ -26,12 +26,12 @@ export const sponsors: Partner[] = [
   },
   {
     name: "EasyEDA",
-    logo: "/logos/sponsors/easyeda.png",
+    logo: "/logos/sponsors/easyeda.svg",
     href: "https://easyeda.com",
   },
   {
     name: "JLCPCB",
-    logo: "/logos/sponsors/jlcpcb.png",
+    logo: "/logos/sponsors/jlcpcb.webp",
     href: "https://jlcpcb.com",
   },
   {

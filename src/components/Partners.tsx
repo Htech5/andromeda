@@ -1,8 +1,13 @@
+import { existsSync } from "node:fs";
 import Image from "next/image";
 import Reveal from "./Reveal";
 import SectionHead from "./SectionHead";
 import { mediaPartners, sponsors } from "@/data/partners";
 import { site } from "@/data/site";
+
+/** Server-side: a logo path only counts once the file is actually in /public,
+    so a missing file falls back to the name instead of a broken image. */
+const hasLogo = (logo?: string) => !!logo && existsSync(`public${logo}`);
 
 const groups = [
   { label: "Sponsors", items: sponsors },
@@ -41,9 +46,9 @@ export default function Partners() {
                 {group.items.map((partner, i) => (
                   <Reveal as="li" key={partner.name} delay={i * 50}>
                     <div className="partners__cell">
-                      {partner.logo ? (
+                      {hasLogo(partner.logo) ? (
                         <Image
-                          src={partner.logo}
+                          src={partner.logo!}
                           alt={partner.name}
                           width={320}
                           height={120}
