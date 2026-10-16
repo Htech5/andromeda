@@ -740,31 +740,9 @@
   color: var(--ink-3);
 }
 
-.specGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
-  margin: 0 0 clamp(1.5rem, 3vw, 2.25rem);
-  border-top: var(--rule-faint);
-  border-left: var(--rule-faint);
-}
 
-.specGrid__cell {
-  padding: 0.8rem 1rem;
-  border-right: var(--rule-faint);
-  border-bottom: var(--rule-faint);
-}
 
-.specGrid__key {
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
 
-.specGrid__value {
-  margin: 0.3rem 0 0;
-  font-size: 0.92rem;
-  color: var(--ink);
-}
 
 .factRow {
   display: grid;
@@ -927,13 +905,6 @@
   margin: 0;
 }
 
-.robotShot figcaption {
-  margin-top: 0.5rem;
-  padding-top: 0.5rem;
-  border-top: var(--rule-faint);
-  font-size: 0.78rem;
-  color: var(--ink-3);
-}
 
 /* ---------- boot screen ---------- */
 

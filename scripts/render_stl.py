@@ -83,11 +83,13 @@ def rasterize(verts, norms, yaw, pitch, roll=0.0, size=1600, fill=0.9):
     return value.reshape(size, size), np.isfinite(depth).reshape(size, size)
 
 
-def render(verts, norms, yaw, pitch, size=1600, ink=(236, 236, 236)):
-    lum, mask = rasterize(verts, norms, yaw, pitch, size=size)
+def render(verts, norms, yaw, pitch, size=1600, ink=(236, 236, 236),
+           base=(0, 0, 0), roll=0.0, fill=0.9):
+    """Ramp the shading between `base` (unlit) and `ink` (fully lit)."""
+    lum, mask = rasterize(verts, norms, yaw, pitch, roll, size=size, fill=fill)
     rgb = np.zeros((size, size, 3), np.uint8)
     for c in range(3):
-        rgb[..., c] = np.clip(lum * ink[c], 0, 255).astype(np.uint8)
+        rgb[..., c] = np.clip(base[c] + (ink[c] - base[c]) * lum, 0, 255).astype(np.uint8)
     return Image.fromarray(np.dstack([rgb, (mask * 255).astype(np.uint8)]), "RGBA")
 
 

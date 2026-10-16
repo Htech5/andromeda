@@ -1,37 +1,23 @@
 import Image from "next/image";
 import Reveal from "./Reveal";
 import SectionHead from "./SectionHead";
-import { robot, specs, subsystems } from "@/data/robot";
+import { robot, subsystems } from "@/data/robot";
 
 export default function RobotArchitecture() {
   return (
     <section className="section shell" id="robot">
-      <SectionHead index="03 / ROBOT" title={robot.model} />
-
-      <Reveal>
-        <dl className="specGrid">
-          {specs.map((spec) => (
-            <div className="specGrid__cell" key={spec.group}>
-              <dt className="specGrid__key mono accent">{spec.group}</dt>
-              <dd className="specGrid__value mono">{spec.value}</dd>
-            </div>
-          ))}
-        </dl>
-      </Reveal>
+      <SectionHead title={robot.model} />
 
       <div className="editorial editorial--wide">
         <Reveal>
           <figure className="robotShot">
             <Image
-              src="/images/m31-side.webp"
-              alt="Render tampak samping robot M31 Enterprise: enam kaki, badan silinder, dan lengan evakuasi"
-              width={1100}
-              height={1100}
+              src="/images/m31-iso.webp"
+              alt="Render isometrik robot M31 Enterprise: enam kaki bersendi, badan silinder, dan lengan evakuasi terangkat"
+              width={930}
+              height={1200}
               sizes="(min-width: 900px) 60vw, 90vw"
             />
-            <figcaption className="mono">
-              Render dari model CAD tim. {robot.dimensions} · {robot.weight}
-            </figcaption>
           </figure>
         </Reveal>
 

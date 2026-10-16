@@ -4,11 +4,6 @@ export type Subsystem = {
   body: string;
 };
 
-export type Spec = {
-  group: string;
-  value: string;
-};
-
 /** M31 Enterprise 2026/2027. Sumber: proposal sponsorship, halaman spesifikasi robot. */
 export const robot = {
   model: "M31 ENTERPRISE",
@@ -16,17 +11,6 @@ export const robot = {
   dimensions: "± 30 × 30 × 30 cm",
   weight: "± 3,7 kg",
 } as const;
-
-export const specs: Spec[] = [
-  { group: "Compute", value: "NVIDIA Jetson Orin Nano Super" },
-  { group: "Control", value: "Dual STM32H7 minimal system" },
-  { group: "Aktuator", value: "DYNAMIXEL seri XC, XL, AX, MX" },
-  { group: "Sensor utama", value: "Intel RealSense D455" },
-  { group: "Sensor jarak", value: "ST VL53L7CX" },
-  { group: "Persepsi", value: "Instance segmentation YOLOv11" },
-  { group: "Dimensi", value: robot.dimensions },
-  { group: "Bobot", value: robot.weight },
-];
 
 export const subsystems: Subsystem[] = [
   {
