@@ -12,12 +12,25 @@ const PATHS: Record<string, string> = {
   award:
     "M12 14.2a4.6 4.6 0 1 0 0-9.2 4.6 4.6 0 0 0 0 9.2M8.6 13.4 7 21l5-2.6L17 21l-1.6-7.6",
   deal: "M3 9.4 6.6 6l3.4 2.8 2.6-1 3.2 1.4M21 9.4 17.4 6M7.4 13.2l2.4 2.2M10.4 11.4l3 2.8M13.6 10.2l3.2 3M6.6 6v9.6M17.4 6v9.6M9.6 17.6l1.6 1.4a1.6 1.6 0 0 0 2.2-2.3",
+  instagram:
+    "M7.6 3.5h8.8a4.1 4.1 0 0 1 4.1 4.1v8.8a4.1 4.1 0 0 1-4.1 4.1H7.6a4.1 4.1 0 0 1-4.1-4.1V7.6a4.1 4.1 0 0 1 4.1-4.1M12 8.3a3.7 3.7 0 1 0 0 7.4 3.7 3.7 0 0 0 0-7.4M17.2 7.1v.01",
+  tiktok:
+    "M14.3 3.5v10.8a3.9 3.9 0 1 1-3.9-3.9c.3 0 .7 0 1 .1M14.3 3.5a5 5 0 0 0 5 5",
+  whatsapp:
+    "M3.6 20.4l1.3-4.2a7.8 7.8 0 1 1 3 2.9zM9 8.6c.4 1.9 1.6 3.4 3.4 4.3l1-1.2 2.3 1a4.3 4.3 0 0 1-4.2 1 6.4 6.4 0 0 1-3.8-3.9 4.2 4.2 0 0 1 .8-3.2l1.1 2.3z",
+  mail: "M3.5 7.3h17v9.4h-17zM3.9 7.7 12 13.3l8.1-5.6",
 };
 
-export default function NavIcon({ name }: { name: string }) {
+export default function NavIcon({
+  name,
+  className = "dock__glyph",
+}: {
+  name: string;
+  className?: string;
+}) {
   return (
     <svg
-      className="dock__glyph"
+      className={className}
       width="1em"
       height="1em"
       viewBox="0 0 24 24"

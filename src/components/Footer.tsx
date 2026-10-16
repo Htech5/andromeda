@@ -1,3 +1,4 @@
+import NavIcon from "./NavIcon";
 import { navLinks, site } from "@/data/site";
 
 export default function Footer() {
@@ -9,25 +10,6 @@ export default function Footer() {
           <p className="footer__affiliation mono">{site.affiliation}</p>
 
           <dl className="footer__contact">
-            <div>
-              <dt className="footer__heading mono accent">Email</dt>
-              <dd>
-                <a className="inlineLink" href={`mailto:${site.email}`}>
-                  {site.email}
-                </a>
-              </dd>
-            </div>
-            <div>
-              <dt className="footer__heading mono accent">WhatsApp</dt>
-              <dd>
-                <a
-                  className="inlineLink mono"
-                  href={`https://wa.me/${site.phoneHref}`}
-                >
-                  {site.phone}
-                </a>
-              </dd>
-            </div>
             <div>
               <dt className="footer__heading mono accent">Platform</dt>
               <dd className="mono">{site.platform}</dd>
@@ -50,22 +32,32 @@ export default function Footer() {
             </ul>
           </nav>
 
-          <div className="footer__col">
+          <div className="footer__col footer__col--map">
             <p className="footer__heading mono accent">Headquarters</p>
-            <address className="footer__address">
-              {site.hq.map((line) => (
-                <span key={line}>{line}</span>
-              ))}
-            </address>
+            <iframe
+              className="footer__map"
+              src={`https://www.google.com/maps?q=${encodeURIComponent(
+                site.mapQuery,
+              )}&output=embed`}
+              title={`Peta ${site.hq[0]}`}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
           </div>
 
           <div className="footer__col">
             <p className="footer__heading mono accent">Social</p>
-            <ul className="footer__list">
+            {/* Icons only: the label stays for screen readers and tooltips. */}
+            <ul className="footer__socials">
               {site.socials.map((social) => (
                 <li key={social.label}>
-                  <a className="footer__link" href={social.href}>
-                    {social.label}
+                  <a
+                    className="footer__social"
+                    href={social.href}
+                    aria-label={social.label}
+                    title={social.label}
+                  >
+                    <NavIcon name={social.icon} className="footer__glyph" />
                   </a>
                 </li>
               ))}

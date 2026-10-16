@@ -19,11 +19,29 @@ export const site = {
     "Kota Semarang, Jawa Tengah 50275",
   ],
   socials: [
-    { label: "Instagram", href: "https://instagram.com/andromedaundip" },
-    { label: "TikTok", href: "https://tiktok.com/@andromedaundip" },
-    { label: "WhatsApp", href: "https://wa.me/62895620131429" },
-    { label: "Email", href: "mailto:undip.ews.andromeda@gmail.com" },
+    {
+      label: "Instagram",
+      href: "https://instagram.com/andromedaundip",
+      icon: "instagram",
+    },
+    {
+      label: "TikTok",
+      href: "https://tiktok.com/@andromedaundip",
+      icon: "tiktok",
+    },
+    {
+      label: "WhatsApp",
+      href: "https://wa.me/62895620131429",
+      icon: "whatsapp",
+    },
+    {
+      label: "Email",
+      href: "mailto:undip.ews.andromeda@gmail.com",
+      icon: "mail",
+    },
   ],
+  /** Google embed needs no API key; the query is the HQ address itself. */
+  mapQuery: "Student Center Universitas Diponegoro, Tembalang, Semarang",
 } as const;
 
 export const navLinks = [
