@@ -14,7 +14,7 @@ export default function Partners() {
 
   return (
     <section className="section shell" id="partners">
-      <SectionHead index="08 / PARTNERS" title="Didukung oleh" />
+      <SectionHead title="Didukung oleh" />
 
       {filled.length === 0 ? (
         <Reveal>

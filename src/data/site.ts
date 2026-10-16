@@ -27,7 +27,6 @@ export const site = {
 
 export const navLinks = [
   { label: "Robot", href: "#robot" },
-  { label: "Kompetisi", href: "#competition" },
   { label: "Tim", href: "#team" },
   { label: "Rekam Jejak", href: "#achievements" },
   { label: "Sponsorship", href: "#sponsorship" },

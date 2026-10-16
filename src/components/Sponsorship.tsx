@@ -12,7 +12,7 @@ import { site } from "@/data/site";
 export default function Sponsorship() {
   return (
     <section className="section shell" id="sponsorship">
-      <SectionHead index="07 / SPONSORSHIP" title="Paket kemitraan" />
+      <SectionHead title="Paket kemitraan" />
 
       <div className="editorial editorial--split">
         <Reveal delay={60}>

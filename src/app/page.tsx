@@ -2,8 +2,7 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import MissionProfile from "@/components/MissionProfile";
 import RobotArchitecture from "@/components/RobotArchitecture";
-import Competition from "@/components/Competition";
-import Team from "@/components/Team";
+import StatsRow from "@/components/StatsRow";
 import Achievements from "@/components/Achievements";
 import Sponsorship from "@/components/Sponsorship";
 import Partners from "@/components/Partners";
@@ -21,8 +20,9 @@ export default function Page() {
         <Hero />
         <MissionProfile />
         <RobotArchitecture />
-        <Competition />
-        <Team />
+        <section className="section shell" id="team">
+          <StatsRow />
+        </section>
         <Achievements />
         <Sponsorship />
         {hasPartners && <Partners />}
