@@ -1,85 +1,61 @@
+import Image from "next/image";
 import Reveal from "./Reveal";
 import SectionHead from "./SectionHead";
 
 const challenges = [
   {
+    image: "/images/mission-medan.webp",
+    alt: "Robot M31 dilihat dari atas, dikelilingi hamparan puing dan kerikil, tiga batu di antaranya ditandai merah",
     label: "Medan tidak rata",
-    body: "Puing, anak tangga, dan jalan miring menghentikan robot beroda.",
+    body: "Puing, anak tangga, dan jalan miring menghentikan robot beroda. Enam kaki memberi pijakan terpisah.",
   },
   {
-    label: "Korban palsu",
-    body: "Robot harus memilah korban asli dari dummy sebelum mengevakuasi.",
+    image: "/images/mission-korban.webp",
+    alt: "Robot M31 menghadap dua sosok korban, satu ditandai merah sebagai korban asli",
+    label: "Korban asli, bukan dummy",
+    body: "Robot memilah korban asli dari dummy lebih dulu, baru mengangkat dan membawanya ke Safety Zone.",
   },
   {
+    image: "/images/mission-otonom.webp",
+    alt: "Robot M31 tampak depan dengan busur pemindaian memancar dari kepala sensornya",
     label: "Tanpa operator",
-    body: "Seluruh rute Home sampai Finish berjalan otonom dalam 5 menit.",
+    body: "Seluruh rute Home sampai Finish berjalan otonom dalam 5 menit. Tidak ada kendali dari luar arena.",
   },
   {
-    label: "Rute berubah",
-    body: "Posisi korban diacak tiap pertandingan, jalur tidak bisa dihafal.",
+    image: "/images/mission-rute.webp",
+    alt: "Robot M31 di awal jalur bertanda, dua titik korban ditandai merah di sepanjang rute",
+    label: "Rute selalu berubah",
+    body: "Posisi korban diacak tiap pertandingan, jadi jalur tidak bisa dihafal dari babak sebelumnya.",
   },
 ];
 
 export default function MissionProfile() {
   return (
     <section className="section shell" id="mission">
-      <SectionHead index="02 / PROFIL MISI" title="Dibangun untuk medan rusak" />
+      <SectionHead title="Dibangun untuk medan rusak" />
 
-      <div className="editorial editorial--split">
-        <div className="stack">
-          <Reveal delay={60}>
-            <p className="lede lede--bar">
-              Andromeda Robotis berdiri pada 2011 dengan robot pemadam api. Sejak
-              2022 fokus tim beralih ke robot otonom Search and Rescue dan
-              Autonomous Car, dengan sasaran teknologi yang terpakai di
-              keselamatan, respons darurat, dan misi kemanusiaan.
-            </p>
-          </Reveal>
-          <Reveal delay={110}>
-            <p className="lede">
-              Pengembangan berjalan di bawah Undip Robotics Development Center
-              (URDC) bersama dosen pembimbing, dengan integrasi kecerdasan buatan
-              agar robot bekerja sepenuhnya otonom.
-            </p>
-          </Reveal>
-        </div>
-
-        <Reveal delay={150}>
-          <dl className="defList">
-            {challenges.map((item) => (
-              <div className="defList__row" key={item.label}>
-                <dt className="defList__term">{item.label}</dt>
-                <dd className="defList__desc">{item.body}</dd>
+      <ol className="missions">
+        {challenges.map((item, i) => (
+          <Reveal as="li" key={item.label} delay={i * 70}>
+            <article className="missions__item">
+              <div className="missions__shot">
+                <Image
+                  src={item.image}
+                  alt={item.alt}
+                  width={1000}
+                  height={750}
+                  sizes="(min-width: 760px) 44vw, 90vw"
+                />
               </div>
-            ))}
-          </dl>
-        </Reveal>
-      </div>
-
-      <Reveal delay={100}>
-        <svg
-          className="terrain"
-          viewBox="0 0 1200 200"
-          role="img"
-          aria-label="Ilustrasi profil medan tidak rata dengan siluet robot berkaki"
-        >
-          <path
-            d="M0 170h120l40-30h90l60 40h110l70-70h130l50 50h120l60-25h110l50 35h190"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          />
-          <g stroke="var(--color-red)" strokeWidth="2" fill="none">
-            <rect x="536" y="58" width="70" height="26" />
-            <path d="M548 84v22l-10 14M594 84v22l10 14" />
-            <path d="M571 58V44" />
-            <circle cx="571" cy="38" r="5" />
-          </g>
-          <g stroke="var(--hairline)" strokeWidth="1">
-            <path d="M0 40h1200M0 100h1200M0 160h1200" />
-          </g>
-        </svg>
-      </Reveal>
+              <p className="missions__num mono accent">
+                {String(i + 1).padStart(2, "0")}
+              </p>
+              <h3 className="missions__label">{item.label}</h3>
+              <p className="missions__body">{item.body}</p>
+            </article>
+          </Reveal>
+        ))}
+      </ol>
     </section>
   );
 }

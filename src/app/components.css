@@ -15,8 +15,7 @@
   z-index: 100;
   background: var(--color-black);
   border-bottom: var(--rule-faint);
-  transition: background 0.3s var(--ease), border-color 0.3s var(--ease),
-    padding 0.3s var(--ease);
+  transition: background 0.45s var(--ease), border-color 0.45s var(--ease);
 }
 
 .nav__inner {
@@ -27,25 +26,45 @@
   min-height: 4.5rem;
   border: 1px solid transparent;
   border-radius: 0;
-  transition: background 0.3s var(--ease), border-color 0.3s var(--ease),
-    border-radius 0.3s var(--ease), padding 0.3s var(--ease),
-    min-height 0.3s var(--ease);
+  /* Every property that differs between the two states is listed, on one
+     duration and one curve. A property left out snaps while the rest glide,
+     and that mismatch is what reads as jank. */
+  transition: background 0.45s var(--ease), border-color 0.45s var(--ease),
+    border-radius 0.45s var(--ease), box-shadow 0.45s var(--ease),
+    -webkit-backdrop-filter 0.45s var(--ease),
+    backdrop-filter 0.45s var(--ease), padding 0.45s var(--ease),
+    max-width 0.45s var(--ease), min-height 0.45s var(--ease),
+    transform 0.45s var(--ease);
 }
 
 /* Floating pill once the page scrolls past the top. */
 .nav--pill {
   background: transparent;
   border-bottom-color: transparent;
-  padding-top: 0.85rem;
 }
 
+/* Tinted glass, not an outline: the bar itself carries the red once scrolled. */
 .nav--pill .nav__inner {
+  transform: translateY(0.85rem);
   min-height: 3.75rem;
-  background: var(--color-black);
-  border-color: rgba(255, 59, 51, 0.38);
+  background: rgba(74, 16, 13, 0.62);
+  border-color: rgba(255, 108, 100, 0.22);
   border-radius: 999px;
   padding-inline: clamp(1.25rem, 3vw, 2rem);
   max-width: min(var(--page-max), calc(100vw - 2 * var(--gutter)));
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  backdrop-filter: blur(16px) saturate(150%);
+  /* Inner highlight along the top edge: the refraction that sells the glass. */
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 18px 40px -24px rgba(90, 12, 8, 0.8);
+}
+
+/* No blur support means no frosting, so the tint has to carry on its own. */
+@supports not (backdrop-filter: blur(1px)) {
+  .nav--pill .nav__inner {
+    background: rgba(48, 12, 10, 0.95);
+  }
 }
 
 .nav__mark {
@@ -134,6 +153,7 @@
 }
 
 .nav--pill .nav__mobile {
+  transform: translateY(0.85rem);
   margin-inline: var(--gutter);
   margin-top: 0.5rem;
   padding-inline: 1.25rem;
@@ -171,6 +191,14 @@
   min-height: 100dvh;
   position: relative;
   overflow: hidden;
+  background:
+    radial-gradient(
+      82% 68% at 74% 36%,
+      rgba(255, 59, 51, 0.28) 0%,
+      rgba(255, 59, 51, 0.09) 40%,
+      transparent 70%
+    ),
+    linear-gradient(158deg, #121212 0%, #1b0d0c 54%, #2e110e 100%);
   padding-inline: 0;
   display: flex;
   flex-direction: column;
@@ -181,7 +209,7 @@
 
 .hero__inner {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   display: grid;
   align-items: center;
   flex: 1;
@@ -205,9 +233,9 @@
   pointer-events: none;
   background: linear-gradient(
     105deg,
-    var(--color-black) 14%,
-    rgba(18, 18, 18, 0.6) 46%,
-    rgba(18, 18, 18, 0.1) 76%
+    rgba(16, 13, 13, 0.96) 12%,
+    rgba(18, 13, 13, 0.6) 46%,
+    rgba(18, 13, 13, 0.08) 76%
   );
 }
 
@@ -347,11 +375,6 @@
   padding-left: clamp(1rem, 2vw, 1.5rem);
 }
 
-.terrain {
-  width: 100%;
-  height: auto;
-  margin-top: clamp(2.5rem, 6vw, 4.5rem);
-}
 
 /* ---------- robot render block below ---------- */
 
@@ -685,7 +708,8 @@
 .hero__lede {
   margin-top: 1.25rem;
   color: var(--ink-2);
-  max-width: 46ch;
+  max-width: 54ch;
+  font-size: 0.95rem;
 }
 
 .statsRow {
@@ -919,94 +943,155 @@
 
 /* Without JS nothing would ever hide this, so it only exists once JS is on. */
 .js .boot {
-  --color-red: #ff3b33;
-  --ink-3: rgba(255, 255, 255, 0.4);
   position: fixed;
   inset: 0;
   z-index: 200;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  background: var(--color-black);
-  color: rgba(255, 255, 255, 0.92);
-  transition: opacity 0.5s var(--ease);
+  display: block;
 }
 
-.boot--leaving {
-  opacity: 0;
+.boot--opening {
   pointer-events: none;
 }
 
-/* Twice the width, panned by half: the streaks repeat seamlessly. */
-.boot__wind {
+.boot__half {
   position: absolute;
   top: 0;
+  bottom: 0;
+  width: 50%;
+  overflow: hidden;
+  background: var(--color-black);
+  display: flex;
+  align-items: center;
+  transition: transform 0.85s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.boot__half--left {
   left: 0;
-  width: 200%;
-  height: 100%;
-  background: repeating-linear-gradient(
-    90deg,
-    transparent 0 72px,
-    rgba(255, 255, 255, 0.07) 72px 74px,
-    transparent 74px 128px,
-    rgba(255, 59, 51, 0.16) 128px 129px
-  );
-  mask-image: linear-gradient(
-    to bottom,
-    transparent,
-    #000 22%,
-    #000 78%,
-    transparent
-  );
-  animation: windPan 0.65s linear infinite;
+  justify-content: flex-end;
 }
 
-.boot__runner {
-  position: relative;
-  width: min(46vw, 34rem);
-  transform-origin: center bottom;
-  animation: charge 2.1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+.boot__half--right {
+  right: 0;
+  justify-content: flex-start;
 }
 
-/* The hero sizes its grid against the hero itself; here it has to fit a box. */
-.boot__runner .ascii__art--bin {
-  font-size: min(
-    calc(46vw / (96 * 0.61)),
-    calc(34rem / (96 * 0.61)),
-    calc(62dvh / 50)
-  );
+/* Half a wordmark past the seam in each direction: together they read whole. */
+.boot__half--left .boot__mark {
+  transform: translateX(50%);
 }
 
-.boot__label {
+.boot__half--right .boot__mark {
+  transform: translateX(-50%);
+}
+
+.boot__mark {
+  width: clamp(11rem, 34vw, 22rem);
+  height: auto;
+  animation: markIn 0.6s var(--ease) both;
+}
+
+/* The split itself: a red hairline on the seam, wiped away as it opens. */
+.boot__seam {
   position: absolute;
-  bottom: clamp(2rem, 8vh, 5rem);
-  font-size: 0.72rem;
-  letter-spacing: 0.3em;
-  color: var(--ink-3);
+  top: 50%;
+  left: 50%;
+  width: 1px;
+  height: clamp(2.5rem, 7vw, 4.5rem);
+  background: #ff3b33;
+  transform: translate(-50%, -50%) scaleY(0);
+  animation: seamIn 0.45s var(--ease) 0.5s both;
 }
 
-@keyframes windPan {
+.boot--opening .boot__half--left {
+  transform: translateX(-100%);
+}
+
+.boot--opening .boot__half--right {
+  transform: translateX(100%);
+}
+
+.boot--opening .boot__seam {
+  opacity: 0;
+  transition: opacity 0.2s linear;
+}
+
+/* Opacity only: the halves carry their own transform and must not lose it. */
+@keyframes markIn {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes seamIn {
   to {
-    transform: translateX(-50%);
-  }
-}
-
-/* Lean into the run, then straighten as it lands on the right. */
-@keyframes charge {
-  0% {
-    transform: translateX(-62%) skewX(-9deg);
-  }
-  55% {
-    transform: translateX(10%) skewX(-5deg);
-  }
-  100% {
-    transform: translateX(62%) skewX(-9deg);
+    transform: translate(-50%, -50%) scaleY(1);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .boot__wind,
-  .boot__runner {
+  .boot__mark,
+  .boot__seam {
     animation: none;
+  }
+  .boot__half {
+    transition-duration: 0.3s;
+  }
+}
+
+
+/* ---------- mission scenes ---------- */
+
+.missions {
+  list-style: none;
+  margin: clamp(1.5rem, 3vw, 2.25rem) 0 0;
+  padding: 0;
+  display: grid;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.missions__item {
+  display: grid;
+  grid-template-columns: 2.5rem 1fr;
+  gap: 0.2rem 0.75rem;
+  border-top: var(--rule-faint);
+  padding-top: 1rem;
+}
+
+.missions__shot {
+  grid-column: 1 / -1;
+  margin-bottom: 0.9rem;
+  background: rgba(18, 18, 18, 0.035);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.missions__shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.missions__num {
+  grid-row: span 2;
+  font-size: 0.78rem;
+  padding-top: 0.2rem;
+}
+
+.missions__label {
+  font-size: 1.1rem;
+  letter-spacing: -0.01em;
+}
+
+.missions__body {
+  grid-column: 2;
+  margin: 0.35rem 0 0;
+  color: var(--ink-2);
+  font-size: 0.95rem;
+  max-width: 46ch;
+}
+
+@media (min-width: 760px) {
+  .missions {
+    grid-template-columns: 1fr 1fr;
   }
 }

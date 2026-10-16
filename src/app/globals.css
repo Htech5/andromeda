@@ -235,12 +235,15 @@ svg {
   opacity: 0;
   transform: translateY(18px);
   transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
-  transition-delay: var(--reveal-delay, 0ms);
+  /* No delay on the way out. Transition timing comes from the end state, so
+     the stagger below only applies on entry and the reset is immediate. */
+  transition-delay: 0ms;
 }
 
 .reveal.is-visible {
   opacity: 1;
   transform: none;
+  transition-delay: var(--reveal-delay, 0ms);
 }
 
 @media (prefers-reduced-motion: reduce) {

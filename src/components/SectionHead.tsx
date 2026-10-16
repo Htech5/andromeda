@@ -4,13 +4,13 @@ export default function SectionHead({
   index,
   title,
 }: {
-  index: string;
+  index?: string;
   title: string;
 }) {
   return (
     <Reveal>
       <div className="sectionHead">
-        <span className="sectionIndex">{index}</span>
+        {index && <span className="sectionIndex">{index}</span>}
         <h2 className="sectionTitle">{title}</h2>
       </div>
     </Reveal>

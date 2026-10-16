@@ -32,13 +32,12 @@ export default function Reveal({
       return;
     }
 
+    // Kept observing on purpose: leaving the viewport resets the element, so
+    // it plays again on the way back instead of firing once per page load.
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            observer.disconnect();
-          }
+          entry.target.classList.toggle("is-visible", entry.isIntersecting);
         }
       },
       { rootMargin: "0px 0px -12% 0px", threshold: 0.1 },

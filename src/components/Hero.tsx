@@ -1,6 +1,4 @@
 import HeroAscii from "./HeroAscii";
-import { competition } from "@/data/competition";
-import { robot } from "@/data/robot";
 import { site } from "@/data/site";
 
 export default function Hero() {
@@ -16,8 +14,13 @@ export default function Hero() {
           <h1 className="hero__title">{site.wordmark}</h1>
           <p className="mono hero__tagline">{site.tagline}</p>
           <p className="hero__lede">
-            Legged robot otonom {robot.model} dari Universitas Diponegoro,
-            disiapkan untuk kategori Search and Rescue {competition.name}.
+            Berdiri 2011 dengan robot pemadam api, sejak 2022 Andromeda beralih
+            ke robot otonom Search and Rescue di bawah URDC Universitas
+            Diponegoro. Pengembangan berjalan bersama dosen pembimbing, dengan
+            kecerdasan buatan yang ditanam langsung di robot agar seluruh misi
+            berjalan tanpa kendali operator. Sasarannya bukan berhenti di arena
+            lomba, melainkan teknologi yang terpakai untuk keselamatan, respons
+            darurat, dan misi kemanusiaan.
           </p>
           <div className="hero__actions">
             <a className="cta cta--solid" href="#robot">

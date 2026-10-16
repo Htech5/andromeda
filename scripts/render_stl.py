@@ -22,16 +22,19 @@ def load(path):
 ZUP = np.array([[1, 0, 0], [0, 0, 1], [0, -1, 0]], np.float32)
 
 
-def basis(yaw, pitch):
+def basis(yaw, pitch, roll=0.0):
     cy, sy = np.cos(yaw), np.sin(yaw)
     cp, sp = np.cos(pitch), np.sin(pitch)
+    cr, sr = np.cos(roll), np.sin(roll)
     ry = np.array([[cy, 0, sy], [0, 1, 0], [-sy, 0, cy]], np.float32)
     rx = np.array([[1, 0, 0], [0, cp, -sp], [0, sp, cp]], np.float32)
-    return (rx @ ry @ ZUP).astype(np.float32)
+    rz = np.array([[cr, -sr, 0], [sr, cr, 0], [0, 0, 1]], np.float32)
+    return (rz @ rx @ ry @ ZUP).astype(np.float32)
 
 
-def render(verts, norms, yaw, pitch, size=1600, ink=(236, 236, 236)):
-    rot = basis(yaw, pitch)
+def rasterize(verts, norms, yaw, pitch, roll=0.0, size=1600, fill=0.9):
+    """Sample the surface into a z-buffer. Returns (shade, mask) as size x size."""
+    rot = basis(yaw, pitch, roll)
     tri = verts @ rot.T
     nrm = norms @ rot.T
     nrm /= np.linalg.norm(nrm, axis=1, keepdims=True) + 1e-9
@@ -39,7 +42,7 @@ def render(verts, norms, yaw, pitch, size=1600, ink=(236, 236, 236)):
     pts = tri.reshape(-1, 3)
     lo, hi = pts.min(0), pts.max(0)
     span = float((hi - lo)[:2].max())
-    scale = (size * 0.9) / span
+    scale = (size * fill) / span
     mid = (lo + hi) / 2
 
     e1 = tri[:, 1] - tri[:, 0]
@@ -77,13 +80,15 @@ def render(verts, norms, yaw, pitch, size=1600, ink=(236, 236, 236)):
         hit = depth[idx] == z
         value[idx[hit]] = shade[t[ok][hit]]
 
-    mask = np.isfinite(depth).reshape(size, size)
-    lum = value.reshape(size, size)
+    return value.reshape(size, size), np.isfinite(depth).reshape(size, size)
+
+
+def render(verts, norms, yaw, pitch, size=1600, ink=(236, 236, 236)):
+    lum, mask = rasterize(verts, norms, yaw, pitch, size=size)
     rgb = np.zeros((size, size, 3), np.uint8)
     for c in range(3):
         rgb[..., c] = np.clip(lum * ink[c], 0, 255).astype(np.uint8)
-    alpha = (mask * 255).astype(np.uint8)
-    return Image.fromarray(np.dstack([rgb, alpha]), "RGBA")
+    return Image.fromarray(np.dstack([rgb, (mask * 255).astype(np.uint8)]), "RGBA")
 
 
 VIEWS = {

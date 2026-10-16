@@ -1,39 +1,38 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
-import HeroAscii from "./HeroAscii";
-import { robot } from "@/data/robot";
+import { site } from "@/data/site";
 
-const MIN_MS = 1100;
-const FADE_MS = 500;
+const MIN_MS = 900;
+const OPEN_MS = 850;
 /** A stalled asset must not leave the overlay sitting on top of the page. */
 const MAX_MS = 4500;
 
 /**
- * First-paint overlay: the robot charges left to right through the wind while
- * the page finishes loading, then it fades out for good.
+ * First-paint overlay: the wordmark lands in the middle, then splits down its
+ * centre and the two halves draw apart, taking the black panels with them.
  *
  * Rendered for everyone, but CSS keeps it hidden unless the `js` class is on
  * <html> — without JS nothing would ever take it back down.
  */
 export default function BootScreen() {
-  const [state, setState] = useState<"run" | "leaving" | "gone">("run");
+  const [state, setState] = useState<"hold" | "opening" | "gone">("hold");
 
   useEffect(() => {
     const started = performance.now();
-    let leave = 0;
-    let remove = 0;
-
     let settled = false;
+    let open = 0;
+    let remove = 0;
 
     // `load` and the cap can both fire; only the first one counts.
     const finish = () => {
       if (settled) return;
       settled = true;
       const waited = performance.now() - started;
-      leave = window.setTimeout(() => {
-        setState("leaving");
-        remove = window.setTimeout(() => setState("gone"), FADE_MS);
+      open = window.setTimeout(() => {
+        setState("opening");
+        remove = window.setTimeout(() => setState("gone"), OPEN_MS);
       }, Math.max(0, MIN_MS - waited));
     };
 
@@ -44,27 +43,40 @@ export default function BootScreen() {
     return () => {
       window.removeEventListener("load", finish);
       clearTimeout(cap);
-      clearTimeout(leave);
+      clearTimeout(open);
       clearTimeout(remove);
     };
   }, []);
 
   if (state === "gone") return null;
 
+  const mark = (
+    <Image
+      src="/wordmark.png"
+      alt=""
+      width={332}
+      height={72}
+      priority
+      className="boot__mark"
+    />
+  );
+
   return (
     <div
-      className={`boot${state === "leaving" ? " boot--leaving" : ""}`}
+      className={`boot${state === "opening" ? " boot--opening" : ""}`}
       role="status"
       aria-live="polite"
-      aria-label="Memuat halaman"
+      aria-label={`Memuat ${site.wordmark}`}
     >
-      <div className="boot__wind" aria-hidden="true" />
-      <div className="boot__runner">
-        <HeroAscii />
+      {/* Each panel holds the whole wordmark, pushed so its centre sits on the
+          seam; the panel's own overflow crops it to that half. */}
+      <div className="boot__half boot__half--left" aria-hidden="true">
+        {mark}
       </div>
-      <p className="boot__label mono">
-        <span className="accent">//</span> MEMUAT {robot.model}
-      </p>
+      <div className="boot__half boot__half--right" aria-hidden="true">
+        {mark}
+      </div>
+      <span className="boot__seam" aria-hidden="true" />
     </div>
   );
 }
