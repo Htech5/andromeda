@@ -18,6 +18,8 @@ export default function NavIcon({ name }: { name: string }) {
   return (
     <svg
       className="dock__glyph"
+      width="1em"
+      height="1em"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import Dock from "./Dock";
 import NavIcon from "./NavIcon";
 import { navLinks, site } from "@/data/site";
 
@@ -73,23 +74,30 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* Mobile dock. Icons only, parked above the home indicator. */}
-      <nav className="dock onDark" aria-label="Navigasi bagian">
-        <ul className="dock__list">
-          {navLinks.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                className="dock__item"
-                aria-label={link.label}
-                aria-current={active === link.href ? "true" : undefined}
-              >
-                <NavIcon name={link.icon} />
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      {/* Mobile dock: React Bits Dock, pinned by its host strip. */}
+      <div className="dockHost">
+        <Dock
+          items={navLinks.map((link) => ({
+            icon: <NavIcon name={link.icon} />,
+            label: link.label,
+            active: active === link.href,
+            className: active === link.href ? "dock-item--here" : undefined,
+            onClick: () => {
+              document
+                .querySelector(link.href)
+                ?.scrollIntoView({ behavior: "smooth" });
+            },
+          }))}
+          theme="dark"
+          tiles={false}
+          showLabels={false}
+          baseItemSize={42}
+          magnification={60}
+          panelHeight={58}
+          gap={14}
+          distance={120}
+        />
+      </div>
     </>
   );
 }
