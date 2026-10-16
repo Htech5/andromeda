@@ -2,35 +2,58 @@
 
 import Image from "next/image";
 import { useEffect, useRef } from "react";
-import Reveal from "./Reveal";
 import type { Achievement } from "@/data/achievements";
 
 /**
- * The walk. Scroll position through the section becomes `--walk` (0 to 1);
- * CSS turns that into the robot's travel and the length of the trail behind it.
+ * Pinned roadmap. The section sticks to the viewport and the page scroll inside
+ * it is spent stepping the robot from one year to the next, one stop per step.
+ *
+ * JS only decides which stop is active and writes `--step`; CSS does the rest,
+ * so the robot and the trail can never drift apart.
  */
 export default function RoadStrip({ items }: { items: Achievement[] }) {
-  const ref = useRef<HTMLOListElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
-    const set = (v: number) => el.style.setProperty("--walk", v.toFixed(4));
+    const stops = el.querySelectorAll<HTMLElement>(".road__stop");
+    const last = items.length - 1;
+    let current = -1;
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      set(1);
+    const show = (step: number) => {
+      if (step === current) return;
+      current = step;
+      el.style.setProperty("--step", String(step));
+      stops.forEach((stop, i) => {
+        stop.dataset.state = i < step ? "past" : i === step ? "now" : "ahead";
+      });
+    };
+
+    const still =
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      !window.matchMedia("(min-width: 900px)").matches;
+
+    if (still) {
+      show(last);
       return;
     }
 
     let frame = 0;
     let running = false;
 
+    const pin = el.querySelector<HTMLElement>(".road__pin");
+    // Where the pin parks, so step 0 lasts until it actually sticks.
+    const offset = pin ? parseFloat(getComputedStyle(pin).top) || 0 : 0;
+
     const measure = () => {
       const rect = el.getBoundingClientRect();
-      const vh = window.innerHeight;
-      // 0 as the strip enters from the bottom, 1 once it has left the top.
-      set(Math.min(1, Math.max(0, (vh - rect.top) / (vh + rect.height))));
+      // Travel is the wrapper height minus the one viewport it stays pinned for.
+      const travel = rect.height - window.innerHeight;
+      if (travel <= 0) return show(last);
+      const past = Math.min(Math.max(offset - rect.top, 0), travel);
+      show(Math.round((past / travel) * last));
     };
 
     const tick = () => {
@@ -38,11 +61,9 @@ export default function RoadStrip({ items }: { items: Achievement[] }) {
       frame = requestAnimationFrame(tick);
     };
 
-    // Set it once up front, or the robot sits at its default spot until the
-    // first intersection and then jumps backwards.
     measure();
 
-    // Only measure while the strip is on screen: no work the rest of the page.
+    // Only measure while the section is on screen.
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting && !running) {
         running = true;
@@ -58,32 +79,36 @@ export default function RoadStrip({ items }: { items: Achievement[] }) {
       observer.disconnect();
       cancelAnimationFrame(frame);
     };
-  }, []);
+  }, [items.length]);
 
   return (
-    <div className="road">
-      <ol className="road__strip" ref={ref}>
-        {items.map((item, i) => (
-          <Reveal as="li" key={`${item.year}-${i}`} delay={i * 90}>
-            <article className="road__stop">
+    <div
+      className="road"
+      ref={ref}
+      style={{ "--stops": items.length } as React.CSSProperties}
+    >
+      <div className="road__pin">
+        <ol className="road__strip">
+          {items.map((item, i) => (
+            <li className="road__stop" key={`${item.year}-${i}`}>
               <p className="road__year mono">{item.year}</p>
               <h3 className="road__event">{item.event}</h3>
               <p className="road__result mono accent">{item.result}</p>
               <p className="road__note">{item.note}</p>
-            </article>
-          </Reveal>
-        ))}
+            </li>
+          ))}
 
-        <li className="road__walker" aria-hidden="true">
-          <Image
-            src="/images/m31-top.webp"
-            alt=""
-            width={700}
-            height={583}
-            sizes="140px"
-          />
-        </li>
-      </ol>
+          <li className="road__walker" aria-hidden="true">
+            <Image
+              src="/images/m31-top.webp"
+              alt=""
+              width={700}
+              height={583}
+              sizes="140px"
+            />
+          </li>
+        </ol>
+      </div>
     </div>
   );
 }
