@@ -31,11 +31,8 @@ export default function RoadStrip({ items }: { items: Achievement[] }) {
       });
     };
 
-    const still =
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-      !window.matchMedia("(min-width: 900px)").matches;
-
-    if (still) {
+    // Both layouts pin and step; only the axis differs, and that is CSS.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       show(last);
       return;
     }

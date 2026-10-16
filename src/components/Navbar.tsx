@@ -2,11 +2,12 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import NavIcon from "./NavIcon";
 import { navLinks, site } from "@/data/site";
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false);
   const [pill, setPill] = useState(false);
+  const [active, setActive] = useState("");
   const sentinel = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -17,6 +18,29 @@ export default function Navbar() {
       setPill(!entry.isIntersecting),
     );
     observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (typeof IntersectionObserver === "undefined") return;
+
+    const targets = navLinks
+      .map((link) => document.querySelector(link.href))
+      .filter((node): node is Element => node !== null);
+    if (targets.length === 0) return;
+
+    // A thin band across the middle of the viewport: whatever crosses it is
+    // the section being read, so the dock marks exactly one tab.
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) setActive(`#${entry.target.id}`);
+        }
+      },
+      { rootMargin: "-48% 0px -48% 0px" },
+    );
+
+    targets.forEach((target) => observer.observe(target));
     return () => observer.disconnect();
   }, []);
 
@@ -42,40 +66,30 @@ export default function Navbar() {
                 {link.label}
               </a>
             ))}
-            <a href="#robot" className="nav__cta mono">
-              Explore the robot
+            <a href="#sponsorship" className="nav__cta mono">
+              Jadi sponsor
             </a>
           </nav>
-
-          <button
-            type="button"
-            className="nav__toggle mono"
-            aria-expanded={open}
-            aria-controls="mobile-nav"
-            onClick={() => setOpen((v) => !v)}
-          >
-            {open ? "Close" : "Menu"}
-          </button>
         </div>
-
-        <nav
-          id="mobile-nav"
-          className="nav__mobile"
-          aria-label="Navigasi mobile"
-          hidden={!open}
-        >
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="nav__mobileLink"
-              onClick={() => setOpen(false)}
-            >
-              <span className="mono accent">/</span> {link.label}
-            </a>
-          ))}
-        </nav>
       </header>
+
+      {/* Mobile dock. Icons only, parked above the home indicator. */}
+      <nav className="dock onDark" aria-label="Navigasi bagian">
+        <ul className="dock__list">
+          {navLinks.map((link) => (
+            <li key={link.href}>
+              <a
+                href={link.href}
+                className="dock__item"
+                aria-current={active === link.href ? "true" : undefined}
+              >
+                <NavIcon name={link.icon} />
+                <span className="dock__label mono">{link.label}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </>
   );
 }

@@ -27,8 +27,8 @@ export const site = {
 } as const;
 
 export const navLinks = [
-  { label: "Robot", href: "#robot" },
-  { label: "Tim", href: "#team" },
-  { label: "Rekam Jejak", href: "#achievements" },
-  { label: "Sponsorship", href: "#sponsorship" },
+  { label: "Robot", href: "#robot", icon: "robot" },
+  { label: "Tim", href: "#team", icon: "team" },
+  { label: "Achievement", href: "#achievements", icon: "award" },
+  { label: "Sponsorship", href: "#sponsorship", icon: "deal" },
 ] as const;

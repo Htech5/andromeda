@@ -129,56 +129,17 @@
   border-radius: 999px;
 }
 
-.nav__toggle {
-  background: none;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: var(--radius);
-  color: var(--color-white);
-  padding: 0.6rem 1rem;
-  min-height: 44px;
-  cursor: pointer;
-  transition: border-radius 0.3s var(--ease);
-}
 
-.nav--pill .nav__toggle {
-  border-radius: 999px;
-}
 
-.nav__mobile {
-  border-top: var(--rule-faint);
-  background: var(--color-black);
-  padding: 1rem var(--gutter) 1.5rem;
-  display: grid;
-  gap: 0.25rem;
-}
 
-.nav--pill .nav__mobile {
-  transform: translateY(0.85rem);
-  margin-inline: var(--gutter);
-  margin-top: 0.5rem;
-  padding-inline: 1.25rem;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 1.75rem;
-}
 
-.nav__mobile[hidden] {
-  display: none;
-}
 
-.nav__mobileLink {
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-  text-transform: uppercase;
-  padding-block: 0.5rem;
-  border-bottom: var(--rule-faint);
-}
 
 @media (min-width: 900px) {
   .nav__links {
     display: flex;
   }
-  .nav__toggle,
-  .nav__mobile {
+  .dock {
     display: none;
   }
 }
@@ -823,192 +784,6 @@
 }
 
 
-/* ---------- achievements roadmap ---------- */
-
-@property --trail {
-  syntax: "<length-percentage>";
-  inherits: false;
-  initial-value: 0%;
-}
-
-/* Mobile and reduced motion get a plain vertical list: no pin, no sideways
-   scroll, nothing to drag. The pinned walk is a wide-screen affordance. */
-.road {
-  margin-top: clamp(1.5rem, 3vw, 2.25rem);
-}
-
-.road__strip {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 1.5rem;
-}
-
-.road__stop {
-  position: relative;
-  padding-left: 1.5rem;
-  border-left: 2px solid var(--color-red);
-}
-
-.road__year {
-  font-size: 1.5rem;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  color: var(--ink);
-}
-
-.road__event {
-  margin-top: 0.5rem;
-  font-size: 1rem;
-  letter-spacing: -0.01em;
-}
-
-.road__result {
-  margin: 0.3rem 0 0;
-  font-size: 0.78rem;
-  letter-spacing: 0.08em;
-}
-
-.road__note {
-  margin: 0.45rem 0 0;
-  color: var(--ink-3);
-  font-size: 0.85rem;
-}
-
-.road__walker {
-  display: none;
-}
-
-@media (min-width: 900px) {
-  .road {
-    /* One viewport pinned, plus a step's worth of scroll per remaining year. */
-    height: calc(100vh + (var(--stops) - 1) * 58vh);
-  }
-
-  .road__pin {
-    position: sticky;
-    top: 4.5rem;
-    height: calc(100vh - 4.5rem);
-    display: flex;
-    align-items: center;
-    container-type: inline-size;
-  }
-
-  .road__strip {
-    position: relative;
-    width: 100%;
-    grid-template-columns: repeat(var(--stops), 1fr);
-    gap: 0;
-    padding-top: 9rem;
-  }
-
-  /* The trail, clipped to wherever the robot has walked. */
-  .road__strip::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 7.4rem;
-    height: 22px;
-    opacity: 0.45;
-    --trail: calc((var(--step, 0) + 0.5) * (100% / var(--stops)));
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='22' viewBox='0 0 46 22'%3E%3Cg fill='%23121212'%3E%3Crect x='3' y='3' width='10' height='4' rx='2' transform='rotate(-16 8 5)'/%3E%3Crect x='25' y='15' width='10' height='4' rx='2' transform='rotate(16 30 17)'/%3E%3C/g%3E%3C/svg%3E")
-      repeat-x left center;
-    mask-image: linear-gradient(90deg, #000 var(--trail), transparent var(--trail));
-    -webkit-mask-image: linear-gradient(
-      90deg,
-      #000 var(--trail),
-      transparent var(--trail)
-    );
-    transition: --trail 0.5s var(--ease);
-  }
-
-  .road__stop {
-    padding: 0 1rem;
-    border-left: 0;
-    text-align: center;
-    opacity: 0.32;
-    transition: opacity 0.45s var(--ease);
-  }
-
-  .road__stop[data-state="past"] {
-    opacity: 0.6;
-  }
-
-  .road__stop[data-state="now"] {
-    opacity: 1;
-  }
-
-  /* Node on the trail, centred in its column. */
-  .road__stop::before {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: -1.85rem;
-    width: 11px;
-    height: 11px;
-    margin-left: -5.5px;
-    border-radius: 50%;
-    background: var(--bg);
-    border: 2px solid var(--color-red);
-    transition: transform 0.45s var(--ease);
-  }
-
-  .road__stop[data-state="now"]::before {
-    transform: scale(1.5);
-    background: var(--color-red);
-  }
-
-  .road__note {
-    opacity: 0;
-    transition: opacity 0.45s var(--ease);
-  }
-
-  .road__stop[data-state="now"] .road__note {
-    opacity: 1;
-  }
-
-  /* The robot stands over the active year and steps to the next one. */
-  .road__walker {
-    display: block;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 8.5rem;
-    transform: translateX(
-      calc((var(--step, 0) + 0.5) * (100cqw / var(--stops)) - 4.25rem)
-    );
-    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .road__walker img {
-    display: block;
-    width: 100%;
-    height: auto;
-    animation: bob 0.6s ease-in-out infinite alternate;
-  }
-}
-
-@keyframes bob {
-  to {
-    transform: translateY(-3px) rotate(0.8deg);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .road {
-    height: auto;
-  }
-  .road__pin {
-    position: static;
-    height: auto;
-  }
-  .road__walker img {
-    animation: none;
-  }
-}
-
 /* ---------- sponsorship prospectus ---------- */
 
 .prospectus {
@@ -1194,4 +969,350 @@
   font-size: 0.62rem;
   letter-spacing: 0.12em;
   opacity: 0.65;
+}
+
+/* ---------- mobile dock ---------- */
+
+.dock {
+  position: fixed;
+  z-index: 110;
+  left: 50%;
+  transform: translateX(-50%);
+  /* Clears the iPhone home indicator; falls back to a plain margin elsewhere. */
+  bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+  width: min(23rem, calc(100vw - 1.5rem));
+  border: 1px solid rgba(255, 108, 100, 0.22);
+  border-radius: 1.6rem;
+  background: rgba(74, 16, 13, 0.62);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  backdrop-filter: blur(16px) saturate(150%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 18px 40px -20px rgba(90, 12, 8, 0.85);
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .dock {
+    background: rgba(48, 12, 10, 0.95);
+  }
+}
+
+.dock__list {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem 0.35rem 0.45rem;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+}
+
+.dock__item {
+  display: grid;
+  justify-items: center;
+  gap: 0.2rem;
+  padding: 0.35rem 0.25rem;
+  border-radius: 1.1rem;
+  color: rgba(255, 255, 255, 0.58);
+  min-height: 44px;
+  transition: color 0.25s var(--ease), background 0.25s var(--ease);
+}
+
+.dock__item[aria-current] {
+  color: var(--color-white);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dock__item:active {
+  transform: scale(0.96);
+}
+
+.dock__glyph {
+  width: 1.3rem;
+  height: 1.3rem;
+}
+
+.dock__label {
+  font-size: 0.56rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* The dock floats over the page end, so the footer needs room beneath it. */
+@media (max-width: 899px) {
+  .footer__base {
+    padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* ---------- achievements roadmap ---------- */
+
+@property --trail {
+  syntax: "<length-percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
+.road {
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
+  /* One viewport pinned, plus a step's worth of scroll per remaining year. */
+  height: calc(100vh + (var(--stops) - 1) * 52vh);
+}
+
+.road__pin {
+  position: sticky;
+  top: 4.5rem;
+  height: calc(100vh - 4.5rem);
+  display: flex;
+  align-items: center;
+  container-type: inline-size;
+}
+
+.road__strip {
+  position: relative;
+  width: 100%;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+}
+
+.road__stop {
+  position: relative;
+  opacity: 0.32;
+  transition: opacity 0.45s var(--ease);
+}
+
+.road__stop[data-state="past"] {
+  opacity: 0.6;
+}
+
+.road__stop[data-state="now"] {
+  opacity: 1;
+}
+
+.road__year {
+  font-size: 1.4rem;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.road__event {
+  margin-top: 0.4rem;
+  font-size: 0.95rem;
+  letter-spacing: -0.01em;
+}
+
+.road__result {
+  margin: 0.25rem 0 0;
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+}
+
+.road__note {
+  color: var(--ink-3);
+  font-size: 0.85rem;
+  opacity: 0;
+  transition: opacity 0.45s var(--ease);
+}
+
+.road__stop[data-state="now"] .road__note {
+  opacity: 1;
+}
+
+/* Node on the trail; it fills in on the year being walked. */
+.road__stop::before {
+  content: "";
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--color-red);
+  transition: transform 0.45s var(--ease), background 0.45s var(--ease);
+}
+
+.road__stop[data-state="now"]::before {
+  transform: scale(1.5);
+  background: var(--color-red);
+}
+
+.road__walker {
+  position: absolute;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.road__walker img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* ---- phone: the walk runs down a rail on the left ---- */
+
+@media (max-width: 899px) {
+  .road__pin {
+    /* dvh, not vh: the phone URL bar must not crop the pinned view. */
+    height: calc(100dvh - 4.5rem);
+  }
+
+  .road__strip {
+    --row: 3.1rem;
+    grid-auto-rows: var(--row);
+    padding-left: 5.25rem;
+    padding-bottom: 7rem;
+  }
+
+  .road__stop {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+    gap: 0 0.6rem;
+  }
+
+  .road__year {
+    font-size: 1.05rem;
+  }
+
+  .road__event {
+    margin: 0;
+    font-size: 0.82rem;
+    color: var(--ink-2);
+  }
+
+  .road__result {
+    grid-column: 2;
+    margin: 0.1rem 0 0;
+    font-size: 0.68rem;
+  }
+
+  /* The rail is 22px wide, so node and robot both centre on its middle. */
+  .road__stop::before {
+    left: calc(-2.1rem + 5.5px);
+    top: 0.35rem;
+  }
+
+  /* Every note sits in the same block below the rail; only the active shows. */
+  .road__note {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 1.5rem;
+    border-top: 2px solid var(--color-red);
+    padding-top: 0.75rem;
+  }
+
+  /* Vertical trail: the same footprint tile, turned a quarter turn. */
+  .road__strip::before {
+    content: "";
+    position: absolute;
+    left: 3.15rem;
+    top: 0.4rem;
+    width: 22px;
+    height: calc(var(--stops) * var(--row));
+    opacity: 0.45;
+    --trail: calc((var(--step, 0) + 0.35) * (100% / var(--stops)));
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='46' viewBox='0 0 22 46'%3E%3Cg fill='%23121212'%3E%3Crect x='3' y='3' width='4' height='10' rx='2' transform='rotate(16 5 8)'/%3E%3Crect x='15' y='25' width='4' height='10' rx='2' transform='rotate(-16 17 30)'/%3E%3C/g%3E%3C/svg%3E")
+      repeat-y center top;
+    mask-image: linear-gradient(180deg, #000 var(--trail), transparent var(--trail));
+    -webkit-mask-image: linear-gradient(
+      180deg,
+      #000 var(--trail),
+      transparent var(--trail)
+    );
+    transition: --trail 0.5s var(--ease);
+  }
+
+  .road__walker {
+    left: calc(3.15rem + 11px - 2.3rem);
+    top: 0;
+    width: 4.6rem;
+    transform: translateY(calc(var(--step, 0) * var(--row) - 1.1rem));
+  }
+
+  .road__walker img {
+    animation: bobY 0.6s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes bobY {
+  to {
+    transform: translateX(3px) rotate(-0.8deg);
+  }
+}
+
+/* ---- wide: the walk runs left to right ---- */
+
+@media (min-width: 900px) {
+  .road__strip {
+    grid-template-columns: repeat(var(--stops), 1fr);
+    padding-top: 9rem;
+  }
+
+  .road__strip::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 7.4rem;
+    height: 22px;
+    opacity: 0.45;
+    --trail: calc((var(--step, 0) + 0.5) * (100% / var(--stops)));
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='22' viewBox='0 0 46 22'%3E%3Cg fill='%23121212'%3E%3Crect x='3' y='3' width='10' height='4' rx='2' transform='rotate(-16 8 5)'/%3E%3Crect x='25' y='15' width='10' height='4' rx='2' transform='rotate(16 30 17)'/%3E%3C/g%3E%3C/svg%3E")
+      repeat-x left center;
+    mask-image: linear-gradient(90deg, #000 var(--trail), transparent var(--trail));
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      #000 var(--trail),
+      transparent var(--trail)
+    );
+    transition: --trail 0.5s var(--ease);
+  }
+
+  .road__stop {
+    padding: 0 1rem;
+    text-align: center;
+  }
+
+  .road__stop::before {
+    left: 50%;
+    top: -1.85rem;
+    margin-left: -5.5px;
+  }
+
+  .road__walker {
+    left: 0;
+    top: 0;
+    width: 8.5rem;
+    transform: translateX(
+      calc((var(--step, 0) + 0.5) * (100cqw / var(--stops)) - 4.25rem)
+    );
+  }
+
+  .road__walker img {
+    animation: bob 0.6s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes bob {
+  to {
+    transform: translateY(-3px) rotate(0.8deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .road {
+    height: auto;
+  }
+  .road__pin {
+    position: static;
+    height: auto;
+  }
+  .road__stop,
+  .road__note {
+    opacity: 1;
+  }
+  .road__walker img {
+    animation: none;
+  }
 }
