@@ -472,13 +472,48 @@
   /* The core blows out white at full strength and swallows any logo crossing
      it, so the whole plate is dimmed instead of dodging the centre. */
   filter: brightness(0.68) contrast(1.14) saturate(1.12);
-  animation: skySpin 320s linear infinite;
-  will-change: transform;
 }
 
-@keyframes skySpin {
+/* Vector stars over the still plate: the galaxy holds its place and these
+   move instead. Three groups, three animations, 138 static nodes. */
+.sky__stars {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  fill: #fff;
+}
+
+.sky__stars g {
+  animation: starTwinkle 7s ease-in-out infinite alternate,
+    starDrift 44s ease-in-out infinite alternate;
+  will-change: opacity, transform;
+}
+
+.sky__stars g:nth-child(2) {
+  animation-duration: 11s, 62s;
+  animation-delay: -4s, -20s;
+}
+
+.sky__stars g:nth-child(3) {
+  animation-duration: 16s, 80s;
+  animation-delay: -9s, -45s;
+}
+
+@keyframes starTwinkle {
+  from {
+    opacity: 0.4;
+  }
   to {
-    transform: translate(-50%, -50%) rotate(360deg);
+    opacity: 1;
+  }
+}
+
+@keyframes starDrift {
+  to {
+    transform: translate(-1.4%, 1%);
   }
 }
 
@@ -517,7 +552,17 @@
   position: absolute;
   left: calc(var(--x) * 1%);
   top: calc(var(--y) * 1%);
+  /* translate centres the seat, transform floats it: separate properties, so
+     neither overwrites the other. */
   translate: -50% -50%;
+  animation: seatFloat var(--t, 9s) ease-in-out infinite alternate;
+  animation-delay: var(--dly, 0s);
+}
+
+@keyframes seatFloat {
+  to {
+    transform: translateY(-1vmin);
+  }
 }
 
 /* Every mark reads as a star first: one white silhouette, depth carried by
@@ -718,7 +763,9 @@
 
 @media (prefers-reduced-motion: reduce) {
   .sky__core,
-  .sky__glow {
+  .sky__glow,
+  .sky__stars g,
+  .sky__seat {
     animation: none;
   }
   .powered__card,
@@ -732,12 +779,14 @@
 
 /* Fills the screen at full scroll, so the last thing on it is the footer and
    not a band of empty page above it. */
+/* No margin: the section above it is a full-bleed dark band, and an outer
+   margin there shows up as a white strip. The breathing room is padding, so
+   it lives inside the dark. */
 .footer {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  padding-block: clamp(4rem, 10vw, 7rem) 0;
-  margin-top: clamp(4rem, 9vw, 7rem);
+  padding-block: clamp(5rem, 12vw, 9rem) 0;
 }
 
 

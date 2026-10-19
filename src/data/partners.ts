@@ -20,9 +20,8 @@ export const poweredBy: Partner[] = [
       "Badan usaha milik negara di sektor energi, dari hulu minyak dan gas sampai pengolahan dan distribusi bahan bakar ke seluruh Indonesia.",
   },
   {
-    // TODO: ganti nama, href, dan about begitu profil perusahaan dipastikan.
-    name: "Scaffolding Partner",
-    logo: "/logos/sponsors/scaffolding.png",
+    name: "PT Rizquna Makmur Abadi",
+    logo: "/logos/sponsors/rizquna-makmur-abadi.png",
     about:
       "Penyedia perancah dan peralatan kerja ketinggian untuk proyek konstruksi dan industri.",
   },

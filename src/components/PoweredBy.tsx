@@ -8,6 +8,29 @@ const hasLogo = (logo?: string) => !!logo && existsSync(`public${logo}`);
 const slug = (name: string) =>
   name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
+type Star = { x: number; y: number; r: number; o: number };
+
+/**
+ * Vector stars, generated once on the server. Three groups, so the whole field
+ * twinkles and drifts on three animations instead of one per star.
+ */
+function starGroups(groups: number, per: number, seed: number): Star[][] {
+  let s = seed >>> 0;
+  const rnd = () => (s = (Math.imul(s, 1664525) + 1013904223) >>> 0) / 2 ** 32;
+  return Array.from({ length: groups }, (_, g) =>
+    Array.from({ length: per }, () => ({
+      x: +(rnd() * 1000).toFixed(1),
+      y: +(rnd() * 1000).toFixed(1),
+      // Nearer groups are drawn bigger and brighter. Kept small: anything
+      // past ~2.4 units reads as dust on the lens, not as a star.
+      r: +(0.5 + rnd() * (0.7 + g * 0.6)).toFixed(2),
+      o: +(0.22 + rnd() * 0.48).toFixed(2),
+    })),
+  );
+}
+
+const stars = starGroups(3, 46, 31415);
+
 type Seat = { x: number; y: number; z: number; pad: number };
 
 /**
@@ -64,6 +87,9 @@ function style(seat: Seat, min: number, span: number, fade: number) {
     "--y": seat.y,
     "--h": `${(min + seat.z * span).toFixed(2)}vmin`,
     "--o": (fade + seat.z * 0.2).toFixed(2),
+    // Each mark drifts on its own clock, so the field never pulses in step.
+    "--t": `${(7 + seat.z * 7).toFixed(1)}s`,
+    "--dly": `-${(seat.z * 9).toFixed(1)}s`,
   } as React.CSSProperties;
 }
 
@@ -96,6 +122,27 @@ export default function PoweredBy() {
         className="sky__core"
         sizes="150vmin"
       />
+      <svg
+        className="sky__stars"
+        viewBox="0 0 1000 1000"
+        preserveAspectRatio="xMidYMid slice"
+        aria-hidden="true"
+      >
+        {stars.map((group, g) => (
+          <g key={g}>
+            {group.map((star, i) => (
+              <circle
+                key={i}
+                cx={star.x}
+                cy={star.y}
+                r={star.r}
+                opacity={star.o}
+              />
+            ))}
+          </g>
+        ))}
+      </svg>
+
       <div className="sky__glow" aria-hidden="true" />
 
       <div className="sky__field">
