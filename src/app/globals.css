@@ -21,6 +21,10 @@
   --section-y: clamp(3.25rem, 6vh, 5rem);
 
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --nav-gap: 1.5rem;
+  /* Width the scrolled pill settles at: roughly the links plus the CTA plus
+     the pill padding. ponytail: eyeballed, adjust if labels change. */
+  --nav-pill-w: 39.75rem;
 }
 
 /* Dark bands: hero and footer. Same tokens, inverted values. */

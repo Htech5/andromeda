@@ -22,7 +22,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1.5rem;
+  gap: var(--nav-gap);
   min-height: 4.5rem;
   border: 1px solid transparent;
   border-radius: 0;
@@ -56,6 +56,15 @@
 .nav__mark {
   display: flex;
   align-items: center;
+  /* Collapsed by width, not display: display cannot be interpolated, so the
+     wordmark used to pop out on frame one while the pill was still gliding.
+     The cap tracks the image's own clamped width (332x72, so 4.6x height)
+     with a little slack.
+     ponytail: hand-tuned cap; measure in JS only if the wordmark changes. */
+  overflow: hidden;
+  max-width: clamp(5.1rem, 10.2vw, 7rem);
+  transition: max-width 0.45s var(--ease), opacity 0.3s var(--ease),
+    margin-right 0.45s var(--ease);
 }
 
 .nav__mark img {
@@ -103,7 +112,7 @@
   border: 1px solid var(--color-red);
   border-radius: var(--radius);
   transition: background 0.3s var(--ease), color 0.3s var(--ease),
-    border-radius 0.3s var(--ease);
+    border-radius 0.45s var(--ease);
 }
 
 .nav__cta:hover {
@@ -159,16 +168,21 @@
     display: none;
   }
 
-  /* Scrolled state: the wordmark drops out and the pill shrinks to the links,
-     centred. Below 900px the links are hidden, so the mark has to stay. */
+  /* Scrolled state: the wordmark folds away and the pill shrinks to the links,
+     centred by .shell's auto margins. Below 900px the links are hidden, so the
+     mark has to stay. */
   .nav--pill .nav__mark {
-    display: none;
+    max-width: 0;
+    opacity: 0;
+    margin-right: calc(-1 * var(--nav-gap));
   }
 
+  /* A width target in px, not fit-content: intrinsic keywords do not
+     interpolate, so the old rule snapped the bar to its final width and
+     animated everything else around it. Tune --nav-pill-w if the links no
+     longer fill the pill. */
   .nav--pill .nav__inner {
-    width: fit-content;
-    margin-inline: auto;
-    justify-content: center;
+    max-width: min(var(--nav-pill-w), calc(100vw - 2 * var(--gutter)));
   }
 }
 
@@ -859,6 +873,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .nav,
+  .nav__inner,
+  .nav__mark {
+    transition-duration: 0.01ms;
+  }
   .boot__mark,
   .boot__seam {
     animation: none;
