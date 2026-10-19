@@ -81,7 +81,13 @@
 .nav__link {
   position: relative;
   padding-block: 0.4rem;
-  color: var(--ink-2);
+  /* .mono's 0.75rem at 0.22em tracking reads as grey noise on black. More
+     weight and tighter tracking buy legibility without changing the face. */
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  color: rgba(255, 255, 255, 0.86);
   transition: color 0.25s var(--ease);
 }
 
@@ -111,6 +117,13 @@
   background: var(--color-red);
   border: 1px solid var(--color-red);
   border-radius: var(--radius);
+  /* White on #ff3b33 is about 3.3:1. Near-black on the same red is about 7:1,
+     and the label is 13px, so it needs the contrast. */
+  color: var(--color-black);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
   transition: background 0.3s var(--ease), color 0.3s var(--ease),
     border-radius 0.45s var(--ease);
 }
@@ -183,6 +196,7 @@
      longer fill the pill. */
   .nav--pill .nav__inner {
     max-width: min(var(--nav-pill-w), calc(100vw - 2 * var(--gutter)));
+    min-width: fit-content;
   }
 }
 

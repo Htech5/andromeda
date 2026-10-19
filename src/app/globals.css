@@ -22,9 +22,12 @@
 
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --nav-gap: 1.5rem;
-  /* Width the scrolled pill settles at: roughly the links plus the CTA plus
-     the pill padding. ponytail: eyeballed, adjust if labels change. */
-  --nav-pill-w: 39.75rem;
+  /* Where the scrolled pill's width animation aims. It is deliberately below
+     the real content width: .nav--pill .nav__inner also carries
+     min-width: fit-content, so the links decide the final width and this value
+     only has to be small enough to never leave dead space.
+     ponytail: raise it if the collapse feels too quick. */
+  --nav-pill-w: 30rem;
 }
 
 /* Dark bands: hero and footer. Same tokens, inverted values. */
