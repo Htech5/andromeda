@@ -173,9 +173,6 @@ export default function PoweredBy() {
         })}
 
         <Reveal className="sky__center" delay={140}>
-          <p className="sky__label">
-            <span className="accent">/</span> Powered by
-          </p>
           <a className="sky__join" href="/sponsorship">
             Join Us
           </a>

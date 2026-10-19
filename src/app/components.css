@@ -448,7 +448,10 @@
    out among its stars, near ones large and bright, far ones small and dim. */
 .sky {
   position: relative;
-  min-height: 100dvh;
+  /* Taller than the viewport on purpose: the marks are laid out as
+     percentages of this box, so the extra height is what gives the field room
+     to breathe instead of stacking the logos on top of each other. */
+  min-height: 128dvh;
   display: grid;
   grid-template-rows: 1fr;
   overflow: clip;
@@ -511,8 +514,11 @@
   top: 50%;
   left: 50%;
   z-index: -2;
-  width: 150vmin;
-  height: 150vmin;
+  /* The plate has to outgrow the section or the band ends in a strip of flat
+     black. 150vmin covers a wide screen; the dvh term is what keeps a tall
+     narrow phone covered, where vmin tracks the width and falls far short. */
+  width: max(150vmin, 132dvh);
+  height: max(150vmin, 132dvh);
   object-fit: cover;
   transform: translate(-50%, -50%);
 }
@@ -747,61 +753,30 @@
   text-align: center;
 }
 
-/* The scatter leaves the core clear, so the one label and the one action in
-   this section sit in that hole. Last in the field, so it paints over any
-   mark that drifts near. */
+/* The scatter leaves the core clear, so the one action in this section sits
+   in that hole. Last in the field, so it paints over any mark that drifts
+   near. No scrim under it: the button is a solid slab and carries its own
+   contrast, and a pool of dark behind it just read as a card. */
 .sky__center {
   position: absolute;
   left: 50%;
   top: 50%;
   translate: -50% -50%;
   z-index: 2;
-  display: grid;
-  justify-items: center;
-  gap: clamp(1rem, 2.5vw, 1.75rem);
-  padding: clamp(2rem, 5vw, 3rem) clamp(2rem, 6vw, 4rem);
-  text-align: center;
 }
 
-/* The galaxy core blows out near-white right here, and white type on it is
-   unreadable. This sits the block on its own pool of dark. */
-.sky__center::before {
-  content: "";
-  position: absolute;
-  inset: -45% -25%;
-  z-index: -1;
-  pointer-events: none;
-  background: radial-gradient(
-    ellipse at 50% 50%,
-    rgba(18, 18, 18, 0.86) 0%,
-    rgba(18, 18, 18, 0.66) 36%,
-    rgba(18, 18, 18, 0.26) 62%,
-    transparent 82%
-  );
-}
-
-.sky__label {
-  margin: 0;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.74);
-}
-
-/* The same red as the nav's Support Us, scaled up: this is the only action in
-   the section, so it does not have to match the inline CTAs elsewhere. Black
-   on #ff3b33 for the contrast, exactly as .nav__cta does. */
 .sky__join {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-height: 60px;
   padding: 1.1rem clamp(2.25rem, 6vw, 3.25rem);
-  background: var(--color-red);
-  border: 1px solid var(--color-red);
+  background: color-mix(in srgb, var(--color-red) 72%, var(--color-black));
+  border: 1px solid color-mix(in srgb, var(--color-red) 52%, transparent);
   border-radius: var(--radius);
-  color: var(--color-black);
+  /* White reads about 5.8:1 on the deepened red; near-black does not survive
+     the drop in luminance the way it does on the full #ff3b33. */
+  color: var(--color-white);
   font-family: var(--font-mono);
   font-size: clamp(0.875rem, 1.6vw, 1rem);
   font-weight: 500;
@@ -813,8 +788,9 @@
 }
 
 .sky__join:hover {
-  background: transparent;
-  color: var(--color-red);
+  background: var(--color-red);
+  border-color: var(--color-red);
+  color: var(--color-black);
 }
 
 .sky__join:active {
