@@ -26,6 +26,27 @@ export const poweredBy: Partner[] = [
     about:
       "Penyedia perancah dan peralatan kerja ketinggian untuk proyek konstruksi dan industri.",
   },
+  {
+    name: "ROBOTIS",
+    logo: "/logos/sponsors/robotis.png",
+    href: "https://www.robotis.com",
+    about:
+      "Produsen robotika asal Korea Selatan. Lini aktuator Dynamixel dan platform TurtleBot-nya dipakai luas di riset dan kompetisi robot.",
+  },
+  {
+    name: "EasyEDA",
+    logo: "/logos/sponsors/easyeda.svg",
+    href: "https://easyeda.com",
+    about:
+      "Perangkat desain elektronik berbasis web: skematik, tata letak PCB, dan simulasi dalam satu alur sampai siap difabrikasi.",
+  },
+  {
+    name: "JLCPCB",
+    logo: "/logos/sponsors/jlcpcb.webp",
+    href: "https://jlcpcb.com",
+    about:
+      "Pabrik PCB dan perakitan PCBA asal Tiongkok, melayani prototipe satuan sampai produksi volume kecil dengan waktu kirim singkat.",
+  },
 ];
 
 /**
@@ -33,11 +54,6 @@ export const poweredBy: Partner[] = [
  * Section akan otomatis menampilkan teks kontak, bukan logo palsu.
  */
 export const sponsors: Partner[] = [
-  {
-    name: "ROBOTIS",
-    logo: "/logos/sponsors/robotis.png",
-    href: "https://www.robotis.com",
-  },
   {
     name: "Dynamixel",
     logo: "/logos/sponsors/dynamixel.png",
@@ -51,16 +67,6 @@ export const sponsors: Partner[] = [
     name: "Polymaker",
     logo: "/logos/sponsors/polymaker.png",
     href: "https://polymaker.com",
-  },
-  {
-    name: "EasyEDA",
-    logo: "/logos/sponsors/easyeda.svg",
-    href: "https://easyeda.com",
-  },
-  {
-    name: "JLCPCB",
-    logo: "/logos/sponsors/jlcpcb.webp",
-    href: "https://jlcpcb.com",
   },
   {
     name: "MikroElektronika",
