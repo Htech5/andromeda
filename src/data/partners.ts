@@ -50,23 +50,27 @@ export const poweredBy: Partner[] = [
 ];
 
 /**
- * Kosongkan array jika belum ada kemitraan resmi.
- * Section akan otomatis menampilkan teks kontak, bukan logo palsu.
+ * Order matters: the orbit fills its outer ring first, so the widest lockups
+ * go at the top of this list and the square-ish marks at the bottom, where
+ * the inner ring has less arc to give them.
  */
 export const sponsors: Partner[] = [
   {
-    name: "Dynamixel",
-    logo: "/logos/sponsors/dynamixel.png",
-    href: "https://www.robotis.us/dynamixel",
+    name: "PT Arkhajayanti Persada Tbk",
+    logo: "/logos/sponsors/arkhajayanti-persada.png",
+  },
+  { name: "PT Streamwork", logo: "/logos/sponsors/streamwork.png" },
+  {
+    name: "PT Pelabuhan Indonesia",
+    logo: "/logos/sponsors/pelabuhan-indonesia.png",
   },
   {
-    name: "Mango Technology Engineering",
-    logo: "/logos/sponsors/mango-technology-engineering.png",
+    name: "PT Enviromate Technology International",
+    logo: "/logos/sponsors/enviromate-technology-international.png",
   },
   {
-    name: "Polymaker",
-    logo: "/logos/sponsors/polymaker.png",
-    href: "https://polymaker.com",
+    name: "PT Pertamina Gas Negara Tbk",
+    logo: "/logos/sponsors/pertamina-gas-negara.png",
   },
   {
     name: "MikroElektronika",
@@ -78,44 +82,32 @@ export const sponsors: Partner[] = [
     logo: "/logos/sponsors/recare.png",
   },
   {
-    name: "PT Enviromate Technology International",
-    logo: "/logos/sponsors/enviromate-technology-international.png",
-  },
-  {
-    name: "PT Pertamina Gas Negara Tbk",
-    logo: "/logos/sponsors/pertamina-gas-negara.png",
+    name: "PT Bumi Agung Perkasa Indah",
+    logo: "/logos/sponsors/bumi-agung-perkasa-indah.png",
   },
   {
     name: "PT Katup Industri Indonesia",
     logo: "/logos/sponsors/katup-industri-indonesia.png",
   },
   {
-    name: "PT Bumi Agung Perkasa Indah",
-    logo: "/logos/sponsors/bumi-agung-perkasa-indah.png",
+    name: "Mango Technology Engineering",
+    logo: "/logos/sponsors/mango-technology-engineering.png",
   },
   {
-    name: "PT Pelabuhan Indonesia",
-    logo: "/logos/sponsors/pelabuhan-indonesia.png",
+    name: "Polymaker",
+    logo: "/logos/sponsors/polymaker.png",
+    href: "https://polymaker.com",
   },
-  {
-    name: "PT Pertamina Gas",
-    logo: "/logos/sponsors/pertamina-gas.png",
-  },
-  {
-    name: "PT Perusahaan Listrik Negara",
-    logo: "/logos/sponsors/pln.png",
-  },
+  { name: "PT Perusahaan Listrik Negara", logo: "/logos/sponsors/pln.png" },
+  { name: "PT Pertamina Gas", logo: "/logos/sponsors/pertamina-gas.png" },
   {
     name: "PT Duraquipt Cemerlang",
     logo: "/logos/sponsors/duraquipt-cemerlang.png",
   },
   {
-    name: "PT Streamwork",
-    logo: "/logos/sponsors/streamwork.png",
-  },
-  {
-    name: "PT Arkhajayanti Persada Tbk",
-    logo: "/logos/sponsors/arkhajayanti-persada.png",
+    name: "Dynamixel",
+    logo: "/logos/sponsors/dynamixel.png",
+    href: "https://www.robotis.us/dynamixel",
   },
 ];
 

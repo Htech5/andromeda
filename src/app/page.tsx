@@ -5,13 +5,12 @@ import RobotArchitecture from "@/components/RobotArchitecture";
 import StatsRow from "@/components/StatsRow";
 import Achievements from "@/components/Achievements";
 import PoweredBy from "@/components/PoweredBy";
-import Partners from "@/components/Partners";
 import Footer from "@/components/Footer";
-import { mediaPartners, poweredBy, sponsors } from "@/data/partners";
+import { poweredBy, sponsors } from "@/data/partners";
 
 export default function Page() {
-  // Partners stays hidden until a real logo exists; an empty wall is dead space.
-  const hasPartners = sponsors.length > 0 || mediaPartners.length > 0;
+  // One orbit section holds both walls; empty, it is just dead space.
+  const hasPartners = poweredBy.length > 0 || sponsors.length > 0;
 
   return (
     <>
@@ -24,8 +23,7 @@ export default function Page() {
           <StatsRow />
         </section>
         <Achievements />
-        {poweredBy.length > 0 && <PoweredBy />}
-        {hasPartners && <Partners />}
+        {hasPartners && <PoweredBy />}
       </main>
       <Footer />
     </>

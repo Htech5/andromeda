@@ -442,32 +442,130 @@
   padding-top: 4.5rem;
 }
 
-/* ---------- powered by ---------- */
+/* ---------- powered by: the field ---------- */
 
-/* Fewer marks than the sponsor wall and bigger, so the running backers read
-   first and the past-sponsor wall below reads as history. */
-.section--powered {
-  padding-bottom: clamp(3rem, 7vw, 5rem);
+/* One full-bleed section: the galaxy is the whole backdrop and the logos sit
+   out among its stars, near ones large and bright, far ones small and dim. */
+.sky {
+  position: relative;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  overflow: clip;
+  background: var(--color-black);
+  isolation: isolate;
 }
 
-.section--powered .sectionHead {
-  justify-content: center;
-  text-align: center;
+/* One rotating layer, nothing else moves. Square source, radially masked, so
+   the spin never brings a corner into view. */
+.sky__core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: -2;
+  width: 150vmin;
+  height: 150vmin;
+  object-fit: cover;
+  transform: translate(-50%, -50%);
+  transform-origin: 50% 50%;
+  mask-image: radial-gradient(circle closest-side, #000 52%, transparent 92%);
+  /* The core blows out white at full strength and swallows any logo crossing
+     it, so the whole plate is dimmed instead of dodging the centre. */
+  filter: brightness(0.68) contrast(1.14) saturate(1.12);
+  animation: skySpin 320s linear infinite;
+  will-change: transform;
 }
 
-.powered__wall {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+@keyframes skySpin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Core light, breathing. Composited opacity only, so it costs nothing. */
+.sky__glow {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(255, 238, 214, 0.1),
+      transparent 42%
+    ),
+    radial-gradient(
+      ellipse at 50% 50%,
+      transparent 42%,
+      var(--color-black) 88%
+    );
+  animation: skyBreathe 9s ease-in-out infinite alternate;
+}
+
+@keyframes skyBreathe {
+  to {
+    opacity: 0.72;
+  }
+}
+
+.sky__field {
+  position: relative;
+  min-height: 0;
+}
+
+.sky__seat {
+  position: absolute;
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
+  translate: -50% -50%;
+}
+
+/* Every mark reads as a star first: one white silhouette, depth carried by
+   size and opacity. The brand colour comes back on hover. */
+.sky__logo {
+  width: auto;
+  height: var(--h);
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: var(--o);
+  transition: opacity 0.35s var(--ease), filter 0.35s var(--ease),
+    scale 0.35s var(--ease);
+}
+
+.sky__seat--near .sky__logo {
+  max-width: 26vmin;
+}
+
+.sky__seat--far .sky__logo {
+  max-width: 17vmin;
+}
+
+.sky__seat--near:hover .sky__logo,
+.powered__trigger:focus-visible .sky__logo {
+  filter: none;
+  opacity: 1;
+  scale: 1.08;
+}
+
+.sky__seat--far:hover .sky__logo {
+  filter: none;
+  opacity: 1;
+}
+
+.sky .partners__name {
+  color: var(--color-white);
+  opacity: var(--o);
+  font-size: clamp(0.6rem, 1.4vmin, 0.8rem);
+}
+
+.sky__foot {
+  position: relative;
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
-  gap: clamp(2.5rem, 7vw, 6rem);
+  padding-block: clamp(2rem, 5vw, 3.5rem);
 }
 
-/* Bare mark, no card and no caption: the lift on hover is the only hint that
-   it opens. */
+/* Bare mark, no card and no caption: the lift is the only hint it opens. */
 .powered__trigger {
   display: grid;
   place-items: center;
@@ -476,28 +574,12 @@
   border: 0;
   color: inherit;
   cursor: pointer;
-  transition: transform 0.3s var(--ease), opacity 0.3s var(--ease);
-}
-
-.powered__trigger:hover {
-  transform: translateY(-4px);
-}
-
-.powered__trigger:active {
-  transform: translateY(-1px);
 }
 
 .powered__trigger:focus-visible {
   outline: 2px solid var(--color-red);
-  outline-offset: 6px;
+  outline-offset: 8px;
   border-radius: 4px;
-}
-
-.powered__logo {
-  width: auto;
-  height: clamp(3.5rem, 8vw, 6.5rem);
-  max-width: min(24rem, 72vw);
-  object-fit: contain;
 }
 
 /* Native popover: the UA stylesheet already centres it in the top layer, so
@@ -591,71 +673,39 @@
   color: var(--color-black);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .powered__card,
-  .powered__card::backdrop,
-  .powered__trigger {
-    transition-duration: 0.01ms;
+/* Phones cannot hold a scattered field: it collapses to a plain wall over the
+   same galaxy. */
+@media (max-width: 767px) {
+  .sky__field {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(1.5rem, 7vw, 2.5rem);
+    min-height: 0;
+    padding: clamp(4rem, 18vw, 7rem) var(--gutter);
   }
-}
 
-/* ---------- partners ---------- */
+  .sky__seat {
+    position: static;
+    translate: none;
+  }
 
-/* Centred wall, and a long run-out before the footer so the logos are not
-   read as part of it. */
-.section--sponsors {
-  padding-bottom: clamp(7rem, 16vw, 12rem);
-}
+  .sky__seat--near .sky__logo {
+    height: clamp(2.25rem, 8vw, 3rem);
+    max-width: 40vw;
+    opacity: 0.95;
+  }
 
-.section--sponsors .sectionHead {
-  justify-content: center;
-  text-align: center;
-}
+  .sky__seat--far .sky__logo {
+    height: clamp(1.35rem, 5vw, 2rem);
+    max-width: 30vw;
+  }
 
-.partners {
-  display: grid;
-  gap: clamp(2.5rem, 6vw, 4rem);
-  color: var(--ink);
-}
-
-.partners__label {
-  color: var(--color-black);
-  margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
-  text-align: center;
-}
-
-.partners__wall {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: clamp(2rem, 5vw, 4.5rem);
-}
-
-.partners__cell {
-  display: grid;
-  place-items: center;
-  min-height: 5rem;
-}
-
-/* One optical height for every mark, whatever its native size. Brand colour
-   stays: greyscale washed out the yellow marks. */
-/* Most of these marks are wide lockups with a company name set small inside
-   them, so the cap has to leave that name readable. */
-.partners__logo {
-  width: auto;
-  height: clamp(2.25rem, 4.2vw, 3.25rem);
-  max-width: min(17rem, 62vw);
-  object-fit: contain;
-}
-
-.partners__join {
-  display: flex;
-  justify-content: center;
-  margin-top: clamp(2.5rem, 6vw, 4rem);
+  .sky__core {
+    width: 150vmax;
+    height: 150vmax;
+  }
 }
 
 .partners__name {
@@ -664,6 +714,18 @@
   letter-spacing: 0.18em;
   text-transform: uppercase;
   text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sky__core,
+  .sky__glow {
+    animation: none;
+  }
+  .powered__card,
+  .powered__card::backdrop,
+  .sky__logo {
+    transition-duration: 0.01ms;
+  }
 }
 
 /* ---------- footer ---------- */

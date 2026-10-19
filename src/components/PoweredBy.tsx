@@ -1,76 +1,182 @@
 import { existsSync } from "node:fs";
 import Image from "next/image";
 import Reveal from "./Reveal";
-import SectionHead from "./SectionHead";
-import { poweredBy } from "@/data/partners";
+import { poweredBy, sponsors, type Partner } from "@/data/partners";
 
-/** Same rule as Partners: a path only counts once the file is in /public. */
+/** A logo path only counts once the file is actually in /public. */
 const hasLogo = (logo?: string) => !!logo && existsSync(`public${logo}`);
 const slug = (name: string) =>
   name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
+type Seat = { x: number; y: number; z: number; pad: number };
+
+/**
+ * Deterministic scatter. Same seed, same sky on every render, so the server
+ * HTML never disagrees with itself and the layout is stable between deploys.
+ * Positions are percentages of the section box; `pad` is the clearance a seat
+ * wants, in the same percentage units, so big marks keep more room than small
+ * ones. Already placed seats are passed in, otherwise the two groups would be
+ * scattered blind to each other and overlap.
+ */
+function scatter(
+  n: number,
+  seed: number,
+  rMin: number,
+  rMax: number,
+  pad: number,
+  taken: Seat[] = [],
+): Seat[] {
+  let s = seed >>> 0;
+  const rnd = () => (s = (Math.imul(s, 1664525) + 1013904223) >>> 0) / 2 ** 32;
+  const out: Seat[] = [];
+
+  for (let i = 0; i < n; i++) {
+    for (let tries = 0; tries < 900; tries++) {
+      // Clearance relaxes the longer a seat goes unplaced, so a crowded field
+      // still seats everyone instead of dropping the last few.
+      const give = 1 - Math.min(tries / 900, 0.45);
+      const angle = rnd() * Math.PI * 2;
+      // sqrt keeps the draw area-uniform instead of crowding the inner edge
+      const r = rMin + (rMax - rMin) * Math.sqrt(rnd());
+      const x = 50 + Math.cos(angle) * r;
+      const y = 50 + Math.sin(angle) * r * 0.82;
+      if (x < 9 || x > 91 || y < 10 || y > 87) continue;
+      // y counts double: the seats are wider than they are tall
+      const clash = [...taken, ...out].some(
+        (q) => Math.hypot(q.x - x, (q.y - y) * 1.9) < ((q.pad + pad) / 2) * give,
+      );
+      if (clash) continue;
+      out.push({ x, y, z: rnd(), pad });
+      break;
+    }
+  }
+  return out;
+}
+
+// Backers sit nearer the core and ride bigger; past sponsors drift out to the
+// faint edge of the field, small and dim, like the further stars.
+const nearSeats = scatter(poweredBy.length, 20260119, 24, 38, 21);
+const farSeats = scatter(sponsors.length, 7781, 32, 50, 14, nearSeats);
+
+function style(seat: Seat, min: number, span: number, fade: number) {
+  return {
+    "--x": seat.x,
+    "--y": seat.y,
+    "--h": `${(min + seat.z * span).toFixed(2)}vmin`,
+    "--o": (fade + seat.z * 0.2).toFixed(2),
+  } as React.CSSProperties;
+}
+
+function Logo({ partner, className }: { partner: Partner; className: string }) {
+  return hasLogo(partner.logo) ? (
+    <Image
+      src={partner.logo!}
+      alt={partner.name}
+      width={440}
+      height={180}
+      className={className}
+    />
+  ) : (
+    <span className="partners__name">{partner.name}</span>
+  );
+}
+
 export default function PoweredBy() {
   return (
-    <section className="section section--powered shell" id="sponsorship">
-      <SectionHead title="Powered by" />
+    <section
+      className="sky onDark"
+      id="sponsorship"
+      aria-label="Powered by"
+    >
+      <Image
+        src="/andromeda.webp"
+        alt=""
+        width={1600}
+        height={1600}
+        className="sky__core"
+        sizes="150vmin"
+      />
+      <div className="sky__glow" aria-hidden="true" />
 
-      <ul className="powered__wall">
+      <div className="sky__field">
         {poweredBy.map((partner, i) => {
+          const seat = nearSeats[i];
+          if (!seat) return null;
           const id = `powered-${slug(partner.name)}`;
           return (
-            <Reveal as="li" key={partner.name} delay={i * 80}>
-              {/* Native popover: top layer, Esc and click-outside for free, no
-                  client component and no dialog script. */}
-              <button
-                type="button"
-                className="powered__trigger"
-                popoverTarget={id}
-                aria-label={`Profil singkat ${partner.name}`}
-              >
-                {hasLogo(partner.logo) ? (
-                  <Image
-                    src={partner.logo!}
-                    alt={partner.name}
-                    width={420}
-                    height={160}
-                    className="powered__logo"
-                  />
-                ) : (
-                  <span className="partners__name">{partner.name}</span>
-                )}
-              </button>
+            <div
+              className="sky__seat sky__seat--near"
+              key={partner.name}
+              style={style(seat, 4.6, 2.8, 0.8)}
+            >
+              <Reveal delay={i * 90}>
+                {/* Native popover: top layer, Esc and click-outside for free,
+                    no client component and no dialog script. */}
+                <button
+                  type="button"
+                  className="powered__trigger"
+                  popoverTarget={id}
+                  aria-label={`Profil singkat ${partner.name}`}
+                >
+                  <Logo partner={partner} className="sky__logo" />
+                </button>
 
-              <div id={id} popover="auto" className="powered__card">
-                <p className="powered__cardLabel mono">
-                  <span className="accent">/</span> Powered by
-                </p>
-                <h3 className="powered__cardTitle">{partner.name}</h3>
-                <p className="powered__cardBody">{partner.about}</p>
-                <div className="powered__cardFoot">
-                  {partner.href && (
-                    <a
-                      className="inlineLink"
-                      href={partner.href}
-                      target="_blank"
-                      rel="noreferrer"
+                <div id={id} popover="auto" className="powered__card">
+                  <p className="powered__cardLabel mono">
+                    <span className="accent">/</span> Powered by
+                  </p>
+                  <h3 className="powered__cardTitle">{partner.name}</h3>
+                  <p className="powered__cardBody">{partner.about}</p>
+                  <div className="powered__cardFoot">
+                    {partner.href && (
+                      <a
+                        className="inlineLink"
+                        href={partner.href}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Situs resmi
+                      </a>
+                    )}
+                    <button
+                      type="button"
+                      className="powered__close mono"
+                      popoverTarget={id}
+                      popoverTargetAction="hide"
                     >
-                      Situs resmi
-                    </a>
-                  )}
-                  <button
-                    type="button"
-                    className="powered__close mono"
-                    popoverTarget={id}
-                    popoverTargetAction="hide"
-                  >
-                    Tutup
-                  </button>
+                      Tutup
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </Reveal>
+              </Reveal>
+            </div>
           );
         })}
-      </ul>
+
+        {sponsors.map((partner, i) => {
+          const seat = farSeats[i];
+          if (!seat) return null;
+          return (
+            <div
+              className="sky__seat sky__seat--far"
+              key={partner.name}
+              style={style(seat, 2.3, 1.7, 0.4)}
+            >
+              <Reveal delay={450 + i * 50}>
+                <Logo partner={partner} className="sky__logo" />
+              </Reveal>
+            </div>
+          );
+        })}
+      </div>
+
+      <Reveal delay={200}>
+        <div className="sky__foot shell">
+          <a className="cta cta--solid" href="/sponsorship">
+            Join us
+          </a>
+        </div>
+      </Reveal>
     </section>
   );
 }
