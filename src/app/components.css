@@ -442,6 +442,180 @@
   padding-top: 4.5rem;
 }
 
+/* ---------- powered by ---------- */
+
+/* Fewer marks than the sponsor wall and bigger, so the running backers read
+   first and the past-sponsor wall below reads as history. */
+.section--powered {
+  padding-bottom: clamp(3rem, 7vw, 5rem);
+}
+
+.section--powered .sectionHead {
+  justify-content: center;
+  text-align: center;
+}
+
+.powered__wall {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(2.5rem, 7vw, 6rem);
+}
+
+.powered__trigger {
+  display: grid;
+  gap: 0.85rem;
+  place-items: center;
+  padding: 0.75rem 1rem;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  color: inherit;
+  cursor: pointer;
+  transition: transform 0.3s var(--ease), border-color 0.3s var(--ease),
+    background 0.3s var(--ease);
+}
+
+.powered__trigger:hover {
+  transform: translateY(-3px);
+  border-color: var(--hairline);
+  background: var(--surface);
+}
+
+.powered__trigger:active {
+  transform: translateY(-1px);
+}
+
+.powered__trigger:focus-visible {
+  outline: 2px solid var(--color-red);
+  outline-offset: 3px;
+}
+
+.powered__logo {
+  width: auto;
+  height: clamp(2.5rem, 5.5vw, 3.75rem);
+  max-width: min(18rem, 60vw);
+  object-fit: contain;
+}
+
+/* The wall is the only clickable logo set on the page, so it says so. */
+.powered__trigger::after {
+  content: "Lihat profil";
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  transition: color 0.3s var(--ease);
+}
+
+.powered__trigger:hover::after {
+  color: var(--color-red);
+}
+
+/* Native popover: the UA stylesheet already centres it in the top layer, so
+   only the look and the open/close transition are left to write. */
+.powered__card {
+  width: min(32rem, calc(100vw - 2 * var(--gutter)));
+  padding: clamp(1.5rem, 4vw, 2.25rem);
+  background: var(--surface);
+  color: var(--ink);
+  border: var(--rule);
+  border-radius: var(--radius);
+  box-shadow: 0 32px 80px -32px rgba(18, 18, 18, 0.45);
+  opacity: 0;
+  transform: translateY(10px) scale(0.98);
+  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease),
+    overlay 0.3s allow-discrete, display 0.3s allow-discrete;
+}
+
+.powered__card:popover-open {
+  opacity: 1;
+  transform: none;
+}
+
+@starting-style {
+  .powered__card:popover-open {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+}
+
+.powered__card::backdrop {
+  background: rgba(18, 18, 18, 0.55);
+  opacity: 0;
+  transition: opacity 0.3s var(--ease), overlay 0.3s allow-discrete,
+    display 0.3s allow-discrete;
+}
+
+.powered__card:popover-open::backdrop {
+  opacity: 1;
+}
+
+@starting-style {
+  .powered__card:popover-open::backdrop {
+    opacity: 0;
+  }
+}
+
+.powered__cardLabel {
+  color: var(--ink-3);
+  margin: 0;
+}
+
+.powered__cardTitle {
+  margin: 0.75rem 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 3vw, 1.6rem);
+  line-height: 1.15;
+}
+
+.powered__cardBody {
+  margin: 0.85rem 0 0;
+  color: var(--ink-2);
+  line-height: 1.65;
+  max-width: 48ch;
+}
+
+.powered__cardFoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: clamp(1.25rem, 3vw, 1.75rem);
+  padding-top: clamp(1rem, 2.5vw, 1.25rem);
+  border-top: var(--rule-faint);
+}
+
+/* Pushed right on its own when there is no website link to sit beside. */
+.powered__close {
+  margin-left: auto;
+  padding: 0.5rem 1rem;
+  background: var(--color-black);
+  color: var(--color-white);
+  border: 1px solid var(--color-black);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.25s var(--ease), color 0.25s var(--ease);
+}
+
+.powered__close:hover {
+  background: transparent;
+  color: var(--color-black);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .powered__card,
+  .powered__card::backdrop,
+  .powered__trigger {
+    transition-duration: 0.01ms;
+  }
+}
+
 /* ---------- partners ---------- */
 
 /* Centred wall, and a long run-out before the footer so the logos are not

@@ -18,8 +18,8 @@ export default function Partners() {
   const filled = groups.filter((group) => group.items.length > 0);
 
   return (
-    <section className="section section--sponsors shell" id="sponsorship">
-      <SectionHead title="Our sponsor" />
+    <section className="section section--sponsors shell" id="past-sponsors">
+      <SectionHead title="Our past sponsor" />
 
       {filled.length === 0 ? (
         <Reveal>
