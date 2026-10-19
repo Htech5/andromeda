@@ -102,11 +102,17 @@ function range(order: number) {
   return `contain ${start.toFixed(2)}% contain ${(start + step * 1.7).toFixed(2)}%`;
 }
 
-function style(seat: Seat, min: number, span: number, order: number) {
+function style(
+  seat: Seat,
+  min: number,
+  span: number,
+  order: number,
+  scale = 1,
+) {
   return {
     "--x": seat.x,
     "--y": seat.y,
-    "--h": `${(min + seat.z * span).toFixed(2)}vmin`,
+    "--h": `${((min + seat.z * span) * scale).toFixed(2)}vmin`,
     "--range": range(order),
   } as React.CSSProperties;
 }
@@ -151,7 +157,7 @@ export default function PoweredBy() {
               <div
                 className="sky__seat sky__seat--near"
                 key={partner.name}
-                style={style(seat, 7.4, 2.4, i)}
+                style={style(seat, 7.4, 2.4, i, partner.scale)}
               >
                 {/* Native popover: top layer, Esc and click-outside for free,
                     no client component and no dialog script. */}
@@ -202,7 +208,7 @@ export default function PoweredBy() {
               <div
                 className="sky__seat sky__seat--far"
                 key={partner.name}
-                style={style(seat, 6.4, 1.8, poweredBy.length + i)}
+                style={style(seat, 6.4, 1.8, poweredBy.length + i, partner.scale)}
               >
                 <Logo partner={partner} className="sky__logo" />
               </div>

@@ -5,6 +5,13 @@ export type Partner = {
   href?: string;
   /** Powered by only: isi kartu popover saat logo diklik. */
   about?: string;
+  /**
+   * Pengali tinggi logo di dinding sponsor. Default 1. Semua logo diberi
+   * tinggi yang sama, jadi logo yang bentuknya kotak terbaca jauh lebih kecil
+   * daripada logo memanjang pada tinggi yang sama. Naikkan nilainya untuk
+   * logo seperti itu, misal 1.5.
+   */
+  scale?: number;
 };
 
 /**
@@ -102,6 +109,7 @@ export const sponsors: Partner[] = [
   {
     name: "PT Duraquipt Cemerlang",
     logo: "/logos/sponsors/duraquipt-cemerlang.png",
+    scale: 1.6,
   },
   {
     name: "Dynamixel",
