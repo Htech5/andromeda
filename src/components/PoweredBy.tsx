@@ -216,7 +216,8 @@ export default function PoweredBy() {
           })}
 
           <a className="sky__join" href="/sponsorship">
-            <span className="sky__joinLabel">Join Us</span>
+            <span className="sky__joinWord">Join</span>
+            <span className="sky__joinWord sky__joinWord--accent">Us</span>
           </a>
         </div>
       </div>

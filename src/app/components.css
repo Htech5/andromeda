@@ -781,6 +781,7 @@
   z-index: 2;
   display: grid;
   place-items: center;
+  align-content: center;
   width: clamp(9rem, 21vmin, 14rem);
   aspect-ratio: 1;
   border-radius: 50%;
@@ -814,16 +815,26 @@
 
 /* The mark's disc is near-white, so the label goes dark on it. Sized to stay
    inside the inner ring at every diameter the clamp above can produce. */
-.sky__joinLabel {
+/* The display face, not the mono label treatment. Mono is the site's voice
+   for indices and captions, and it is only loaded at 400 and 500, so the old
+   700 here was a browser-synthesised bold: heavy-looking and slightly smeared
+   rather than actually bold. Oxanium 800 is real weight, it is what every
+   heading on the site already speaks in, and set over two short lines it
+   fills the mark's inner ring instead of threading one thin line across it.
+   "Us" takes the brand red, which is the same red as the rings around it. */
+.sky__joinWord {
   position: relative;
-  max-width: 76%;
-  color: var(--color-black);
-  font-family: var(--font-mono);
-  font-size: clamp(0.85rem, 2.5vmin, 1.2rem);
-  font-weight: 700;
-  letter-spacing: 0.14em;
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 4vmin, 2.2rem);
+  font-weight: 800;
+  line-height: 0.86;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
-  text-align: center;
+  color: var(--color-black);
+}
+
+.sky__joinWord--accent {
+  color: var(--color-red);
 }
 
 /* ---------- powered by: one sponsor per scroll ---------- */
