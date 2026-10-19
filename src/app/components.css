@@ -456,8 +456,56 @@
   isolation: isolate;
 }
 
-/* One rotating layer, nothing else moves. Square source, radially masked, so
-   the spin never brings a corner into view. */
+/* The band used to cut straight from the light section above into black. Both
+   edges now dissolve instead: the top washes the page ground down into the
+   sky, the bottom settles the stars and the outer logos into the footer's
+   black. Painted order, not z-index: ::before lands behind the logos, ::after
+   in front of them, which is what softens the marks nearest the edge. */
+.sky::before,
+.sky::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  pointer-events: none;
+  /* An eased ramp, not a straight line. A plain fade to transparent is still
+     dropping at the moment it stops, and that slope shows up as a seam across
+     the band. These stops flatten the tail so it arrives at nothing. */
+  background: linear-gradient(
+    var(--dir),
+    var(--fade) 0%,
+    /* Held opaque for a moment so the band meets its neighbour flat, with no
+       sliver of galaxy left showing along the join. */
+    var(--fade) 7%,
+    color-mix(in srgb, var(--fade) 78%, transparent) 26%,
+    color-mix(in srgb, var(--fade) 52%, transparent) 42%,
+    color-mix(in srgb, var(--fade) 28%, transparent) 60%,
+    color-mix(in srgb, var(--fade) 11%, transparent) 76%,
+    color-mix(in srgb, var(--fade) 3%, transparent) 89%,
+    transparent 100%
+  );
+}
+
+.sky::before {
+  --dir: to bottom;
+  --fade: var(--bg-page);
+  top: 0;
+  height: clamp(6rem, 20vh, 16rem);
+}
+
+/* Taller than the top: the plate is 150vmin against a 100dvh band, so the
+   section clips the galaxy while it is still bright and the footer's black
+   needs the extra run to take it down. */
+.sky::after {
+  --dir: to top;
+  --fade: var(--color-black);
+  bottom: 0;
+  height: clamp(9rem, 32vh, 24rem);
+}
+
+/* Flat plate, nothing to compute. The colour grade and the radial edge fade
+   are baked into the file by scripts/bake_galaxy.py, which is also where to
+   retune them: run as CSS they cost a filter pass and a mask pass on a
+   150vmin layer, which is what made this section crawl on phones. */
 .sky__core {
   position: absolute;
   top: 50%;
@@ -467,11 +515,6 @@
   height: 150vmin;
   object-fit: cover;
   transform: translate(-50%, -50%);
-  transform-origin: 50% 50%;
-  mask-image: radial-gradient(circle closest-side, #000 52%, transparent 92%);
-  /* The core blows out white at full strength and swallows any logo crossing
-     it, so the whole plate is dimmed instead of dodging the centre. */
-  filter: brightness(0.68) contrast(1.14) saturate(1.12);
 }
 
 /* Vector stars over the still plate: the galaxy holds its place and these
@@ -605,6 +648,7 @@
 
 .sky__foot {
   position: relative;
+  z-index: 1;
   display: flex;
   justify-content: center;
   padding-block: clamp(2rem, 5vw, 3.5rem);

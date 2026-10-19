@@ -3,8 +3,11 @@
   --color-black: #121212;
   --color-white: #ffffff;
 
-  /* Light base. Neutrals are black at reduced opacity: still no new hue. */
-  --bg: #f4f4f4;
+  /* Light base. Neutrals are black at reduced opacity: still no new hue.
+     --bg-page is the page ground and is never inverted, so a dark band can
+     still reach for the colour of the light sections it sits between. */
+  --bg-page: #f4f4f4;
+  --bg: var(--bg-page);
   --surface: #ffffff;
   --ink: rgba(18, 18, 18, 0.92);
   --ink-2: rgba(18, 18, 18, 0.6);
