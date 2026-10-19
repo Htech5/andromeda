@@ -570,24 +570,20 @@
   translate: -50% -50%;
 }
 
-/* Marks keep their own colours now. Most of these files are dark artwork on
-   transparency, so on a black sky they need something under them. A tight
-   light pill, hugging the mark: a loose radial wash at this count just reads
-   as a field of grey blobs. No border and no shadow, so it stays a surface
-   the mark sits on and not a card. */
-.sky__seat::before {
-  content: "";
-  position: absolute;
-  inset: -20% -9%;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.95);
-}
-
+/* Marks keep their own colours. Most of these files are dark artwork on
+   transparency, so on a black sky they need something to lift them off it. */
 .sky__logo {
   position: relative;
   width: auto;
   height: var(--h);
   object-fit: contain;
+  /* A halo on the mark's own outline, not a plate behind it: a pill reads as
+     a sticker stuck on the galaxy, this reads as the mark catching light.
+     Three passes, tight core to soft spread. Static, so it is rasterised once
+     and costs nothing per frame. */
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.95))
+    drop-shadow(0 0 4px rgba(255, 255, 255, 0.8))
+    drop-shadow(0 0 10px rgba(255, 255, 255, 0.36));
   transition: scale 0.35s var(--ease);
 }
 
@@ -614,8 +610,8 @@
   display: grid;
   place-items: center;
   height: var(--h);
-  color: var(--color-black);
-  font-size: calc(var(--h) * 0.4);
+  color: var(--color-white);
+  font-size: calc(var(--h) * 0.36);
   line-height: 1.1;
 }
 
@@ -747,14 +743,13 @@
   }
 
   .sky__seat--near .sky__logo {
-    height: clamp(2.25rem, 8vw, 3rem);
-    max-width: 40vw;
-    opacity: 0.95;
+    height: clamp(2.75rem, 10vw, 3.5rem);
+    max-width: 44vw;
   }
 
   .sky__seat--far .sky__logo {
-    height: clamp(1.35rem, 5vw, 2rem);
-    max-width: 30vw;
+    height: clamp(2.25rem, 8vw, 2.9rem);
+    max-width: 36vw;
   }
 
   .sky__core {
@@ -785,8 +780,19 @@
   width: clamp(9rem, 21vmin, 14rem);
   aspect-ratio: 1;
   border-radius: 50%;
-  background: url("/andromeda-mark.png") center / contain no-repeat;
   transition: scale 0.35s var(--ease);
+}
+
+/* The mark sits on its own layer so it can be softened without taking the
+   label with it. At full sharpness the rings and the robot compete with the
+   one word that has to be read. One small static element, rasterised once. */
+.sky__join::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: url("/andromeda-mark.png") center / contain no-repeat;
+  filter: blur(4px);
 }
 
 .sky__join:hover {
@@ -805,12 +811,13 @@
 /* The mark's disc is near-white, so the label goes dark on it. Sized to stay
    inside the inner ring at every diameter the clamp above can produce. */
 .sky__joinLabel {
-  max-width: 62%;
+  position: relative;
+  max-width: 76%;
   color: var(--color-black);
   font-family: var(--font-mono);
-  font-size: clamp(0.7rem, 1.9vmin, 0.95rem);
-  font-weight: 500;
-  letter-spacing: 0.18em;
+  font-size: clamp(0.85rem, 2.5vmin, 1.2rem);
+  font-weight: 700;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   text-align: center;
 }
