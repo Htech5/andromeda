@@ -448,14 +448,20 @@
    out among its stars, near ones large and bright, far ones small and dim. */
 .sky {
   position: relative;
-  /* Taller than the viewport on purpose: the marks are laid out as
-     percentages of this box, so the extra height is what gives the field room
-     to breathe instead of stacking the logos on top of each other. */
+  /* Fallback height, and what the section keeps wherever scroll-driven
+     animation is unavailable: one tall screen showing the whole field. */
   min-height: 128dvh;
+  background: var(--color-black);
+}
+
+/* Clipping and stacking belong to the pin, not the track. overflow on the
+   track would box the sticky child in and the pin would never catch. */
+.sky__pin {
+  position: relative;
+  min-height: inherit;
   display: grid;
   grid-template-rows: 1fr;
   overflow: clip;
-  background: var(--color-black);
   isolation: isolate;
 }
 
@@ -469,6 +475,9 @@
   content: "";
   position: absolute;
   inset-inline: 0;
+  /* Above the pin: both are children of the track, and without this the
+     sticky pin paints over the top band entirely. */
+  z-index: 3;
   pointer-events: none;
   /* An eased ramp, not a straight line. A plain fade to transparent is still
      dropping at the moment it stops, and that slope shows up as a seam across
@@ -561,44 +570,53 @@
   translate: -50% -50%;
 }
 
-/* Every mark reads as a star first: one white silhouette, depth carried by
-   size and opacity. The brand colour comes back on hover. */
+/* Marks keep their own colours now. Most of these files are dark artwork on
+   transparency, so on a black sky they need something under them. A tight
+   light pill, hugging the mark: a loose radial wash at this count just reads
+   as a field of grey blobs. No border and no shadow, so it stays a surface
+   the mark sits on and not a card. */
+.sky__seat::before {
+  content: "";
+  position: absolute;
+  inset: -20% -9%;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.95);
+}
+
 .sky__logo {
+  position: relative;
   width: auto;
   height: var(--h);
   object-fit: contain;
-  filter: brightness(0) invert(1);
-  opacity: var(--o);
-  transition: opacity 0.35s var(--ease), filter 0.35s var(--ease),
-    scale 0.35s var(--ease);
+  transition: scale 0.35s var(--ease);
 }
 
 .sky__seat--near .sky__logo {
-  max-width: 30vmin;
+  max-width: 25vmin;
 }
 
 .sky__seat--far .sky__logo {
-  max-width: 24vmin;
+  max-width: 20vmin;
 }
 
 .sky__seat--near:hover .sky__logo,
 .powered__trigger:focus-visible .sky__logo {
-  filter: none;
-  opacity: 1;
   scale: 1.08;
-}
-
-.sky__seat--far:hover .sky__logo {
-  filter: none;
-  opacity: 1;
 }
 
 /* A backer with no logo file on disk shows as its name, so it has to carry
    the same weight as the marks around it. */
+/* A backer with no logo file falls back to its name. Sized off the same --h
+   the images use, so it fills a plate the way they do instead of sitting in
+   one as a line of small type. */
 .sky .partners__name {
-  color: var(--color-white);
-  opacity: var(--o);
-  font-size: clamp(0.8rem, 2vmin, 1.1rem);
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: var(--h);
+  color: var(--color-black);
+  font-size: calc(var(--h) * 0.4);
+  line-height: 1.1;
 }
 
 
@@ -754,51 +772,141 @@
 }
 
 /* The scatter leaves the core clear, so the one action in this section sits
-   in that hole. Last in the field, so it paints over any mark that drifts
-   near. No scrim under it: the button is a solid slab and carries its own
-   contrast, and a pool of dark behind it just read as a card. */
-.sky__center {
+   in that hole: the mark from the favicon, at size, with the label inside its
+   inner ring. No slab, no fill of its own. */
+.sky__join {
   position: absolute;
   left: 50%;
   top: 50%;
   translate: -50% -50%;
   z-index: 2;
-}
-
-.sky__join {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 60px;
-  padding: 1.1rem clamp(2.25rem, 6vw, 3.25rem);
-  background: color-mix(in srgb, var(--color-red) 72%, var(--color-black));
-  border: 1px solid color-mix(in srgb, var(--color-red) 52%, transparent);
-  border-radius: var(--radius);
-  /* White reads about 5.8:1 on the deepened red; near-black does not survive
-     the drop in luminance the way it does on the full #ff3b33. */
-  color: var(--color-white);
-  font-family: var(--font-mono);
-  font-size: clamp(0.875rem, 1.6vw, 1rem);
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  transition: background 0.3s var(--ease), color 0.3s var(--ease),
-    transform 0.12s var(--ease);
+  display: grid;
+  place-items: center;
+  width: clamp(9rem, 21vmin, 14rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: url("/andromeda-mark.png") center / contain no-repeat;
+  transition: scale 0.35s var(--ease);
 }
 
 .sky__join:hover {
-  background: var(--color-red);
-  border-color: var(--color-red);
-  color: var(--color-black);
+  scale: 1.06;
 }
 
 .sky__join:active {
-  transform: translateY(1px);
+  scale: 0.98;
+}
+
+.sky__join:focus-visible {
+  outline: 2px solid var(--color-red);
+  outline-offset: 6px;
+}
+
+/* The mark's disc is near-white, so the label goes dark on it. Sized to stay
+   inside the inner ring at every diameter the clamp above can produce. */
+.sky__joinLabel {
+  max-width: 62%;
+  color: var(--color-black);
+  font-family: var(--font-mono);
+  font-size: clamp(0.7rem, 1.9vmin, 0.95rem);
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* ---------- powered by: one sponsor per scroll ---------- */
+
+/* Scroll-driven, so it runs on the compositor and costs no script. Every
+   rule that lengthens the section lives in here: without support the section
+   keeps its fallback height and the whole field is simply on show. */
+@supports (animation-timeline: view()) {
+  .sky {
+    /* One screen to arrive on, then a step of scroll for each mark. */
+    --step: 15dvh;
+    min-height: calc(100dvh + 20 * var(--step));
+    view-timeline: --sky block;
+  }
+
+  /* A phone screen is short, so the same step count turns into a very long
+     thumb drag. The sequence keeps its shape, the track just gets tighter. */
+  @media (max-width: 767px) {
+    .sky {
+      --step: 10dvh;
+    }
+  }
+
+  .sky__pin {
+    position: sticky;
+    top: 0;
+    height: 100dvh;
+    min-height: 0;
+  }
+
+  .sky__seat,
+  .sky__join {
+    animation: markIn linear both;
+    animation-timeline: --sky;
+    /* The marks finish by 80% and the mark-button lands just after, so the
+       last stretch of the pin is a hold on the complete wall instead of the
+       field still assembling as it scrolls away. */
+    animation-range: var(--range, contain 81% contain 90%);
+  }
+
+  /* The bands belong to the track, so while the pin is stuck they sit over
+     the field and grey out the row under them. They are only wanted at the
+     joins, so they are tied to the same timeline: present on the way in,
+     gone for the whole pin, back for the way out. */
+  .sky::before {
+    animation: edgeOut linear both;
+    animation-timeline: --sky;
+    animation-range: contain 0% contain 7%;
+  }
+
+  .sky::after {
+    animation: edgeIn linear both;
+    animation-timeline: --sky;
+    animation-range: contain 95% contain 100%;
+  }
+
+  @keyframes edgeOut {
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes edgeIn {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @keyframes markIn {
+    from {
+      opacity: 0;
+      scale: 0.86;
+    }
+    to {
+      opacity: 1;
+      scale: 1;
+    }
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sky__glow {
+  .sky {
+    min-height: 128dvh;
+  }
+  .sky__pin {
+    position: relative;
+    height: auto;
+    min-height: inherit;
+  }
+  .sky__glow,
+  .sky__seat,
+  .sky__join,
+  .sky::before,
+  .sky::after {
     animation: none;
   }
   .powered__card,

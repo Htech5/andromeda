@@ -1,6 +1,5 @@
 import { existsSync } from "node:fs";
 import Image from "next/image";
-import Reveal from "./Reveal";
 import { poweredBy, sponsors, type Partner } from "@/data/partners";
 
 /** A logo path only counts once the file is actually in /public. */
@@ -14,15 +13,18 @@ type Seat = { x: number; y: number; z: number; pad: number };
  * Deterministic scatter. Same seed, same sky on every render, so the server
  * HTML never disagrees with itself and the layout is stable between deploys.
  * Positions are percentages of the section box; `pad` is the clearance a seat
- * wants, in the same percentage units, so big marks keep more room than small
- * ones. Already placed seats are passed in, otherwise the two groups would be
- * scattered blind to each other and overlap.
+ * wants, in the same percentage units. Already placed seats are passed in,
+ * otherwise the two groups would be scattered blind to each other.
+ *
+ * Sampling is over the box with the middle punched out, not around a ring.
+ * A ring wide enough to clear the centre runs past the left and right bounds,
+ * and every rejected point there pushes the survivors to the top and bottom:
+ * the field ends up clustered in the corners with holes at either side.
  */
 function scatter(
   n: number,
   seed: number,
-  rMin: number,
-  rMax: number,
+  hole: number,
   pad: number,
   taken: Seat[] = [],
 ): Seat[] {
@@ -32,19 +34,19 @@ function scatter(
 
   for (let i = 0; i < n; i++) {
     for (let tries = 0; tries < 900; tries++) {
-      // Clearance relaxes the longer a seat goes unplaced, so a crowded field
-      // still seats everyone instead of dropping the last few.
-      const give = 1 - Math.min(tries / 900, 0.45);
-      const angle = rnd() * Math.PI * 2;
-      // sqrt keeps the draw area-uniform instead of crowding the inner edge
-      const r = rMin + (rMax - rMin) * Math.sqrt(rnd());
-      const x = 50 + Math.cos(angle) * r;
-      const y = 50 + Math.sin(angle) * r * 0.82;
-      // Tighter than it looks: a seat is a point, but the mark hung on it is
-      // up to 30vmin wide, so the bounds have to hold back half of that. The
-      // top edge also clears the nav pill and the fade band under it.
-      if (x < 15 || x > 85 || y < 17 || y > 86) continue;
-      // y counts double: the seats are wider than they are tall
+      // Clearance relaxes the longer a seat goes unplaced, but only so far:
+      // past about a quarter the plates start touching, and seatAll below is
+      // the proper place to give ground when a field is genuinely crowded.
+      const give = 1 - Math.min(tries / 900, 0.22);
+      // Bounds hold back half of the widest plate a mark can wear, and clear
+      // the nav pill along the top.
+      const x = 15 + rnd() * 70;
+      const y = 17 + rnd() * 69;
+      // The hole the mark button sits in.
+      const dx = (x - 50) / hole;
+      const dy = (y - 50) / (hole * 0.92);
+      if (dx * dx + dy * dy < 1) continue;
+      // y counts double: the plates are wider than they are tall
       const clash = [...taken, ...out].some(
         (q) => Math.hypot(q.x - x, (q.y - y) * 1.9) < ((q.pad + pad) / 2) * give,
       );
@@ -56,17 +58,56 @@ function scatter(
   return out;
 }
 
-// Backers sit nearer the core and ride bigger; past sponsors drift out to the
-// faint edge of the field, small and dim, like the further stars.
-const nearSeats = scatter(poweredBy.length, 20260119, 29, 43, 27);
-const farSeats = scatter(sponsors.length, 7781, 37, 53, 20, nearSeats);
+/**
+ * Seats everyone, or gives up clearance until it can. scatter() drops whoever
+ * it cannot place, and a sponsor silently missing from the wall is a worse
+ * outcome than a tight field, so `pad` is an ambition here and not a promise.
+ * This is what keeps the wall correct when partners are added later.
+ */
+function seatAll(
+  n: number,
+  seed: number,
+  hole: number,
+  pad: number,
+  taken: Seat[] = [],
+): Seat[] {
+  for (let p = pad; p > 6; p -= 2) {
+    const out = scatter(n, seed, hole, p, taken);
+    if (out.length === n) return out;
+  }
+  return scatter(n, seed, hole, 6, taken);
+}
 
-function style(seat: Seat, min: number, span: number, fade: number) {
+// Backers sit nearer the core and ride bigger; past sponsors drift out to the
+// edge of the field. Both carry the same clearance ambition and settle for
+// whatever actually fits.
+const nearSeats = seatAll(poweredBy.length, 20260119, 26, 30);
+const farSeats = seatAll(sponsors.length, 7781, 26, 26, nearSeats);
+
+const TOTAL = poweredBy.length + sponsors.length;
+
+/**
+ * The slice of the pinned scroll a mark arrives on. `contain 0%` to
+ * `contain 100%` is exactly the stretch where the section is taller than the
+ * viewport and the pin is stuck, so steps laid out across it line up with the
+ * scrolling. Windows run wider than one step on purpose: marks overlap
+ * slightly on the way in, which reads as a field filling up rather than a
+ * slideshow.
+ */
+const SEQ_END = 80;
+
+function range(order: number) {
+  const step = SEQ_END / TOTAL;
+  const start = order * step;
+  return `contain ${start.toFixed(2)}% contain ${(start + step * 1.7).toFixed(2)}%`;
+}
+
+function style(seat: Seat, min: number, span: number, order: number) {
   return {
     "--x": seat.x,
     "--y": seat.y,
     "--h": `${(min + seat.z * span).toFixed(2)}vmin`,
-    "--o": (fade + seat.z * 0.2).toFixed(2),
+    "--range": range(order),
   } as React.CSSProperties;
 }
 
@@ -86,33 +127,32 @@ function Logo({ partner, className }: { partner: Partner; className: string }) {
 
 export default function PoweredBy() {
   return (
-    <section
-      className="sky onDark"
-      id="sponsorship"
-      aria-label="Powered by"
-    >
-      <Image
-        src="/andromeda.webp"
-        alt=""
-        width={1600}
-        height={1600}
-        className="sky__core"
-        sizes="150vmin"
-      />
-      <div className="sky__glow" aria-hidden="true" />
+    <section className="sky onDark" id="sponsorship" aria-label="Powered by">
+      {/* Everything that is seen lives in the pin; the section around it is
+          only the scroll track the marks are timed against. */}
+      <div className="sky__pin">
+        <Image
+          src="/andromeda.webp"
+          alt=""
+          width={1600}
+          height={1600}
+          className="sky__core"
+          sizes="150vmin"
+        />
 
-      <div className="sky__field">
-        {poweredBy.map((partner, i) => {
-          const seat = nearSeats[i];
-          if (!seat) return null;
-          const id = `powered-${slug(partner.name)}`;
-          return (
-            <div
-              className="sky__seat sky__seat--near"
-              key={partner.name}
-              style={style(seat, 6.4, 3.4, 0.8)}
-            >
-              <Reveal delay={i * 90}>
+        <div className="sky__glow" aria-hidden="true" />
+
+        <div className="sky__field">
+          {poweredBy.map((partner, i) => {
+            const seat = nearSeats[i];
+            if (!seat) return null;
+            const id = `powered-${slug(partner.name)}`;
+            return (
+              <div
+                className="sky__seat sky__seat--near"
+                key={partner.name}
+                style={style(seat, 7.4, 2.4, i)}
+              >
                 {/* Native popover: top layer, Esc and click-outside for free,
                     no client component and no dialog script. */}
                 <button
@@ -151,32 +191,28 @@ export default function PoweredBy() {
                     </button>
                   </div>
                 </div>
-              </Reveal>
-            </div>
-          );
-        })}
+              </div>
+            );
+          })}
 
-        {sponsors.map((partner, i) => {
-          const seat = farSeats[i];
-          if (!seat) return null;
-          return (
-            <div
-              className="sky__seat sky__seat--far"
-              key={partner.name}
-              style={style(seat, 4.2, 2.2, 0.45)}
-            >
-              <Reveal delay={450 + i * 50}>
+          {sponsors.map((partner, i) => {
+            const seat = farSeats[i];
+            if (!seat) return null;
+            return (
+              <div
+                className="sky__seat sky__seat--far"
+                key={partner.name}
+                style={style(seat, 6.4, 1.8, poweredBy.length + i)}
+              >
                 <Logo partner={partner} className="sky__logo" />
-              </Reveal>
-            </div>
-          );
-        })}
+              </div>
+            );
+          })}
 
-        <Reveal className="sky__center" delay={140}>
           <a className="sky__join" href="/sponsorship">
-            Join Us
+            <span className="sky__joinLabel">Join Us</span>
           </a>
-        </Reveal>
+        </div>
       </div>
     </section>
   );
