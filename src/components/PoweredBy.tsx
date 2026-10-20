@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs";
 import Image from "next/image";
 import { poweredBy, sponsors, type Partner } from "@/data/partners";
+import GalaxyCore from "./GalaxyCore";
 
 /** A logo path only counts once the file is actually in /public. */
 const hasLogo = (logo?: string) => !!logo && existsSync(`public${logo}`);
@@ -137,14 +138,7 @@ export default function PoweredBy() {
       {/* Everything that is seen lives in the pin; the section around it is
           only the scroll track the marks are timed against. */}
       <div className="sky__pin">
-        <Image
-          src="/andromeda.webp"
-          alt=""
-          width={1600}
-          height={1600}
-          className="sky__core"
-          sizes="150vmin"
-        />
+        <GalaxyCore />
 
         <div className="sky__glow" aria-hidden="true" />
 
