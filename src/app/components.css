@@ -561,20 +561,40 @@
 }
 
 /* The field goes soft the moment the invitation lands, so the type is read
-   against texture and not against a wall of logos. One layer over the whole
-   pin: the galaxy, the core light and every mark sit behind it and blur
-   together, which is why nothing else in here carries a filter of its own.
-   ponytail: backdrop-filter on a full-bleed layer is the expensive part of
-   this section on a phone, hence the smaller radius under 768px. If it ever
-   shows up in a trace, bake a blurred plate in scripts/bake_galaxy.py and
-   cross-fade to that instead. */
+   against texture and not against a wall of logos. Two painted layers, no
+   live filter: a galaxy plate blurred once at raster time, then an even tint
+   over it. All that moves per frame is this layer's opacity.
+   This started life as one backdrop-filter, which looked identical and was
+   unusable: .sky__core is a canvas repainting 30 times a second, and a
+   backdrop filter re-blurs the whole backdrop on every one of those frames. */
 .sky__veil {
   position: absolute;
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  backdrop-filter: blur(20px);
-  background: rgba(12, 12, 12, 0.34);
+}
+
+/* /andromeda.webp is the baked M31 photo GalaxyCore now stands in for, so the
+   soft galaxy and the sharp one are the same galaxy. Static element, static
+   radius: rasterised once and composited from then on. */
+.sky__veil::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/andromeda.webp") center / cover no-repeat;
+  filter: blur(26px);
+  /* Blur pulls transparency in from the edges; the overscale keeps that rim
+     off screen. */
+  scale: 1.14;
+}
+
+/* Carried separately so the blur above cannot smear the darkening, which has
+   to stay flat for the type to hold its contrast everywhere. */
+.sky__veil::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(12, 12, 12, 0.46), rgba(12, 12, 12, 0.58));
 }
 
 .sky__field {
@@ -780,8 +800,8 @@
     height: 210vmax;
   }
 
-  .sky__veil {
-    backdrop-filter: blur(12px);
+  .sky__veil::before {
+    filter: blur(16px);
   }
 
   .sky__joinWord {
@@ -839,14 +859,18 @@
   margin: 0;
 }
 
-/* The display face at full voice. Oxanium 800 is real weight rather than a
-   browser-synthesised bold, and the two words stack so the block fills the
-   pin vertically instead of threading one wide line across it. The words are
-   light now: they sit on a blurred galaxy, not on the mark's pale disc.
-   "Us" takes the brand red, the same red as the rings behind it. */
+/* Outfit, not the site's Oxanium. Oxanium is the engineering voice: narrow,
+   cut corners, right for headings about a robot and wrong for the one line
+   on the site that asks a company to work with us. Outfit's rounder, wider
+   letterforms read as an open hand at this size. 800 is real weight in a
+   variable face, not a browser-synthesised bold, and the two words stack so
+   the block fills the pin vertically instead of threading one wide line
+   across it. The words are light: they sit on a blurred galaxy, not on the
+   mark's pale disc. "Us" takes the brand red, the same red as the rings
+   behind it. */
 .sky__joinWord {
   position: relative;
-  font-family: var(--font-display);
+  font-family: var(--font-invite);
   font-size: clamp(4rem, 20vmin, 16rem);
   font-weight: 800;
   line-height: 0.82;
@@ -857,6 +881,17 @@
 
 .sky__joinWord--accent {
   color: var(--color-red);
+}
+
+/* .cta is mono by default, which is the site's voice for part numbers and
+   captions. Under an invitation it reads like a serial. Same face as the
+   words above it, and large enough to be the obvious next move. */
+.sky__joinCta {
+  font-family: var(--font-invite);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  padding: 1.05rem 2.25rem;
 }
 
 /* ---------- powered by: one sponsor per scroll ---------- */

@@ -223,7 +223,7 @@ export default function PoweredBy() {
           {/* "Click here" alone is not a destination, so the accessible name
               carries the one the sighted label leaves implicit. */}
           <a
-            className="cta cta--solid"
+            className="cta cta--solid sky__joinCta"
             href="/sponsorship"
             aria-label="Join us: lihat paket sponsorship"
           >

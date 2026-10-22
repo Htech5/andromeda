@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Oxanium, JetBrains_Mono } from "next/font/google";
+import { Oxanium, JetBrains_Mono, Outfit } from "next/font/google";
 import BootScreen from "@/components/BootScreen";
 import SmoothScroll from "@/components/SmoothScroll";
 import { site } from "@/data/site";
@@ -12,6 +12,14 @@ const display = Oxanium({
   weight: ["600", "700", "800"],
   display: "swap",
   variable: "--font-display",
+});
+
+// One section speaks in this: the sponsorship invitation. Variable, so the
+// 600 on the button and the 800 on the words cost a single file.
+const invite = Outfit({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-invite",
 });
 
 const mono = JetBrains_Mono({
@@ -62,7 +70,7 @@ export default function RootLayout({
     // <html> before React hydrates, so server and client markup differ by design.
     <html
       lang="id"
-      className={`${display.variable} ${mono.variable}`}
+      className={`${display.variable} ${invite.variable} ${mono.variable}`}
       suppressHydrationWarning
     >
       <head>
