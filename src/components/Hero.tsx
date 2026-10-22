@@ -1,4 +1,4 @@
-import HeroAscii from "./HeroAscii";
+import HeroVideo from "./HeroVideo";
 import { site } from "@/data/site";
 
 export default function Hero() {
@@ -6,7 +6,7 @@ export default function Hero() {
     <section className="hero onDark" id="top">
       {/* Full-bleed backdrop: sized against the hero itself, not a grid column. */}
       <div className="hero__art" aria-hidden="true">
-        <HeroAscii />
+        <HeroVideo />
       </div>
 
       <div className="hero__inner shell">
