@@ -52,7 +52,12 @@ export default function Capability() {
 
       <ol className="caps">
         {capabilities.map((cap, i) => (
-          <Reveal as="li" key={cap.kicker} delay={i * 70}>
+          <Reveal
+            as="li"
+            key={cap.kicker}
+            delay={i * 70}
+            variant={i % 2 === 0 ? "left" : "right"}
+          >
             <article className="caps__item">
               <div
                 className="caps__shot"

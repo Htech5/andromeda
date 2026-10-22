@@ -243,11 +243,64 @@ svg {
 
 .js .reveal {
   opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  /* One transform for every variant; the variant classes below only move the
+     custom props, so nothing here has to be overridden per direction. */
+  transform: translate3d(var(--reveal-x, 0px), var(--reveal-y, 18px), 0)
+    scale(var(--reveal-s, 1)) rotate(var(--reveal-r, 0deg));
+  transition: opacity var(--reveal-dur, 0.7s) var(--ease),
+    transform var(--reveal-dur, 0.7s) var(--ease);
   /* No delay on the way out. Transition timing comes from the end state, so
      the stagger below only applies on entry and the reset is immediate. */
   transition-delay: 0ms;
+}
+
+/* Entry variants. Travel stays small on purpose: the stagger carries the
+   rhythm, distance only says which direction an element comes from. */
+.js .reveal--down {
+  --reveal-y: -18px;
+}
+
+.js .reveal--left {
+  --reveal-x: -32px;
+  --reveal-y: 0px;
+}
+
+.js .reveal--right {
+  --reveal-x: 32px;
+  --reveal-y: 0px;
+}
+
+/* For heavy assets: settles in place instead of sliding across the grid. */
+.js .reveal--scale {
+  --reveal-s: 0.94;
+  --reveal-y: 10px;
+  --reveal-dur: 0.9s;
+}
+
+.js .reveal--tilt {
+  --reveal-r: -1.6deg;
+  --reveal-y: 24px;
+  --reveal-s: 0.98;
+  transform-origin: 0% 100%;
+}
+
+/* Longer travel for figures that own a whole band. */
+.js .reveal--rise {
+  --reveal-y: 46px;
+  --reveal-dur: 0.95s;
+}
+
+/* Rotation and scale read as a wobble on a narrow screen, so drop both and
+   keep the plain vertical lift. */
+@media (max-width: 767px) {
+  .js .reveal--left,
+  .js .reveal--right,
+  .js .reveal--tilt {
+    --reveal-x: 0px;
+    --reveal-r: 0deg;
+    --reveal-s: 1;
+    --reveal-y: 18px;
+  }
 }
 
 .reveal.is-visible {

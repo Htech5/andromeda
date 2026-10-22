@@ -20,7 +20,7 @@ export default function Sponsorship() {
       <SectionHead title="Paket kemitraan" />
 
       <div className="prospectus">
-        <Reveal>
+        <Reveal variant="tilt">
           <p className="lede lede--bar">
             Identitas perusahaan ditempatkan pada robot, perlengkapan, dan media
             publikasi resmi tim. Dukungan masuk langsung ke komponen dan biaya
@@ -28,7 +28,7 @@ export default function Sponsorship() {
           </p>
         </Reveal>
 
-        <Reveal delay={90}>
+        <Reveal delay={90} variant="right">
           <div className="prospectus__contact">
             <p className="prospectus__label mono accent">Divisi Sponsorship</p>
             <a className="cta cta--solid" href={site.proposal} download>
@@ -42,7 +42,7 @@ export default function Sponsorship() {
         </Reveal>
       </div>
 
-      <Reveal delay={60}>
+      <Reveal delay={60} variant="rise">
         <div className="matrixWrap">
           <table className="matrix">
             <caption className="srOnly">Benefit sponsorship per paket</caption>
@@ -116,7 +116,7 @@ export default function Sponsorship() {
         </div>
       </Reveal>
 
-      <Reveal delay={120}>
+      <Reveal delay={120} variant="scale">
         <p className="noteLine mono">
           Harga dan benefit dapat menyesuaikan hasil diskusi.
         </p>

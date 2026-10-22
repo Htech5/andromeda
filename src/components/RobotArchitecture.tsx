@@ -9,7 +9,7 @@ export default function RobotArchitecture() {
       <SectionHead title={robot.model} />
 
       <div className="editorial editorial--wide">
-        <Reveal>
+        <Reveal variant="scale">
           <figure className="robotShot">
             <Image
               src="/images/m31-iso.webp"
@@ -24,7 +24,7 @@ export default function RobotArchitecture() {
 
         <ol className="partsList">
           {subsystems.map((item, i) => (
-            <Reveal as="li" key={item.id} delay={i * 70}>
+            <Reveal as="li" key={item.id} delay={i * 70} variant="right">
               <div className="partsList__item">
                 <span className="partsList__num mono accent">
                   {String(i + 1).padStart(2, "0")}

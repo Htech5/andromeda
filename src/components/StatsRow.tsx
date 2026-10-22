@@ -68,7 +68,12 @@ export default function StatsRow() {
   return (
     <dl className="statsRow" ref={ref}>
       {stats.map((item, i) => (
-        <Reveal className="statsRow__cell" delay={i * 140} key={item.label}>
+        <Reveal
+          className="statsRow__cell"
+          delay={i * 140}
+          key={item.label}
+          variant="rise"
+        >
           <dt
             className="statsRow__value mono"
             data-count={item.value}

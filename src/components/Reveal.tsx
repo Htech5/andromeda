@@ -2,11 +2,23 @@
 
 import { useEffect, useRef } from "react";
 
+/** Entry directions. Each one only remaps the --reveal-* custom props in CSS,
+    so every variant shares the same composited transform/opacity transition. */
+type Variant =
+  | "up"
+  | "down"
+  | "left"
+  | "right"
+  | "scale"
+  | "tilt"
+  | "rise";
+
 type Props = {
   children: React.ReactNode;
   delay?: number;
   as?: "div" | "li" | "tr";
   className?: string;
+  variant?: Variant;
 };
 
 /** Scroll reveal. One observer per element, disconnected after first hit. */
@@ -15,6 +27,7 @@ export default function Reveal({
   delay = 0,
   as = "div",
   className = "",
+  variant = "up",
 }: Props) {
   // One element type for the ref; the tag itself stays whatever the caller asked for.
   const Tag = as as "div";
@@ -50,7 +63,7 @@ export default function Reveal({
   return (
     <Tag
       ref={ref}
-      className={`reveal ${className}`.trim()}
+      className={`reveal reveal--${variant} ${className}`.trim()}
       style={{ "--reveal-delay": `${delay}ms` } as React.CSSProperties}
     >
       {children}

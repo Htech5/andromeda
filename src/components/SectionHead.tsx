@@ -8,7 +8,7 @@ export default function SectionHead({
   title: string;
 }) {
   return (
-    <Reveal>
+    <Reveal variant="left">
       <div className="sectionHead">
         {index && <span className="sectionIndex">{index}</span>}
         <h2 className="sectionTitle">{title}</h2>
