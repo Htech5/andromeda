@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Capability from "@/components/Capability";
@@ -6,6 +7,8 @@ import StatsRow from "@/components/StatsRow";
 import Achievements from "@/components/Achievements";
 import PoweredBy from "@/components/PoweredBy";
 import Footer from "@/components/Footer";
+import NavIcon from "@/components/NavIcon";
+import Reveal from "@/components/Reveal";
 import { poweredBy, sponsors } from "@/data/partners";
 
 export default function Page() {
@@ -21,6 +24,14 @@ export default function Page() {
         <RobotArchitecture />
         <section className="section section--stats shell" id="team">
           <StatsRow />
+          <Reveal variant="right">
+            <Link className="teamLink" href="/team">
+              Lihat struktur tim
+              <span className="teamLink__arrow">
+                <NavIcon name="arrow" className="teamLink__glyph" />
+              </span>
+            </Link>
+          </Reveal>
         </section>
         <Achievements />
         {hasPartners && <PoweredBy />}

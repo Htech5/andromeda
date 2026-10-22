@@ -19,6 +19,7 @@ const PATHS: Record<string, string> = {
   whatsapp:
     "M3.6 20.4l1.3-4.2a7.8 7.8 0 1 1 3 2.9zM9 8.6c.4 1.9 1.6 3.4 3.4 4.3l1-1.2 2.3 1a4.3 4.3 0 0 1-4.2 1 6.4 6.4 0 0 1-3.8-3.9 4.2 4.2 0 0 1 .8-3.2l1.1 2.3z",
   mail: "M3.5 7.3h17v9.4h-17zM3.9 7.7 12 13.3l8.1-5.6",
+  arrow: "M5 12h13M12.5 6.5 18 12l-5.5 5.5",
 };
 
 export default function NavIcon({
