@@ -1494,10 +1494,9 @@
 
 /* ---------- capability ---------- */
 
-/* Three capabilities, one section. The reference this follows gave each of
-   them a screen of its own and left most of it empty; these are rows instead,
-   picture against copy, alternating sides so neither column ever runs as a
-   stack of identical cards. */
+/* Three capabilities, one section. The site this follows gave each of them a
+   screen of its own and left most of it empty; these are rows instead,
+   picture against copy, alternating sides. */
 .caps {
   list-style: none;
   margin: clamp(1.25rem, 2.5vw, 2rem) 0 0;
@@ -1513,43 +1512,38 @@
 }
 
 /* min-width: 0 on both columns. A grid track's automatic minimum is the
-   item's min-content width, and an aspect-ratio box with a large image in it
-   reports a big one: without this the two tracks push past the shell and the
+   item's min-content width, and an aspect-ratio box holding a large image
+   reports a big one: without this the tracks push past the shell and the
    headline runs off the right edge of the page. */
 .caps__shot,
 .caps__copy {
   min-width: 0;
 }
 
-.caps__shot {
-  display: grid;
-  gap: 0.6rem;
-}
-
-/* The frames are sized by the grid and filled by the image, so a row never
-   ends with a band of empty under a picture that ran out of height. */
 .caps__frame {
   position: relative;
   overflow: hidden;
   border-radius: var(--radius);
   background: rgba(18, 18, 18, 0.035);
+  height: 100%;
 }
 
-/* Cover, and it crops almost nothing: the shot column below is given the
-   source files' own 4:3, so the picture fills its frame edge to edge without
-   losing a subject. Contain was the other way out of the clipping and it was
-   worse, a small drawing marooned in a grey panel. */
-.caps__frame img {
+/* Photographs fill their frame; the arena drawing is line art on a
+   transparent ground, so it is fitted whole and the frame's tint stands in
+   for the paper it was drawn on. */
+.caps__frame--cover img {
   object-fit: cover;
 }
 
-/* Copy is pushed apart rather than stacked: the heading sits at the top of
-   the row, the data strip at the bottom, and whatever slack the row has goes
-   between them instead of trailing off the end. */
+.caps__frame--contain img {
+  object-fit: contain;
+  padding: clamp(0.5rem, 1.5vw, 1.25rem);
+}
+
 .caps__copy {
   display: grid;
-  align-content: space-between;
-  gap: 1.1rem;
+  align-content: center;
+  gap: 0;
 }
 
 .caps__kicker {
@@ -1557,100 +1551,59 @@
   font-size: 0.72rem;
 }
 
+/* Outfit, not the Oxanium every other heading on the site speaks in. Oxanium
+   is the engineering voice, cut corners and narrow counters, and it made
+   these three read like part numbers. This section has to sell what the team
+   can build, so it gets the warmer face and sentence case with it. */
 .caps__title {
-  margin: 0.5rem 0 0;
-  font-family: var(--font-display);
-  font-size: clamp(1.25rem, 2.6vw, 1.9rem);
-  line-height: 1.15;
-  letter-spacing: -0.015em;
+  margin: 0.55rem 0 0;
+  font-family: var(--font-warm);
+  font-size: clamp(1.6rem, 3.4vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
 }
 
 .caps__body {
-  margin: 0.75rem 0 0;
+  margin: 1rem 0 0;
   color: var(--ink-2);
-  line-height: 1.65;
-  max-width: 54ch;
+  font-size: 1.02rem;
+  line-height: 1.7;
+  max-width: 56ch;
 }
 
-/* A rule and a row of terms, no card: the facts are a caption to the copy
-   above them, not a second thing to read. */
-.caps__facts {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
-  gap: 0.85rem 1.5rem;
-  margin: 0;
-  border-top: var(--rule-faint);
-  padding-top: 0.9rem;
-}
-
-.caps__fact dt {
-  font-size: 0.72rem;
-  color: var(--color-red);
-}
-
-.caps__fact dd {
-  margin: 0.3rem 0 0;
-  font-size: 0.85rem;
-  color: var(--ink-2);
-}
-
-/* One column: the frames carry their own shape, since there is no second
+/* One column: the frame carries its own shape, since there is no second
    column to borrow a height from. */
 @media (max-width: 1039px) {
-  .caps__frame {
-    aspect-ratio: 16 / 10;
+  .caps__shot {
+    aspect-ratio: var(--ratio, 4 / 3);
   }
 }
 
-/* Two columns only once they are wide enough to be worth it. Lower than
-   this the copy wraps into a long column beside a short picture, and the
-   gap under the picture is exactly the empty space this section exists to
-   avoid. */
+/* Two columns only once they are wide enough to be worth it. Lower than this
+   the copy wraps into a long column beside a short picture, and the gap under
+   the picture is exactly the empty space this section exists to avoid. */
 @media (min-width: 1040px) {
   .caps__item {
-    /* The picture is the narrower half on purpose. At 4:3 its height follows
-       its width, and an even split made it far taller than the copy beside
-       it, which left a hole in the middle of the copy column. */
-    grid-template-columns: 0.88fr 1.12fr;
-    /* Stretch, so the copy column is as tall as the picture beside it and
-       .caps__copy's space-between has a height to work against. Start-aligned
-       it sized to its own text instead, and the slack piled up under the
-       facts strip as a block of empty beside the image. The picture keeps its
-       4:3 either way: the row is sized by the taller of the two, which is the
-       picture, so stretching it changes nothing. */
+    grid-template-columns: 1fr 1fr;
+    /* Stretch, so the copy column is as tall as the picture beside it and has
+       a height to centre itself against. */
     align-items: stretch;
   }
 
-  /* Zig-zag. Counted on the list items, not on .caps__item: Reveal wraps
-     each row in its own <li>, so every .caps__item is an only child and
-     nth-child on it would match all of them or none. Only the picture moves;
-     the copy column stays in source order, so the reading order is the same
-     on every row. */
+  /* The picture's own proportion, so cover crops nothing. It is also what
+     makes the picture the tall half of most rows: the copy centres against
+     it rather than the row ending in a band of empty under a short image. */
+  .caps__shot {
+    aspect-ratio: var(--ratio, 4 / 3);
+  }
+
+  /* Zig-zag. Counted on the list items, not on .caps__item: Reveal wraps each
+     row in its own <li>, so every .caps__item is an only child and nth-child
+     on it would match all of them or none. Only the picture moves; the copy
+     stays in source order, so reading order is the same on every row. */
   .caps > li:nth-child(even) .caps__shot {
     order: 2;
-  }
-
-  /* The track widths swap with it. order moves the picture into the second
-     column but not the sizing, so without this the picture lands in the wide
-     track on every other row and, being 4:3, grows a hundred pixels taller
-     than the copy it is supposed to match. */
-  .caps > li:nth-child(even) .caps__item {
-    grid-template-columns: 1.12fr 0.88fr;
-  }
-
-  /* The source files are all 4:3. Giving the column that same ratio is what
-     lets cover fill the frame without cutting into the drawing, and it also
-     makes the picture the tall half of the row: the copy spreads to meet it
-     rather than the row ending in a band of empty under a short image. */
-  .caps__shot {
-    aspect-ratio: 4 / 3;
-  }
-
-  /* Two rows of terms rather than one long line: it reads better at this
-     width and it gives the copy column the height it was short of. */
-  .caps__facts {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.1rem 1.5rem;
   }
 }
 
