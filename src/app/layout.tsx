@@ -14,12 +14,13 @@ const display = Oxanium({
   variable: "--font-display",
 });
 
-// One section speaks in this: the sponsorship invitation. Variable, so the
-// 600 on the button and the 800 on the words cost a single file.
+// The warm voice, against Oxanium's engineering one and the mono's captions:
+// the sponsorship invitation and the footer. Variable, so every weight the two
+// of them use costs a single file.
 const invite = Outfit({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-invite",
+  variable: "--font-warm",
 });
 
 const mono = JetBrains_Mono({

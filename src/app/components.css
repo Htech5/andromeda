@@ -870,7 +870,7 @@
    behind it. */
 .sky__joinWord {
   position: relative;
-  font-family: var(--font-invite);
+  font-family: var(--font-warm);
   font-size: clamp(4rem, 20vmin, 16rem);
   font-weight: 800;
   line-height: 0.82;
@@ -884,14 +884,15 @@
 }
 
 /* .cta is mono by default, which is the site's voice for part numbers and
-   captions. Under an invitation it reads like a serial. Same face as the
-   words above it, and large enough to be the obvious next move. */
-.sky__joinCta {
-  font-family: var(--font-invite);
+   captions. On anything that asks the reader for something it reads like a
+   serial number. This is the same modifier the footer's buttons wear. */
+.cta--warm {
+  font-family: var(--font-warm);
   font-size: 0.95rem;
   font-weight: 600;
   letter-spacing: 0.1em;
   padding: 1.05rem 2.25rem;
+  text-transform: none;
 }
 
 /* ---------- powered by: one sponsor per scroll ---------- */
@@ -1062,9 +1063,19 @@
   height: auto;
 }
 
+/* The footer used to be mono end to end: 0.75rem, 0.22em of tracking and
+   uppercase on every line, which is the site's caption voice and reads as a
+   parts list when a whole band is set in it. Mono now stays on the labels
+   only, and everything a person actually reads moved to Outfit. The contrast
+   between the two is what makes the band feel composed instead of stiff. */
 .footer__affiliation {
   margin-top: 1rem;
-  color: var(--ink-3);
+  font-family: var(--font-warm);
+  font-size: 1rem;
+  line-height: 1.6;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink-2);
   max-width: 34ch;
 }
 
@@ -1084,6 +1095,12 @@
 
 .footer__contact dd {
   margin: 0;
+  font-family: var(--font-warm);
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  color: var(--ink);
 }
 
 .footer__cols {
@@ -1189,6 +1206,8 @@
 }
 
 .footer__link {
+  font-family: var(--font-warm);
+  font-size: 1.05rem;
   color: var(--ink-2);
   transition: color 0.25s var(--ease);
 }
@@ -1198,6 +1217,9 @@
 }
 
 .footer__base {
+  font-family: var(--font-warm);
+  font-size: 0.85rem;
+  letter-spacing: 0.01em;
   display: flex;
   justify-content: center;
   text-align: center;

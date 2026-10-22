@@ -23,24 +23,24 @@ export default function Footer() {
             width={332}
             height={72}
           />
-          <p className="footer__affiliation mono">{site.affiliation}</p>
+          <p className="footer__affiliation">{site.affiliation}</p>
 
           <dl className="footer__contact">
             <div>
               <dt className="footer__heading mono accent">Platform</dt>
-              <dd className="mono">{site.platform}</dd>
+              <dd>{site.platform}</dd>
             </div>
             <div>
               <dt className="footer__heading mono accent">Berdiri</dt>
-              <dd className="mono">{site.founded}</dd>
+              <dd>{site.founded}</dd>
             </div>
           </dl>
 
           <div className="footer__actions">
-            <a className="cta cta--solid" href="/sponsorship">
+            <a className="cta cta--solid cta--warm" href="/sponsorship">
               Support us
             </a>
-            <a className="cta" href={site.proposal} download>
+            <a className="cta cta--warm" href={site.proposal} download>
               Unduh proposal
               <span className="cta__meta mono">PDF · 13 MB</span>
             </a>
@@ -94,7 +94,7 @@ export default function Footer() {
         ))}
       </ul>
 
-      <div className="footer__base shell mono">
+      <div className="footer__base shell">
         <span>
           &copy; {new Date().getFullYear()} {site.wordmark}. {site.tagline}
         </span>
