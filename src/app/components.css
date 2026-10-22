@@ -680,44 +680,21 @@
   }
 }
 
-/* The arrow out of the home page's team band. */
-.teamLink {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-top: clamp(1.5rem, 3vw, 2.25rem);
-  min-height: 48px;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  transition: color 0.3s var(--ease);
+/* The way out of the home page's team band. It reads as a button, not as a
+   caption: it is the only action in a band otherwise made of numbers. */
+.teamCta {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(1.75rem, 3.5vw, 2.5rem);
 }
 
-.teamLink:hover {
-  color: var(--color-red);
+.teamCta__glyph {
+  font-size: 1.1rem;
+  transition: transform 0.35s var(--ease);
 }
 
-.teamLink__arrow {
-  display: grid;
-  place-items: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  border: var(--rule);
-  border-radius: 50%;
-  transition: transform 0.35s var(--ease), border-color 0.3s var(--ease),
-    background 0.3s var(--ease), color 0.3s var(--ease);
-}
-
-.teamLink:hover .teamLink__arrow {
+.teamCta .cta:hover .teamCta__glyph {
   transform: translateX(4px);
-  border-color: var(--color-red);
-  background: var(--color-red);
-  color: var(--color-white);
-}
-
-.teamLink:active .teamLink__arrow {
-  transform: translateX(4px) scale(0.94);
 }
 
 /* Sub-pages open under the fixed nav, so the first section clears it. */
@@ -1633,6 +1610,80 @@
   }
 }
 
+/* The band carries the decor: numbers alone leave it empty, worst of all on a
+   phone. Three painted layers, no extra markup, nothing animated. */
+.section--stats {
+  position: relative;
+}
+
+/* Orbit arcs off both gutters, the same vocabulary as the chart page. They
+   run past the band's edges on purpose, so the layer that holds them clips:
+   a bare negative offset would widen the page's scroll area instead. */
+.statsDeco {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.statsDeco::before,
+.statsDeco::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 46vmax;
+  height: 46vmax;
+  transform: translateY(-50%);
+  pointer-events: none;
+  opacity: 0.55;
+  background: center / contain no-repeat;
+}
+
+.statsDeco::before {
+  left: -26vmax;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400' fill='none' stroke='%23d92b22' stroke-width='0.8'%3E%3Ccircle cx='200' cy='200' r='88' stroke-opacity='0.3'/%3E%3Ccircle cx='200' cy='200' r='140' stroke-opacity='0.22' stroke-dasharray='3 11'/%3E%3Ccircle cx='200' cy='200' r='190' stroke-opacity='0.14'/%3E%3Ccircle cx='288' cy='200' r='3' fill='%23d92b22' fill-opacity='0.5' stroke='none'/%3E%3C/svg%3E");
+}
+
+.statsDeco::after {
+  right: -28vmax;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400' fill='none' stroke='%23d92b22' stroke-width='0.8'%3E%3Ccircle cx='200' cy='200' r='64' stroke-opacity='0.26' stroke-dasharray='2 9'/%3E%3Ccircle cx='200' cy='200' r='124' stroke-opacity='0.3'/%3E%3Ccircle cx='200' cy='200' r='186' stroke-opacity='0.16' stroke-dasharray='4 14'/%3E%3Ccircle cx='200' cy='76' r='3.2' fill='%23d92b22' fill-opacity='0.45' stroke='none'/%3E%3C/svg%3E");
+}
+
+/* A wire the faces hang from, so the lanes read as strung together and not as
+   two loose rows. Painted before the lanes, which cover it disc by disc. */
+.faceStrip::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(217, 43, 34, 0.42) 0 9px,
+    transparent 9px 20px
+  );
+}
+
+/* The curve threading the four numbers: one crest per column, alternating, so
+   the row reads left to right as a single line instead of four islands. */
+.statsRow {
+  position: relative;
+}
+
+.statsRow::before {
+  content: "";
+  position: absolute;
+  /* Vertical bleed only. A negative horizontal inset would push past the
+     gutter and widen the page's scroll area. */
+  inset: -14% 0;
+  z-index: -1;
+  pointer-events: none;
+  /* Stretched to the row, so the crests stay under the columns at any width. */
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 160' preserveAspectRatio='none' fill='none' stroke='%23d92b22' stroke-opacity='0.4' stroke-width='2'%3E%3Cpath d='M0 80 Q 150 12 300 80 T 600 80 T 900 80 T 1200 80'/%3E%3C/svg%3E")
+    center / 100% 100% no-repeat;
+}
+
 .statsRow {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -1703,6 +1754,32 @@
 @media (min-width: 700px) {
   .statsRow {
     grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Phones: the numbers sit 2x2, so the line serpentines through both rows
+   instead of running straight across, and the arcs pull in tighter. */
+@media (max-width: 699px) {
+  .statsRow::before {
+    inset: -9% 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400' preserveAspectRatio='none' fill='none' stroke='%23d92b22' stroke-opacity='0.32' stroke-width='3'%3E%3Cpath d='M0 104 Q 130 40 260 104 Q 380 158 476 104 C 540 138 540 262 476 296 Q 380 352 260 296 Q 130 232 0 296'/%3E%3C/svg%3E");
+  }
+
+  .statsDeco::before,
+  .statsDeco::after {
+    width: 76vw;
+    height: 76vw;
+    opacity: 0.6;
+  }
+
+  .statsDeco::before {
+    top: 24%;
+    left: -40vw;
+  }
+
+  .statsDeco::after {
+    top: 76%;
+    right: -42vw;
   }
 }
 

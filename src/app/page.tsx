@@ -25,15 +25,14 @@ export default function Page() {
         <Capability />
         <RobotArchitecture />
         <section className="section section--stats shell" id="team">
+          <div className="statsDeco" aria-hidden="true" />
           <TeamFaces lane={0} />
           <SectionHead title="Andromeda Team" />
           <StatsRow />
-          <Reveal variant="right">
-            <Link className="teamLink" href="/team">
+          <Reveal className="teamCta" variant="right">
+            <Link className="cta cta--solid" href="/team">
               Lihat struktur tim
-              <span className="teamLink__arrow">
-                <NavIcon name="arrow" className="teamLink__glyph" />
-              </span>
+              <NavIcon name="arrow" className="teamCta__glyph" />
             </Link>
           </Reveal>
           <TeamFaces lane={1} />
