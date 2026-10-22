@@ -301,10 +301,13 @@
   animation: rise 0.8s var(--ease) both;
 }
 
+/* The backdrop used to be the ASCII grid, a fixed block of type that was
+   pushed to the right so the copy had the left of the screen to itself. A
+   cover video has no such block to place: it fills the box it is given, so
+   the old right gutter only carved a strip of empty hero out of the right
+   edge. Opacity is the one part of that override still worth having. */
 @media (min-width: 1000px) {
   .hero__art {
-    justify-content: flex-end;
-    padding-right: var(--gutter);
     opacity: 0.62;
   }
 }
