@@ -1,6 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import MissionProfile from "@/components/MissionProfile";
+import Capability from "@/components/Capability";
 import RobotArchitecture from "@/components/RobotArchitecture";
 import StatsRow from "@/components/StatsRow";
 import Achievements from "@/components/Achievements";
@@ -17,7 +17,7 @@ export default function Page() {
       <Navbar />
       <main>
         <Hero />
-        <MissionProfile />
+        <Capability />
         <RobotArchitecture />
         <section className="section section--stats shell" id="team">
           <StatsRow />
