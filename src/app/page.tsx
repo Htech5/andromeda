@@ -25,16 +25,9 @@ export default function Page() {
         <Capability />
         <RobotArchitecture />
         <section className="section section--stats shell" id="team">
-          <SectionHead title="Tim" />
-          <Reveal variant="tilt">
-            <p className="lede lede--bar">
-              Dua puluh enam anggota lintas fakultas, satu leader, dua manajer,
-              lima divisi. Mereka yang merakit, memprogram, dan menurunkan M31
-              ke arena.
-            </p>
-          </Reveal>
+          <TeamFaces lane={0} />
+          <SectionHead title="Andromeda Team" />
           <StatsRow />
-          <TeamFaces />
           <Reveal variant="right">
             <Link className="teamLink" href="/team">
               Lihat struktur tim
@@ -43,6 +36,7 @@ export default function Page() {
               </span>
             </Link>
           </Reveal>
+          <TeamFaces lane={1} />
         </section>
         <Achievements />
         {hasPartners && <PoweredBy />}

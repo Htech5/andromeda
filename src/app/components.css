@@ -1544,7 +1544,10 @@
   padding-block: calc(var(--section-y) * 1.9);
 }
 
-.section--stats .lede {
+/* The only centred head on the site: this band is a portrait of the team, and
+   the two face lanes bracket it symmetrically. */
+.section--stats .sectionHead {
+  justify-content: center;
   margin-bottom: clamp(2rem, 4vw, 3rem);
 }
 
@@ -1558,7 +1561,9 @@
   margin-left: -50vw;
   display: grid;
   gap: clamp(0.75rem, 2vw, 1.25rem);
-  margin-block: clamp(2rem, 5vw, 3.25rem);
+  /* First lane sits above the head, last one closes the band, so the outer
+     margin goes to the section padding and only the inner side spaces. */
+  margin-block: clamp(1.5rem, 4vw, 2.5rem);
   /* The lanes are wider than the screen by design. The mask only hides their
      paint, so the clip has to be real or the page scrolls sideways. */
   overflow: hidden;
