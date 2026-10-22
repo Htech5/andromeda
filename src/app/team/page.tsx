@@ -20,7 +20,7 @@ export default function TeamPage() {
           footer, and a light band between them would read as a seam. */}
       <main className="subpage onDark">
         <section className="section shell" id="team">
-          <SectionHead index="02" title="Struktur tim" />
+          <SectionHead title="Struktur tim" />
           <Reveal variant="tilt">
             <p className="lede lede--bar">
               Dua puluh enam anggota lintas fakultas, dibagi ke lima divisi
