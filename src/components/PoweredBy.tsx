@@ -209,9 +209,25 @@ export default function PoweredBy() {
             );
           })}
 
-          <a className="sky__join" href="/sponsorship">
+        </div>
+
+        {/* DOM order is paint order here: the veil blurs the field above it,
+            the invitation sits over the veil. */}
+        <div className="sky__veil" aria-hidden="true" />
+
+        <div className="sky__join">
+          <h2 className="sky__joinTitle">
             <span className="sky__joinWord">Join</span>
             <span className="sky__joinWord sky__joinWord--accent">Us</span>
+          </h2>
+          {/* "Click here" alone is not a destination, so the accessible name
+              carries the one the sighted label leaves implicit. */}
+          <a
+            className="cta cta--solid"
+            href="/sponsorship"
+            aria-label="Join us: lihat paket sponsorship"
+          >
+            Click here
           </a>
         </div>
       </div>

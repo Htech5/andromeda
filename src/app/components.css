@@ -504,7 +504,7 @@
   height: clamp(6rem, 20vh, 16rem);
 }
 
-/* Taller than the top: the plate is 150vmin against a 100dvh band, so the
+/* Taller than the top: the plate is 210vmin against a 100dvh band, so the
    section clips the galaxy while it is still bright and the footer's black
    needs the extra run to take it down. */
 .sky::after {
@@ -524,10 +524,12 @@
   left: 50%;
   z-index: -2;
   /* The plate has to outgrow the section or the band ends in a strip of flat
-     black. 150vmin covers a wide screen; the dvh term is what keeps a tall
-     narrow phone covered, where vmin tracks the width and falls far short. */
-  width: max(150vmin, 132dvh);
-  height: max(150vmin, 132dvh);
+     black. 210vmin covers a wide screen; the dvh term is what keeps a tall
+     narrow phone covered, where vmin tracks the width and falls far short.
+     The plate grows but the track above does not: the galaxy reads larger
+     because it is cropped harder, at no cost to the section's height. */
+  width: max(210vmin, 185dvh);
+  height: max(210vmin, 185dvh);
   object-fit: cover;
   transform: translate(-50%, -50%);
 }
@@ -556,6 +558,23 @@
   to {
     opacity: 0.72;
   }
+}
+
+/* The field goes soft the moment the invitation lands, so the type is read
+   against texture and not against a wall of logos. One layer over the whole
+   pin: the galaxy, the core light and every mark sit behind it and blur
+   together, which is why nothing else in here carries a filter of its own.
+   ponytail: backdrop-filter on a full-bleed layer is the expensive part of
+   this section on a phone, hence the smaller radius under 768px. If it ever
+   shows up in a trace, bake a blurred plate in scripts/bake_galaxy.py and
+   cross-fade to that instead. */
+.sky__veil {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  backdrop-filter: blur(20px);
+  background: rgba(12, 12, 12, 0.34);
 }
 
 .sky__field {
@@ -757,8 +776,16 @@
   }
 
   .sky__core {
-    width: 150vmax;
-    height: 150vmax;
+    width: 210vmax;
+    height: 210vmax;
+  }
+
+  .sky__veil {
+    backdrop-filter: blur(12px);
+  }
+
+  .sky__joinWord {
+    font-size: clamp(3.25rem, 19vw, 7rem);
   }
 }
 
@@ -771,8 +798,9 @@
 }
 
 /* The scatter leaves the core clear, so the one action in this section sits
-   in that hole: the mark from the favicon, at size, with the label inside its
-   inner ring. No slab, no fill of its own. */
+   in that hole. It is not a mark-sized button any more: the invitation is
+   the largest type on the site, filling the pin, with the brand mark ghosted
+   behind it and the link itself under it. */
 .sky__join {
   position: absolute;
   left: 50%;
@@ -780,57 +808,51 @@
   translate: -50% -50%;
   z-index: 2;
   display: grid;
-  place-items: center;
+  justify-items: center;
   align-content: center;
-  width: clamp(9rem, 21vmin, 14rem);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  transition: scale 0.35s var(--ease);
+  gap: clamp(1.5rem, 4vmin, 2.75rem);
+  width: min(92vw, 90rem);
+  padding-inline: var(--gutter);
+  text-align: center;
 }
 
-/* The mark sits on its own layer so it can be softened without taking the
-   label with it. At full sharpness the rings and the robot compete with the
-   one word that has to be read. One small static element, rasterised once. */
+/* The mark, at size and ghosted. Held far under the type's contrast so it
+   reads as depth behind the words instead of a plate competing with them,
+   and blurred because its rings and robot are detail nobody is meant to
+   read at this scale. One static element, rasterised once. */
 .sky__join::before {
   content: "";
   position: absolute;
-  inset: 0;
-  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  z-index: -1;
+  width: min(86vmin, 64rem);
+  aspect-ratio: 1;
   background: url("/andromeda-mark.png") center / contain no-repeat;
-  filter: blur(4px);
+  filter: blur(8px);
+  opacity: 0.2;
 }
 
-.sky__join:hover {
-  scale: 1.06;
+.sky__joinTitle {
+  display: grid;
+  margin: 0;
 }
 
-.sky__join:active {
-  scale: 0.98;
-}
-
-.sky__join:focus-visible {
-  outline: 2px solid var(--color-red);
-  outline-offset: 6px;
-}
-
-/* The mark's disc is near-white, so the label goes dark on it. Sized to stay
-   inside the inner ring at every diameter the clamp above can produce. */
-/* The display face, not the mono label treatment. Mono is the site's voice
-   for indices and captions, and it is only loaded at 400 and 500, so the old
-   700 here was a browser-synthesised bold: heavy-looking and slightly smeared
-   rather than actually bold. Oxanium 800 is real weight, it is what every
-   heading on the site already speaks in, and set over two short lines it
-   fills the mark's inner ring instead of threading one thin line across it.
-   "Us" takes the brand red, which is the same red as the rings around it. */
+/* The display face at full voice. Oxanium 800 is real weight rather than a
+   browser-synthesised bold, and the two words stack so the block fills the
+   pin vertically instead of threading one wide line across it. The words are
+   light now: they sit on a blurred galaxy, not on the mark's pale disc.
+   "Us" takes the brand red, the same red as the rings behind it. */
 .sky__joinWord {
   position: relative;
   font-family: var(--font-display);
-  font-size: clamp(1.3rem, 4vmin, 2.2rem);
+  font-size: clamp(4rem, 20vmin, 16rem);
   font-weight: 800;
-  line-height: 0.86;
-  letter-spacing: -0.02em;
+  line-height: 0.82;
+  letter-spacing: -0.03em;
   text-transform: uppercase;
-  color: var(--color-black);
+  color: var(--color-white);
 }
 
 .sky__joinWord--accent {
@@ -891,6 +913,13 @@
     animation-range: contain 95% contain 100%;
   }
 
+  /* Same window as the invitation it serves. */
+  .sky__veil {
+    animation: edgeIn linear both;
+    animation-timeline: --sky;
+    animation-range: contain 81% contain 90%;
+  }
+
   @keyframes edgeOut {
     to {
       opacity: 0;
@@ -927,6 +956,7 @@
   .sky__glow,
   .sky__seat,
   .sky__join,
+  .sky__veil,
   .sky::before,
   .sky::after {
     animation: none;
