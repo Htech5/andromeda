@@ -1719,17 +1719,12 @@
   gap: 0;
 }
 
-.caps__kicker {
-  margin: 0;
-  font-size: 0.72rem;
-}
-
 /* Outfit, not the Oxanium every other heading on the site speaks in. Oxanium
    is the engineering voice, cut corners and narrow counters, and it made
    these three read like part numbers. This section has to sell what the team
    can build, so it gets the warmer face and sentence case with it. */
 .caps__title {
-  margin: 0.55rem 0 0;
+  margin: 0;
   font-family: var(--font-warm);
   font-size: clamp(1.6rem, 3.4vw, 2.5rem);
   font-weight: 700;

@@ -9,7 +9,6 @@ import SectionHead from "./SectionHead";
  */
 const capabilities = [
   {
-    kicker: "01 — Arena",
     title: "High-difficulty arena",
     body:
       "Every part of the KSTI arena is built to stop a robot. Obstacle zones of broken, uneven ground. Rescue zones where a victim has to be found and lifted out. Control zones the robot takes its bearings from, with stairs, slopes and loose gravel between start and finish. Victim positions are shuffled before every round, so no route can be memorised. We design and rehearse Andromeda against all of it, which is why none of it is met for the first time on competition day.",
@@ -22,7 +21,6 @@ const capabilities = [
     alt: "Isometric and plan drawings of the KSTI rescue arena, with obstacle, rescue and control zones marked and a route traced between them",
   },
   {
-    kicker: "02 — Object detection",
     title: "Advanced object detection",
     body:
       "Andromeda tells a real victim from a dummy by itself. Instance segmentation runs on the robot rather than on an operator's laptop, so a decision costs a glance instead of a round trip over a radio link. Depth and ranging sensors give that vision the distance it needs to approach, lift and carry a victim to the safety zone — in dust, in poor light, and in the narrow spaces a rescue robot is sent into in the first place.",
@@ -33,7 +31,6 @@ const capabilities = [
     alt: "Camera view from the robot with orange figures in the arena, each boxed and labelled either victim or dummy",
   },
   {
-    kicker: "03 — Design",
     title: "Precision design",
     body:
       "Everything on this robot is designed, machined and assembled by the team: six independently driven legs, a frame narrow enough for confined spaces, and a shell that survives a full competition run. The design is revised between seasons rather than rebuilt from scratch — every joint, bracket and board carries a change the last arena asked for. That is how a student-built machine keeps getting quicker, steadier and easier to repair.",
@@ -54,7 +51,7 @@ export default function Capability() {
         {capabilities.map((cap, i) => (
           <Reveal
             as="li"
-            key={cap.kicker}
+            key={cap.title}
             delay={i * 70}
             variant={i % 2 === 0 ? "left" : "right"}
           >
@@ -74,7 +71,6 @@ export default function Capability() {
               </div>
 
               <div className="caps__copy">
-                <p className="caps__kicker mono accent">{cap.kicker}</p>
                 <h3 className="caps__title">{cap.title}</h3>
                 <p className="caps__body">{cap.body}</p>
               </div>
