@@ -590,6 +590,89 @@
   }
 }
 
+/* Decor behind the chart. The page is one tall column of hairlines on black,
+   so the ground carries the colour instead: the hero's red wash, a slow orbit
+   ring, and a dot field. One fixed, pointer-events-none layer, nothing in the
+   scrolling container, and only transform animates. */
+.teamDeco {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      58% 42% at 88% 6%,
+      rgba(255, 59, 51, 0.26) 0%,
+      rgba(255, 59, 51, 0.07) 46%,
+      transparent 72%
+    ),
+    radial-gradient(
+      52% 40% at 4% 94%,
+      rgba(255, 59, 51, 0.18) 0%,
+      transparent 70%
+    ),
+    linear-gradient(168deg, #121212 0%, #190c0b 58%, #250f0d 100%);
+}
+
+/* Orbit rings, off-canvas to the right so the chart keeps the centre line. */
+.teamDeco::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -22vmax;
+  width: 68vmax;
+  height: 68vmax;
+  transform: translateY(-50%);
+  opacity: 0.5;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400' fill='none' stroke='%23ff3b33' stroke-width='0.7'%3E%3Ccircle cx='200' cy='200' r='64' stroke-opacity='0.55'/%3E%3Ccircle cx='200' cy='200' r='119' stroke-opacity='0.4' stroke-dasharray='2 10'/%3E%3Ccircle cx='200' cy='200' r='168' stroke-opacity='0.3'/%3E%3Ccircle cx='200' cy='200' r='198' stroke-opacity='0.16' stroke-dasharray='1 14'/%3E%3Ccircle cx='200' cy='32' r='3.5' fill='%23ff3b33' stroke='none'/%3E%3Ccircle cx='319' cy='200' r='2.2' fill='%23ff3b33' stroke='none'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+  animation: orbitSpin 140s linear infinite;
+}
+
+/* Dot field, faded out before it reaches the type. */
+.teamDeco::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='46'%3E%3Ccircle cx='2' cy='2' r='1' fill='%23ffffff' fill-opacity='0.16'/%3E%3C/svg%3E")
+    repeat;
+  mask-image: radial-gradient(70% 55% at 50% 50%, transparent 18%, #000 85%);
+  -webkit-mask-image: radial-gradient(
+    70% 55% at 50% 50%,
+    transparent 18%,
+    #000 85%
+  );
+}
+
+@keyframes orbitSpin {
+  to {
+    transform: translateY(-50%) rotate(360deg);
+  }
+}
+
+/* The band keeps its black: the decor is a child and paints over it, so the
+   black stays as the ground if the decor layer ever fails to render. */
+.subpage--team {
+  position: relative;
+}
+
+.subpage--team > .section {
+  position: relative;
+  z-index: 1;
+}
+
+/* Narrow screens: the ring crowds the cards and the dots read as noise. */
+@media (max-width: 700px) {
+  .teamDeco::before {
+    right: -34vmax;
+    opacity: 0.32;
+  }
+  .teamDeco::after {
+    opacity: 0.5;
+  }
+}
+
 /* The arrow out of the home page's team band. */
 .teamLink {
   display: inline-flex;

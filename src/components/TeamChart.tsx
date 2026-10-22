@@ -2,7 +2,7 @@ import Image from "next/image";
 import Reveal from "./Reveal";
 import { branches, leader, type Person } from "@/data/team";
 
-/** First letter of the first and last word. Three photos are still missing, and
+/** First letter of the first and last word. One photo is still missing, and
     an initials disc reads better there than a stock silhouette. */
 function initials(name: string) {
   const words = name.trim().split(/\s+/);

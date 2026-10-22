@@ -18,7 +18,8 @@ export default function TeamPage() {
       <Navbar />
       {/* Dark the whole way: the chart sits between a black nav and a black
           footer, and a light band between them would read as a seam. */}
-      <main className="subpage onDark">
+      <main className="subpage subpage--team onDark">
+        <div className="teamDeco" aria-hidden="true" />
         <section className="section shell" id="team">
           <SectionHead title="Struktur tim" />
           <Reveal variant="tilt">

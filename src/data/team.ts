@@ -31,7 +31,11 @@ export const leader: Person = {
 
 export const branches: Branch[] = [
   {
-    manager: { name: "Aftito Nur Faturohim", role: "Engineering Manager" },
+    manager: {
+      name: "Aftito Nur Faturohim",
+      role: "Engineering Manager",
+      photo: "aftito-nur-faturohim",
+    },
     divisions: [
       {
         name: "Programming",
@@ -102,7 +106,11 @@ export const branches: Branch[] = [
             role: "Staff",
             photo: "ismail-arief-at-thoriq",
           },
-          { name: "Muhammad Aria Pratama", role: "Staff" },
+          {
+            name: "Muhammad Aria Pratama",
+            role: "Staff",
+            photo: "muhammad-aria-pratama",
+          },
         ],
       },
     ],
