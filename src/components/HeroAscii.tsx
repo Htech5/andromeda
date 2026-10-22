@@ -63,8 +63,27 @@ export default function HeroAscii() {
       timer = window.setTimeout(step, 110);
     };
 
-    timer = window.setTimeout(step, 110);
-    return () => clearTimeout(timer);
+    // Two of these mount now, hero and footer, and only one is ever on screen.
+    // A paused one costs nothing; an unpaused one rewrites both grids every
+    // 110ms behind whatever the visitor is actually reading. The observer
+    // reports the current state on observe(), so this also starts the loop.
+    const seen = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          if (!timer) timer = window.setTimeout(step, 110);
+        } else if (timer) {
+          clearTimeout(timer);
+          timer = 0;
+        }
+      },
+      { rootMargin: "120px" },
+    );
+    seen.observe(zeroEl);
+
+    return () => {
+      seen.disconnect();
+      clearTimeout(timer);
+    };
   }, []);
 
   return (

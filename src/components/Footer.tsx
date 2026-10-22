@@ -1,10 +1,19 @@
 import Image from "next/image";
+import HeroAscii from "./HeroAscii";
 import NavIcon from "./NavIcon";
 import { navLinks, site } from "@/data/site";
 
 export default function Footer() {
   return (
     <footer className="footer onDark" id="contact">
+      {/* The same robot the hero opens with, dimmed to a watermark. It is what
+          fills the band on a wide screen, where the content block alone leaves
+          the footer looking like a strip in an empty field. Hidden under
+          900px, which also parks its loop: see HeroAscii. */}
+      <div className="footer__art" aria-hidden="true">
+        <HeroAscii />
+      </div>
+
       <div className="footer__inner shell">
         <div className="footer__brand">
           <Image

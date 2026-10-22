@@ -1011,10 +1011,37 @@
    margin there shows up as a white strip. The breathing room is padding, so
    it lives inside the dark. */
 .footer {
+  position: relative;
+  /* The watermark is clipped to the band and layered under it, so the footer
+     owns the stacking context rather than leaking z-indexes onto the page. */
+  isolation: isolate;
+  overflow: clip;
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
   padding-block: clamp(5rem, 12vw, 9rem) 0;
+}
+
+/* The hero's robot again, at watermark strength. Held low: it has to fill
+   the dark without ever competing with the type over it, and the ASCII grid
+   is pure texture at this opacity. */
+.footer__art {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  display: none;
+  place-items: center;
+  overflow: clip;
+  opacity: 0.13;
+  pointer-events: none;
+}
+
+/* Only where the emptiness is. A phone footer is already full, and a hidden
+   watermark never intersects, so its flicker loop stays parked. */
+@media (min-width: 900px) {
+  .footer__art {
+    display: grid;
+  }
 }
 
 
@@ -1023,6 +1050,7 @@
 
 
 .footer__inner {
+  position: relative;
   flex: 1;
   display: grid;
   align-content: center;
@@ -1068,6 +1096,26 @@
 @media (min-width: 700px) {
   .footer__cols {
     grid-template-columns: minmax(8rem, 0.55fr) minmax(18rem, 2fr);
+  }
+}
+
+/* Past the page cap the footer is allowed to run wider than every section
+   above it. 1400px of content on a 2560px screen is the thing that reads as
+   empty, and this band has a map and a link list that can use the room.
+   The links column gives most of the gain to the map. */
+@media (min-width: 1500px) {
+  .footer .shell {
+    max-width: min(1860px, 94vw);
+  }
+
+  .footer__cols {
+    grid-template-columns: minmax(9rem, 0.4fr) minmax(24rem, 2.7fr);
+  }
+
+  /* 16/9 across 1500px of map is over 800px tall. The cap turns the extra
+     width into a wider frame instead of a taller one. */
+  .footer__map {
+    max-height: 30rem;
   }
 }
 
