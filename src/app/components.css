@@ -81,11 +81,15 @@
 .nav__link {
   position: relative;
   padding-block: 0.4rem;
-  /* .mono's 0.75rem at 0.22em tracking reads as grey noise on black. More
-     weight and tighter tracking buy legibility without changing the face. */
-  font-size: 0.8125rem;
+  /* Outfit, not the mono this used to wear. Mono at 0.75rem and 0.22em of
+     tracking read as grey noise on black, and uppercase link labels in a
+     monospace face are the stiffest thing a page can open with. The labels
+     are already written in title case, so dropping the transform is enough
+     to make them read as words. */
+  font-family: var(--font-warm);
+  font-size: 0.95rem;
   font-weight: 500;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.01em;
   white-space: nowrap;
   color: rgba(255, 255, 255, 0.86);
   transition: color 0.25s var(--ease);
@@ -120,9 +124,10 @@
   /* White on #ff3b33 is about 3.3:1. Near-black on the same red is about 7:1,
      and the label is 13px, so it needs the contrast. */
   color: var(--color-black);
-  font-size: 0.8125rem;
-  font-weight: 500;
-  letter-spacing: 0.12em;
+  font-family: var(--font-warm);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
   white-space: nowrap;
   transition: background 0.3s var(--ease), color 0.3s var(--ease),
     border-radius 0.45s var(--ease);

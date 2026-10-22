@@ -71,12 +71,12 @@ export default function Navbar() {
               <a
                 key={link.href}
                 href={hrefFor(link.href)}
-                className="nav__link mono"
+                className="nav__link"
               >
                 {link.label}
               </a>
             ))}
-            <Link href="/sponsorship" className="nav__cta mono">
+            <Link href="/sponsorship" className="nav__cta">
               Support Us
             </Link>
           </nav>
