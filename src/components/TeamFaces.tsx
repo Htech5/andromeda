@@ -25,9 +25,12 @@ const lanes: Person[][] = [
 /** Decorative: the names and roles live on /team, and reading 50 duplicated
     portraits out loud would bury the link between the two lanes. */
 export default function TeamFaces({ lane }: { lane: 0 | 1 }) {
-  // Duplicated once: the track travels exactly half its width per cycle, so
-  // the seam lands on an identical face and never shows.
-  const cycle = [...lanes[lane], ...lanes[lane]];
+  // Four copies, and the track travels exactly one copy per cycle (25%), so
+  // the seam always lands on an identical face. Two copies were not enough:
+  // one copy is about 1250px, so past that width the tail ran out mid-cycle
+  // and the lane ended in blank page. Three copies cover 2496px, four cover
+  // 3744px. ponytail: add a fifth if the site ever has to fill a wall.
+  const cycle = [0, 1, 2, 3].flatMap(() => lanes[lane]);
 
   return (
     <div className="faceStrip" aria-hidden="true">

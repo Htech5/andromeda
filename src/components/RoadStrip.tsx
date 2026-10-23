@@ -11,14 +11,28 @@ import type { Achievement } from "@/data/achievements";
  * JS only decides which stop is active and writes `--step`; CSS does the rest,
  * so the robot and the trail can never drift apart.
  */
-export default function RoadStrip({ items }: { items: Achievement[] }) {
+export default function RoadStrip({
+  head,
+  items,
+}: {
+  head?: React.ReactNode;
+  items: Achievement[];
+}) {
   const ref = useRef<HTMLDivElement>(null);
+
+  // Read off the roster itself, so a new line in the data updates the tally.
+  const tally = [
+    `${items.length} musim`,
+    `${items.filter((item) => /^juara/i.test(item.result)).length} podium`,
+    `${items.filter((item) => /terbaik/i.test(item.result)).length} penghargaan`,
+  ].join("  ·  ");
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
     const stops = el.querySelectorAll<HTMLElement>(".road__stop");
+    const ghost = el.querySelector<HTMLElement>(".road__ghost");
     const last = items.length - 1;
     let current = -1;
 
@@ -26,6 +40,9 @@ export default function RoadStrip({ items }: { items: Achievement[] }) {
       if (step === current) return;
       current = step;
       el.style.setProperty("--step", String(step));
+      // The watermark is the one piece of text that cannot be derived in CSS,
+      // so it is written here alongside the step the whole band reads from.
+      if (ghost) ghost.textContent = items[step].year;
       stops.forEach((stop, i) => {
         stop.dataset.state = i < step ? "past" : i === step ? "now" : "ahead";
       });
@@ -85,26 +102,36 @@ export default function RoadStrip({ items }: { items: Achievement[] }) {
       style={{ "--stops": items.length } as React.CSSProperties}
     >
       <div className="road__pin">
-        <ol className="road__strip">
-          {items.map((item, i) => (
-            <li className="road__stop" key={`${item.year}-${i}`}>
-              <p className="road__year mono">{item.year}</p>
-              <h3 className="road__event">{item.event}</h3>
-              <p className="road__result mono accent">{item.result}</p>
-              <p className="road__note">{item.note}</p>
-            </li>
-          ))}
+        <div className="road__ember" aria-hidden="true" />
+        <p className="road__ghost" aria-hidden="true">
+          {items[0].year}
+        </p>
 
-          <li className="road__walker" aria-hidden="true">
-            <Image
-              src="/images/m31-top.webp"
-              alt=""
-              width={700}
-              height={583}
-              sizes="140px"
-            />
-          </li>
-        </ol>
+        <div className="road__frame">
+          {head}
+          <ol className="road__strip">
+            {items.map((item, i) => (
+              <li className="road__stop" key={`${item.year}-${i}`}>
+                <p className="road__year mono">{item.year}</p>
+                <h3 className="road__event">{item.event}</h3>
+                <p className="road__result mono accent">{item.result}</p>
+                <p className="road__note">{item.note}</p>
+              </li>
+            ))}
+
+            <li className="road__walker" aria-hidden="true">
+              <Image
+                src="/images/m31-top.webp"
+                alt=""
+                width={700}
+                height={583}
+                sizes="140px"
+              />
+            </li>
+          </ol>
+
+          <p className="road__tally mono">{tally}</p>
+        </div>
       </div>
     </div>
   );

@@ -1606,7 +1606,7 @@
 
 @keyframes faceDrift {
   to {
-    transform: translateX(-50%);
+    transform: translateX(-25%);
   }
 }
 
@@ -2245,6 +2245,63 @@
   container-type: inline-size;
 }
 
+/* Head and strip travel together inside the pin, centred in the held view. */
+.road__frame {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+/* The year being walked, written big across the band. It is the cheapest way
+   to fill the held screen, and it says which year you are standing in from
+   anywhere on the page. */
+.road__ghost {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(8rem, 30vw, 25rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  color: rgba(217, 43, 34, 0.08);
+  /* Lifted off the strip: centred exactly, the digits sat inside the lines of
+     type and the years became hard to read. */
+  transform: translateY(-9%);
+  user-select: none;
+  pointer-events: none;
+}
+
+/* The fire gets louder the closer the walk comes to the latest season: the
+   opacity is driven straight off the step the strip already publishes. */
+.road__ember {
+  position: absolute;
+  inset: -12% -8%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: calc((var(--step, 0) + 1) / var(--stops) * 0.78 + 0.22);
+  transition: opacity 0.5s var(--ease);
+  background:
+    radial-gradient(
+      54% 46% at 50% 88%,
+      rgba(217, 43, 34, 0.2) 0%,
+      transparent 72%
+    ),
+    radial-gradient(
+      30% 26% at 88% 16%,
+      rgba(217, 43, 34, 0.1) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      26% 24% at 8% 24%,
+      rgba(217, 43, 34, 0.08) 0%,
+      transparent 72%
+    );
+}
+
 .road__strip {
   position: relative;
   width: 100%;
@@ -2266,6 +2323,10 @@
 
 .road__stop[data-state="now"] {
   opacity: 1;
+}
+
+.road__stop[data-state="now"] .road__year {
+  color: var(--color-red);
 }
 
 .road__year {
@@ -2296,6 +2357,22 @@
 
 .road__stop[data-state="now"] .road__note {
   opacity: 1;
+}
+
+/* The seasons in one line, under the walk. Phones hide it: the active note
+   already owns the bottom of the pinned view there. */
+.road__tally {
+  display: none;
+  margin: clamp(2.5rem, 6vh, 4.5rem) 0 0;
+  text-align: center;
+  color: var(--ink-3);
+  font-size: 0.7rem;
+}
+
+@media (min-width: 900px) {
+  .road__tally {
+    display: block;
+  }
 }
 
 /* Node on the trail; it fills in on the year being walked. */
@@ -2504,6 +2581,9 @@
   }
   .road__walker img {
     animation: none;
+  }
+  .road__ghost {
+    display: none;
   }
 }
 
