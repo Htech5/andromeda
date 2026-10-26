@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import Image from "next/image";
 import Reveal from "./Reveal";
 import SectionHead from "./SectionHead";
@@ -42,18 +43,48 @@ const capabilities = [
   },
 ];
 
+/**
+ * The trace between two rows. The arena plan this section opens with draws its
+ * route as a line between zones; the rows borrow that line to say the three
+ * capabilities are one run, not three slides. Uniform viewBox, so the geometry
+ * never skews with the column width, and `pathLength` normalises the dash so
+ * the draw-on needs no measuring in JS.
+ */
+function CapsLink({ flip }: { flip: boolean }) {
+  return (
+    <li
+      className={`capsLink${flip ? " capsLink--flip" : ""}`}
+      aria-hidden="true"
+    >
+      <svg viewBox="0 0 1200 120" fill="none">
+        <path
+          className="capsLink__trace"
+          pathLength="1"
+          d="M300 0 V40 Q300 60 320 60 H880 Q900 60 900 80 V120"
+        />
+        <circle className="capsLink__node" cx="600" cy="60" r="3.5" />
+      </svg>
+    </li>
+  );
+}
+
 export default function Capability() {
   return (
-    <section className="section shell" id="capability">
+    <section className="section capsBand onDark" id="capability">
+      <div className="shell">
       <SectionHead title="Our Capability" />
 
       <ol className="caps">
         {capabilities.map((cap, i) => (
+          <Fragment key={cap.title}>
+          {/* Connects the row above to this one, so it leaves the side the
+              picture above sits on and arrives at the side this one takes. */}
+          {i > 0 && <CapsLink flip={i % 2 === 0} />}
           <Reveal
             as="li"
-            key={cap.title}
             delay={i * 70}
             variant={i % 2 === 0 ? "left" : "right"}
+            className={i % 2 === 1 ? "caps__row caps__row--flip" : "caps__row"}
           >
             <article className="caps__item">
               <div
@@ -76,8 +107,10 @@ export default function Capability() {
               </div>
             </article>
           </Reveal>
+          </Fragment>
         ))}
       </ol>
+      </div>
     </section>
   );
 }
