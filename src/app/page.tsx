@@ -23,6 +23,10 @@ export default function Page() {
       <main>
         <Hero />
         <Capability />
+        {/* The three light sections share one warm band, so the run from the
+            robot to the achievements reads as a single stretch of paper
+            rather than three white sections stacked. */}
+        <div className="lightRun">
         <RobotArchitecture />
         <section className="section section--stats shell" id="team">
           <div className="statsDeco" aria-hidden="true" />
@@ -38,6 +42,7 @@ export default function Page() {
           <TeamFaces lane={1} />
         </section>
         <Achievements />
+        </div>
         {hasPartners && <PoweredBy />}
       </main>
       <Footer />

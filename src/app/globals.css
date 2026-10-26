@@ -18,6 +18,13 @@
   --solid-bg: var(--color-black);
   --solid-fg: var(--color-white);
 
+  /* Where the hero hands over to the capability band. Both ends read it, so
+     the two gradients cannot drift apart and open a seam between them. Held
+     as channels as well, because the join needs the same colour at zero alpha
+     and fading to plain `transparent` would drag it through black on the way. */
+  --seam-dark-rgb: 31 14 12;
+  --seam-dark: rgb(var(--seam-dark-rgb));
+
   --radius: 12px;
   --page-max: 1400px;
   --gutter: clamp(1.25rem, 5vw, 6rem);

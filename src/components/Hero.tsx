@@ -9,6 +9,9 @@ export default function Hero() {
         <HeroVideo />
       </div>
 
+      {/* Dissolves the footage into the colour the next section opens on. */}
+      <div className="hero__seam" aria-hidden="true" />
+
       <div className="hero__inner shell">
         <div className="hero__text">
           <h1 className="hero__title">{site.wordmark}</h1>
