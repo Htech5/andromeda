@@ -69,9 +69,17 @@ html:not(.lenis) {
   scroll-behavior: smooth;
 }
 
+/* The sideways clip belongs on the root, not only on body. Several bands are
+   full-bleed and run past the screen on purpose, and `overflow-x: hidden` on
+   body alone leaves the document itself pannable on iOS — which is the strip
+   of empty page you could drag to on a phone.
+   `clip`, not `hidden`: clip does not turn the element into a scroll
+   container, so the sticky pin in the sponsor band keeps working and the
+   vertical axis stays plain visible. */
 html {
   scroll-padding-top: 5rem;
   -webkit-text-size-adjust: 100%;
+  overflow-x: clip;
 }
 
 body {
@@ -81,7 +89,9 @@ body {
   font-family: var(--font-body);
   font-size: 1rem;
   line-height: 1.65;
-  overflow-x: hidden;
+  /* Matches the root. Left as `hidden` it would become a scroll container of
+     its own now that the root clips, and anything sticky inside would break. */
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
 }
 

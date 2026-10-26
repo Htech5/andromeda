@@ -783,11 +783,14 @@
   );
 }
 
+/* The run into black needs distance, and on a phone 20vh is barely 170px: the
+   band went from paper to black inside a thumb's width and read as a cut. The
+   floor is what does the work here; the ceiling is unchanged. */
 .sky::before {
   --dir: to bottom;
   --fade: var(--bg-page);
   top: 0;
-  height: clamp(6rem, 20vh, 16rem);
+  height: clamp(11rem, 26vh, 16rem);
 }
 
 /* Taller than the top: the plate is 210vmin against a 100dvh band, so the
@@ -1547,6 +1550,18 @@
   padding-block: calc(var(--section-y) * 1.9);
 }
 
+/* dvh is the viewport as it is right now, and on a phone that changes every
+   time the browser toolbar collapses — so this band kept re-measuring
+   mid-scroll and shunted everything below it. It holds about 390px of content
+   on a phone anyway, so the full-screen height was buying dead space and a
+   scroll jump at the same time. The band keeps its screen on desktop, where
+   the toolbar does not move. */
+@media (max-width: 767px) {
+  .section--stats {
+    min-height: 0;
+  }
+}
+
 /* The only centred head on the site: this band is a portrait of the team, and
    the two face lanes bracket it symmetrically. */
 .section--stats .sectionHead {
@@ -2275,19 +2290,22 @@
    either join would show as a line against any other colour. */
 .lightRun {
   position: relative;
+  /* Every radial is held clear of the top and bottom edges. One that reached
+     an edge tinted it, and the neighbour it meets there fades from plain
+     --bg-page: the difference showed as a hard line across the join. */
   background:
     radial-gradient(
-      62% 28% at 88% 17%,
+      58% 20% at 88% 25%,
       rgba(217, 43, 34, 0.08) 0%,
       transparent 72%
     ),
     radial-gradient(
-      54% 24% at 6% 58%,
+      54% 22% at 6% 55%,
       rgba(217, 43, 34, 0.06) 0%,
       transparent 74%
     ),
     radial-gradient(
-      58% 26% at 82% 88%,
+      54% 16% at 82% 72%,
       rgba(217, 43, 34, 0.05) 0%,
       transparent 76%
     ),
@@ -2297,7 +2315,8 @@
       var(--bg-page) 7%,
       #f7efed 28%,
       #f6eae8 56%,
-      #f7eeec 84%,
+      #f7eeec 82%,
+      var(--bg-page) 95%,
       var(--bg-page) 100%
     );
 }
@@ -2549,7 +2568,14 @@
    opacity is driven straight off the step the strip already publishes. */
 .road__ember {
   position: absolute;
-  inset: -12% -8%;
+  /* No bleed past the bottom. The hot half of this glow sits low in the box,
+     and the 12% it used to hang below the strip reached into the sponsor
+     band, where that section's opaque black cut it off square — a red edge
+     straight across the join. The taper below finishes the job: the fire
+     reaches nothing while it is still on its own paper. */
+  inset: -12% -8% 0;
+  mask-image: linear-gradient(to bottom, #000 58%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 58%, transparent 100%);
   z-index: 0;
   pointer-events: none;
   opacity: calc((var(--step, 0) + 1) / var(--stops) * 0.78 + 0.22);
