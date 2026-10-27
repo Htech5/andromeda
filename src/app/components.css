@@ -728,6 +728,15 @@
   padding-top: 4.5rem;
 }
 
+/* This page's first section is a dark band, but that clearance padding sits
+   above it with no background of its own — it shows the page's light
+   ground through once the nav turns into its transparent floating-pill
+   state. Painting it black here keeps the strip under the nav dark no
+   matter which state the nav is in. */
+.subpage--sponsorship {
+  background: var(--color-black);
+}
+
 /* ---------- powered by: the field ---------- */
 
 /* One full-bleed section: the galaxy is the whole backdrop and the logos sit
@@ -2378,6 +2387,38 @@
   stroke: none;
 }
 
+.pricingBand__deco--circuit2 {
+  right: -4%;
+  top: 4%;
+  width: min(18rem, 46vw);
+  opacity: 0.15;
+}
+
+.pricingBand__deco--circuit2 path {
+  stroke-width: 1.5;
+}
+
+.pricingBand__deco--circuit2 circle {
+  fill: var(--color-red);
+  stroke: none;
+}
+
+.pricingBand__deco--circuit3 {
+  right: -5%;
+  bottom: 2%;
+  width: min(16rem, 44vw);
+  opacity: 0.14;
+}
+
+.pricingBand__deco--circuit3 path {
+  stroke-width: 1.5;
+}
+
+.pricingBand__deco--circuit3 circle {
+  fill: var(--color-red);
+  stroke: none;
+}
+
 .pricingBand > .shell {
   position: relative;
   z-index: 1;
@@ -2386,10 +2427,6 @@
 .pricingBand__head {
   max-width: 44rem;
   margin-top: clamp(1.25rem, 3vw, 2rem);
-}
-
-.pricingBand__eyebrow {
-  margin-bottom: 0.6rem;
 }
 
 .pricingBand__headline {
@@ -2416,17 +2453,40 @@
   margin: clamp(1.75rem, 4vw, 2.5rem) 0 clamp(2.25rem, 5vw, 3rem);
 }
 
-.pricingBand__cta .cta--solid {
+/* A warm, confident pill rather than the site's small-caps mono voice: this
+   is an invitation to talk, not a part number. */
+.cta--whatsapp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 1.05rem 2.4rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-red);
   background: var(--color-red);
-  border-color: var(--color-red);
   color: var(--color-white);
-  padding-inline: 2.25rem;
+  font-family: var(--font-warm);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  box-shadow: 0 16px 36px -16px rgba(255, 59, 51, 0.55);
+  transition: background 0.3s var(--ease), border-color 0.3s var(--ease),
+    box-shadow 0.3s var(--ease), transform 0.2s var(--ease);
 }
 
-.pricingBand__cta .cta--solid:hover {
-  background: var(--color-white);
-  border-color: var(--color-white);
-  color: var(--color-black);
+.cta--whatsapp:hover {
+  background: #ff5349;
+  border-color: #ff5349;
+  box-shadow: 0 20px 44px -16px rgba(255, 59, 51, 0.7);
+  transform: translateY(-2px);
+}
+
+.cta--whatsapp:active {
+  transform: translateY(0);
+}
+
+.pricingBand__ctaGlyph {
+  font-size: 1.2rem;
 }
 
 .tierCards {
@@ -2470,11 +2530,39 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
+/* Zamrud means emerald: the one tier that steps outside the red family
+   entirely, in colour, cut and size, so "exclusive" reads at a glance
+   instead of needing the badge to say it. */
 .pixel-card.tierCard--top {
+  padding: 2rem 1.7rem 1.7rem;
   box-shadow:
     var(--pixel-card-shadow),
-    0 0 0 1px rgba(255, 59, 51, 0.5),
-    0 26px 44px -20px rgba(255, 59, 51, 0.45);
+    0 0 0 1px rgba(110, 231, 176, 0.45),
+    0 30px 52px -20px rgba(16, 185, 129, 0.5);
+}
+
+@media (min-width: 900px) {
+  .pixel-card.tierCard--top {
+    transform: scale(1.055);
+  }
+
+  .pixel-card.tierCard--top:hover {
+    transform: scale(1.055) translateY(-6px);
+  }
+}
+
+.pixel-card.tierCard--top .tierCard__name {
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
+}
+
+.pixel-card.tierCard--top .tierCard__price {
+  font-size: 1.85rem;
+  color: #6ee7b0;
+}
+
+.pixel-card.tierCard--top .tierCard__list li::before {
+  background: #10b981;
 }
 
 .tierCard__badge {
@@ -2487,6 +2575,10 @@
   color: var(--color-white);
   font-size: 0.62rem;
   letter-spacing: 0.14em;
+}
+
+.tierCard--top .tierCard__badge {
+  background: #10b981;
 }
 
 .tierCard__name {
@@ -2526,7 +2618,11 @@
   padding: 0;
   list-style: none;
   display: grid;
-  gap: 0.45rem;
+  /* Without this, grid's default stretch divides the flex-grow leftover space
+     evenly between rows — a card with one benefit ends up with one enormous
+     gap instead of the space simply sitting below the list. */
+  align-content: start;
+  gap: 0.4rem;
   font-size: 0.82rem;
   color: var(--ink-2);
   flex-grow: 1;
@@ -2566,6 +2662,16 @@
   background: var(--color-white);
   border-color: var(--color-white);
   color: var(--color-black);
+}
+
+.pixel-card.tierCard--top .cta--solid {
+  background: #10b981;
+  border-color: #10b981;
+}
+
+.pixel-card.tierCard--top .cta--solid:hover {
+  background: var(--color-white);
+  border-color: var(--color-white);
 }
 
 .matrixDetails {

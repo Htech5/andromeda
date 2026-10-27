@@ -14,7 +14,7 @@ export default function SponsorshipPage() {
   return (
     <>
       <Navbar />
-      <main className="subpage">
+      <main className="subpage subpage--sponsorship">
         <Sponsorship />
       </main>
       <Footer />

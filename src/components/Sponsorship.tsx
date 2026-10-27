@@ -1,6 +1,7 @@
 import Reveal from "./Reveal";
 import SectionHead from "./SectionHead";
 import PixelCard from "./PixelCard";
+import NavIcon from "./NavIcon";
 import {
   benefits,
   budget,
@@ -32,27 +33,39 @@ export default function Sponsorship() {
         <circle cx="150" cy="90" r="4" />
         <circle cx="180" cy="230" r="4" />
       </svg>
+      <svg className="pricingBand__deco pricingBand__deco--circuit2" viewBox="0 0 260 260" aria-hidden="true">
+        <path d="M260 0 V70 L210 120 H90 L50 160 V260" />
+        <circle cx="210" cy="120" r="4" />
+        <circle cx="50" cy="160" r="4" />
+      </svg>
+      <svg className="pricingBand__deco pricingBand__deco--circuit3" viewBox="0 0 220 220" aria-hidden="true">
+        <path d="M0 110 H60 L90 80 H160 L190 110 V220" />
+        <circle cx="90" cy="80" r="3.5" />
+        <circle cx="190" cy="110" r="3.5" />
+      </svg>
 
       <div className="shell">
         <SectionHead title="Sponsorship" />
 
         <Reveal variant="tilt">
           <div className="pricingBand__head">
-            <p className="pricingBand__eyebrow mono accent">Divisi Sponsorship</p>
             <h3 className="pricingBand__headline">
               Jadikan nama perusahaan Anda melesat bersama robot juara nasional
             </h3>
             <p className="pricingBand__sub">
-              Setiap rupiah langsung menjadi komponen robot, seragam tim, dan
-              tiket keberangkatan ke KSTI 2026 — bukan sekadar logo di baliho.
+              Logo Anda ikut bertanding — terpasang di robot, seragam tim, dan
+              setiap laporan progres yang kami publikasikan sepanjang jalan ke
+              KSTI 2026. Eksposur yang terus bekerja, bukan logo yang cuma
+              numpang sekali di baliho.
             </p>
           </div>
         </Reveal>
 
         <Reveal delay={60} variant="scale">
           <div className="pricingBand__cta">
-            <a className="cta cta--solid" href={`https://wa.me/${site.phoneHref}`}>
-              WhatsApp tim
+            <a className="cta--whatsapp" href={`https://wa.me/${site.phoneHref}`}>
+              <NavIcon name="whatsapp" className="pricingBand__ctaGlyph" />
+              WhatsApp Tim Sponsorship
             </a>
           </div>
         </Reveal>
@@ -64,20 +77,35 @@ export default function Sponsorship() {
                 <PixelCard
                   className={`tierCard${i === top ? " tierCard--top" : ""}`}
                   theme="dark"
-                  colors={["#ff6a5e", "#ff3b33", "#7a1510"]}
-                  glowColor="#ff3b33"
-                  gap={7}
+                  colors={
+                    i === top
+                      ? ["#6ee7b0", "#10b981", "#065f46"]
+                      : ["#ffb199", "#ff3b33"]
+                  }
+                  glowColor={i === top ? "#10b981" : "#ff3b33"}
+                  shape={i === top ? "diamond" : "square"}
+                  gap={i === top ? 9 : 8}
                   pixelSize={2}
-                  speed={28}
-                  opacity={i === top ? 0.55 : 0.35}
+                  speed={i === top ? 22 : 26}
+                  opacity={i === top ? 0.6 : 0.3}
                   fade={0.65}
                   trigger="hover"
                   radius={20}
                   clickPulse
                   intro
                   introDelay={i * 90}
+                  style={
+                    {
+                      "--pixel-card-surface": i === top
+                        ? "linear-gradient(180deg, #0c1f18 0%, #071411 100%)"
+                        : "linear-gradient(180deg, #1c110f 0%, #110a09 100%)",
+                      "--pixel-card-edge": i === top
+                        ? "rgba(110, 231, 176, 0.18)"
+                        : "rgba(255, 255, 255, 0.07)",
+                    } as React.CSSProperties
+                  }
                 >
-                  {i === top && <span className="tierCard__badge mono">Paling populer</span>}
+                  {i === top && <span className="tierCard__badge mono">Paling eksklusif</span>}
                   <p className="tierCard__name">{tier.name}</p>
                   <p className="tierCard__price">
                     {tier.price}
