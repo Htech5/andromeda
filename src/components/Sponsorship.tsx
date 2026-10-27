@@ -81,18 +81,13 @@ export default function Sponsorship() {
                 <PixelCard
                   className={`tierCard${i === top ? " tierCard--top" : ""}`}
                   theme="dark"
-                  colors={
-                    i === top
-                      ? ["#d9b36c", "#3f8f6c", "#1b3a2d"]
-                      : ["#ffb199", "#ff3b33"]
-                  }
-                  glowColor={i === top ? "#c9a35a" : "#ff3b33"}
-                  glow={i === top ? 0.22 : 0.5}
-                  shape={i === top ? "diamond" : "square"}
-                  gap={i === top ? 9 : 8}
+                  colors={["#ffb199", "#ff3b33"]}
+                  glowColor="#ff3b33"
+                  glow={0.5}
+                  gap={8}
                   pixelSize={2}
-                  speed={i === top ? 16 : 26}
-                  opacity={i === top ? 0.22 : 0.3}
+                  speed={26}
+                  opacity={0.3}
                   fade={0.65}
                   trigger="hover"
                   radius={20}
@@ -101,12 +96,8 @@ export default function Sponsorship() {
                   introDelay={i * 90}
                   style={
                     {
-                      "--pixel-card-surface": i === top
-                        ? "linear-gradient(180deg, #16231d 0%, #0d1512 100%)"
-                        : "linear-gradient(180deg, #1c110f 0%, #110a09 100%)",
-                      "--pixel-card-edge": i === top
-                        ? "rgba(201, 163, 90, 0.16)"
-                        : "rgba(255, 255, 255, 0.07)",
+                      "--pixel-card-surface": "linear-gradient(180deg, #1c110f 0%, #110a09 100%)",
+                      "--pixel-card-edge": "rgba(255, 255, 255, 0.07)",
                     } as React.CSSProperties
                   }
                 >
