@@ -1781,26 +1781,6 @@
 
 
 
-/* Marks are drawn, not typed: no glyph font dependency, no emoji. */
-.matrix__yes,
-.matrix__no {
-  display: inline-block;
-  width: 0.85rem;
-  height: 0.85rem;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-}
-
-.matrix__yes {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23ffffff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 8.8l3.6 3.6L13.5 4'/%3E%3C/svg%3E");
-}
-
-.matrix__no {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23d92b22' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M3.5 3.5l9 9M12.5 3.5l-9 9'/%3E%3C/svg%3E");
-}
-
-
 @media (min-width: 700px) {
   .statsRow {
     grid-template-columns: repeat(4, 1fr);
@@ -2368,55 +2348,64 @@
 }
 
 .pricingBand__deco--ring circle {
-  stroke-width: 1;
+  stroke-width: 1.5;
+}
+
+/* Every PCB trace shares one weight and one via-dot fill, so adding more of
+   them is just another block below rather than another set of rules. */
+.pricingBand__deco--circuit,
+.pricingBand__deco--circuit2,
+.pricingBand__deco--circuit3,
+.pricingBand__deco--circuit4,
+.pricingBand__deco--circuit5 {
+  opacity: 0.26;
+}
+
+.pricingBand__deco--circuit path,
+.pricingBand__deco--circuit2 path,
+.pricingBand__deco--circuit3 path,
+.pricingBand__deco--circuit4 path,
+.pricingBand__deco--circuit5 path {
+  stroke-width: 2.4;
+}
+
+.pricingBand__deco--circuit circle,
+.pricingBand__deco--circuit2 circle,
+.pricingBand__deco--circuit3 circle,
+.pricingBand__deco--circuit4 circle,
+.pricingBand__deco--circuit5 circle {
+  fill: var(--color-red);
+  stroke: none;
 }
 
 .pricingBand__deco--circuit {
   left: -6%;
   top: 46%;
   width: min(20rem, 50vw);
-  opacity: 0.18;
-}
-
-.pricingBand__deco--circuit path {
-  stroke-width: 1.5;
-}
-
-.pricingBand__deco--circuit circle {
-  fill: var(--color-red);
-  stroke: none;
 }
 
 .pricingBand__deco--circuit2 {
   right: -4%;
   top: 4%;
   width: min(18rem, 46vw);
-  opacity: 0.15;
-}
-
-.pricingBand__deco--circuit2 path {
-  stroke-width: 1.5;
-}
-
-.pricingBand__deco--circuit2 circle {
-  fill: var(--color-red);
-  stroke: none;
 }
 
 .pricingBand__deco--circuit3 {
   right: -5%;
   bottom: 2%;
   width: min(16rem, 44vw);
-  opacity: 0.14;
 }
 
-.pricingBand__deco--circuit3 path {
-  stroke-width: 1.5;
+.pricingBand__deco--circuit4 {
+  left: -5%;
+  top: 6%;
+  width: min(16rem, 42vw);
 }
 
-.pricingBand__deco--circuit3 circle {
-  fill: var(--color-red);
-  stroke: none;
+.pricingBand__deco--circuit5 {
+  right: -6%;
+  bottom: 34%;
+  width: min(18rem, 46vw);
 }
 
 .pricingBand > .shell {
@@ -2530,15 +2519,16 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
-/* Zamrud means emerald: the one tier that steps outside the red family
-   entirely, in colour, cut and size, so "exclusive" reads at a glance
-   instead of needing the badge to say it. */
+/* Zamrud means emerald: the one tier that steps outside the red family, in
+   colour, cut and size, so "exclusive" reads at a glance. Muted and gold-
+   leaning rather than a bright mint, so it still sits in the same warm,
+   low-saturation room as the red cards around it instead of fighting them. */
 .pixel-card.tierCard--top {
   padding: 2rem 1.7rem 1.7rem;
   box-shadow:
     var(--pixel-card-shadow),
-    0 0 0 1px rgba(110, 231, 176, 0.45),
-    0 30px 52px -20px rgba(16, 185, 129, 0.5);
+    0 0 0 1px rgba(201, 163, 90, 0.4),
+    0 26px 44px -22px rgba(63, 143, 108, 0.38);
 }
 
 @media (min-width: 900px) {
@@ -2558,11 +2548,11 @@
 
 .pixel-card.tierCard--top .tierCard__price {
   font-size: 1.85rem;
-  color: #6ee7b0;
+  color: #d9b36c;
 }
 
 .pixel-card.tierCard--top .tierCard__list li::before {
-  background: #10b981;
+  background: #3f8f6c;
 }
 
 .tierCard__badge {
@@ -2578,7 +2568,8 @@
 }
 
 .tierCard--top .tierCard__badge {
-  background: #10b981;
+  background: #c9a35a;
+  color: #1b3a2d;
 }
 
 .tierCard__name {
@@ -2665,178 +2656,15 @@
 }
 
 .pixel-card.tierCard--top .cta--solid {
-  background: #10b981;
-  border-color: #10b981;
+  background: #c9a35a;
+  border-color: #c9a35a;
+  color: #1b3a2d;
 }
 
 .pixel-card.tierCard--top .cta--solid:hover {
   background: var(--color-white);
   border-color: var(--color-white);
-}
-
-.matrixDetails {
-  margin-top: clamp(2.5rem, 5vw, 3.5rem);
-}
-
-.matrixDetails summary {
-  cursor: pointer;
-  font-size: 0.72rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  padding-bottom: 0.75rem;
-  border-bottom: var(--rule);
-}
-
-.matrixDetails[open] summary {
-  margin-bottom: 0.5rem;
-}
-
-.matrixWrap {
-  margin-top: clamp(1.75rem, 3.5vw, 2.75rem);
-  overflow-x: auto;
-  /* Without paint containment the table's min-width leaks into the document's
-     scroll width, so the page lays out wider than the viewport on mobile. */
-  contain: paint;
-  border-top: var(--rule);
-}
-
-.matrix {
-  width: 100%;
-  min-width: 48rem;
-  border-collapse: collapse;
-  font-size: 0.9rem;
-}
-
-.matrix th,
-.matrix td {
-  padding: 0.7rem 0.75rem;
-  border-bottom: var(--rule-faint);
-  text-align: center;
-  vertical-align: middle;
-}
-
-.matrix thead th {
-  padding-block: 1.1rem 0.9rem;
-  border-bottom: var(--rule);
-  vertical-align: bottom;
-}
-
-/* The row label stays put when the table is panned sideways. */
-.matrix tbody th,
-.matrix thead th:first-child {
-  position: sticky;
-  left: 0;
-  z-index: 1;
-  background: var(--bg);
-  text-align: left;
-  font-weight: 500;
-  color: var(--ink-2);
-}
-
-.matrix__tier {
-  display: block;
-  font-size: 0.82rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--ink);
-}
-
-.matrix__price {
-  display: block;
-  margin-top: 0.3rem;
-  font-size: 0.92rem;
-  color: var(--ink);
-}
-
-.matrix__count {
-  display: block;
-  margin-top: 0.2rem;
-  font-size: 0.68rem;
-  letter-spacing: 0.1em;
-  color: var(--ink-3);
-}
-
-/* Top package reads as the recommended column. */
-.matrix [data-top] {
-  background: rgba(217, 43, 34, 0.05);
-}
-
-.matrix thead [data-top] {
-  box-shadow: inset 0 3px 0 var(--color-red);
-}
-
-.matrix thead [data-top] .matrix__tier {
-  color: var(--color-red);
-}
-
-/* ---------- budget ---------- */
-
-.budget {
-  margin-top: clamp(1.75rem, 3.5vw, 2.75rem);
-}
-
-.budget__head {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 0.75rem;
-  border-bottom: var(--rule);
-  padding-bottom: 0.75rem;
-}
-
-.budget__title {
-  font-size: 1.1rem;
-  letter-spacing: -0.01em;
-}
-
-.budget__total {
-  font-size: 0.95rem;
-}
-
-.budget__list {
-  margin: 0;
-}
-
-.budget__row {
-  display: grid;
-  grid-template-columns: 1fr auto 3rem;
-  align-items: center;
-  gap: 0.35rem 1rem;
-  padding-block: 0.8rem;
-  border-bottom: var(--rule-faint);
-}
-
-.budget__row dd,
-.budget__row dt {
-  margin: 0;
-}
-
-.budget__label {
-  font-size: 0.95rem;
-}
-
-.budget__bar {
-  grid-column: 1 / -1;
-  grid-row: 2;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.12);
-}
-
-.budget__bar span {
-  display: block;
-  height: 100%;
-  background: var(--color-red);
-}
-
-.budget__amount {
-  font-size: 0.88rem;
-}
-
-.budget__share {
-  font-size: 0.78rem;
-  color: var(--ink-3);
-  text-align: right;
+  color: var(--color-black);
 }
 
 .noteLine {

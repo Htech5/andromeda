@@ -2,13 +2,7 @@ import Reveal from "./Reveal";
 import SectionHead from "./SectionHead";
 import PixelCard from "./PixelCard";
 import NavIcon from "./NavIcon";
-import {
-  benefits,
-  budget,
-  budgetTotal,
-  rupiah,
-  tiers,
-} from "@/data/sponsorship";
+import { benefits, tiers } from "@/data/sponsorship";
 import { site } from "@/data/site";
 
 const included = (i: number) =>
@@ -42,6 +36,16 @@ export default function Sponsorship() {
         <path d="M0 110 H60 L90 80 H160 L190 110 V220" />
         <circle cx="90" cy="80" r="3.5" />
         <circle cx="190" cy="110" r="3.5" />
+      </svg>
+      <svg className="pricingBand__deco pricingBand__deco--circuit4" viewBox="0 0 240 240" aria-hidden="true">
+        <path d="M0 0 V50 L40 90 H140 L170 60 V0" />
+        <circle cx="40" cy="90" r="4" />
+        <circle cx="170" cy="60" r="4" />
+      </svg>
+      <svg className="pricingBand__deco pricingBand__deco--circuit5" viewBox="0 0 260 260" aria-hidden="true">
+        <path d="M260 260 V190 L220 150 H120 L90 180 V260" />
+        <circle cx="220" cy="150" r="4" />
+        <circle cx="90" cy="180" r="4" />
       </svg>
 
       <div className="shell">
@@ -79,15 +83,15 @@ export default function Sponsorship() {
                   theme="dark"
                   colors={
                     i === top
-                      ? ["#6ee7b0", "#10b981", "#065f46"]
+                      ? ["#d9b36c", "#3f8f6c", "#1b3a2d"]
                       : ["#ffb199", "#ff3b33"]
                   }
-                  glowColor={i === top ? "#10b981" : "#ff3b33"}
+                  glowColor={i === top ? "#c9a35a" : "#ff3b33"}
                   shape={i === top ? "diamond" : "square"}
                   gap={i === top ? 9 : 8}
                   pixelSize={2}
-                  speed={i === top ? 22 : 26}
-                  opacity={i === top ? 0.6 : 0.3}
+                  speed={i === top ? 20 : 26}
+                  opacity={i === top ? 0.4 : 0.3}
                   fade={0.65}
                   trigger="hover"
                   radius={20}
@@ -97,10 +101,10 @@ export default function Sponsorship() {
                   style={
                     {
                       "--pixel-card-surface": i === top
-                        ? "linear-gradient(180deg, #0c1f18 0%, #071411 100%)"
+                        ? "linear-gradient(180deg, #16231d 0%, #0d1512 100%)"
                         : "linear-gradient(180deg, #1c110f 0%, #110a09 100%)",
                       "--pixel-card-edge": i === top
-                        ? "rgba(110, 231, 176, 0.18)"
+                        ? "rgba(201, 163, 90, 0.22)"
                         : "rgba(255, 255, 255, 0.07)",
                     } as React.CSSProperties
                   }
@@ -131,83 +135,6 @@ export default function Sponsorship() {
               </li>
             ))}
           </ul>
-        </Reveal>
-
-        <Reveal delay={75}>
-          <details className="matrixDetails">
-            <summary className="mono accent">Lihat detail lengkap benefit</summary>
-            <div className="matrixWrap">
-              <table className="matrix">
-                <caption className="srOnly">Benefit sponsorship per paket</caption>
-                <thead>
-                  <tr>
-                    <th scope="col">Benefit</th>
-                    {tiers.map((tier, i) => (
-                      <th
-                        scope="col"
-                        key={tier.name}
-                        data-top={i === top ? "true" : undefined}
-                      >
-                        <span className="matrix__tier">{tier.name}</span>
-                        <span className="matrix__price mono">{tier.price}</span>
-                        <span className="matrix__count mono">
-                          {included(i)} / {benefits.length} benefit
-                        </span>
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {benefits.map((benefit) => (
-                    <tr key={benefit.label}>
-                      <th scope="row">{benefit.label}</th>
-                      {benefit.tiers.map((has, i) => (
-                        <td key={tiers[i].name} data-top={i === top ? "true" : undefined}>
-                          <span
-                            className={has ? "matrix__yes" : "matrix__no"}
-                            aria-hidden="true"
-                          />
-                          <span className="srOnly">
-                            {has ? "Termasuk" : "Tidak termasuk"}
-                          </span>
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </details>
-        </Reveal>
-
-        <Reveal delay={90}>
-          <div className="budget">
-            <div className="budget__head">
-              <h3 className="budget__title">Rencana anggaran</h3>
-              <p className="budget__total mono">
-                Total <span className="accent">{rupiah(budgetTotal)}</span>
-              </p>
-            </div>
-
-            <dl className="budget__list">
-              {budget.map((item) => {
-                const share = item.amount / budgetTotal;
-                return (
-                  <div className="budget__row" key={item.label}>
-                    <dt className="budget__label">{item.label}</dt>
-                    <dd className="budget__bar">
-                      {/* Width is data, not decoration: the share of the total. */}
-                      <span style={{ width: `${(share * 100).toFixed(1)}%` }} />
-                    </dd>
-                    <dd className="budget__amount mono">{rupiah(item.amount)}</dd>
-                    <dd className="budget__share mono">
-                      {Math.round(share * 100)}%
-                    </dd>
-                  </div>
-                );
-              })}
-            </dl>
-          </div>
         </Reveal>
 
         <Reveal delay={120} variant="scale">
