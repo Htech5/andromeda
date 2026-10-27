@@ -1,5 +1,6 @@
 import Reveal from "./Reveal";
 import SectionHead from "./SectionHead";
+import PixelCard from "./PixelCard";
 import {
   benefits,
   budget,
@@ -21,149 +22,176 @@ export default function Sponsorship() {
   const top = tiers.length - 1;
 
   return (
-    <section className="section shell" id="sponsorship">
-      <SectionHead title="Paket kemitraan" />
+    <section className="section" id="sponsorship">
+      <div className="pricingBand onDark">
+        <svg className="pricingBand__deco pricingBand__deco--ring" viewBox="0 0 400 400" aria-hidden="true">
+          <circle cx="200" cy="200" r="180" />
+          <circle cx="200" cy="200" r="130" />
+        </svg>
+        <svg className="pricingBand__deco pricingBand__deco--circuit" viewBox="0 0 300 300" aria-hidden="true">
+          <path d="M0 60 H120 L150 90 V200 L180 230 H300" />
+          <circle cx="150" cy="90" r="4" />
+          <circle cx="180" cy="230" r="4" />
+        </svg>
 
-      <div className="prospectus">
-        <Reveal variant="tilt">
-          <p className="lede lede--bar">
-            Identitas perusahaan ditempatkan pada robot, perlengkapan, dan media
-            publikasi resmi tim. Dukungan masuk langsung ke komponen dan biaya
-            keberangkatan ke KSTI 2026, Surabaya, November 2026.
-          </p>
-        </Reveal>
+        <div className="shell">
+          <SectionHead title="Sponsorship" />
 
-        <Reveal delay={90} variant="right">
-          <div className="prospectus__contact">
-            <p className="prospectus__label mono accent">Divisi Sponsorship</p>
-            <a className="cta cta--solid" href={site.proposal} download>
-              Unduh proposal
-              <span className="cta__meta mono">PDF · 13 MB</span>
-            </a>
-            <a className="cta" href={`https://wa.me/${site.phoneHref}`}>
-              WhatsApp tim
-            </a>
-          </div>
-        </Reveal>
+          <Reveal variant="tilt">
+            <div className="pricingBand__head">
+              <p className="pricingBand__eyebrow mono accent">Divisi Sponsorship</p>
+              <h3 className="pricingBand__headline">
+                Jadikan nama perusahaan Anda melesat bersama robot juara nasional
+              </h3>
+              <p className="pricingBand__sub">
+                Setiap rupiah langsung menjadi komponen robot, seragam tim, dan
+                tiket keberangkatan ke KSTI 2026 — bukan sekadar logo di baliho.
+              </p>
+            </div>
+          </Reveal>
+
+          <Reveal delay={60} variant="scale">
+            <div className="pricingBand__cta">
+              <a className="cta cta--solid" href={`https://wa.me/${site.phoneHref}`}>
+                WhatsApp tim
+              </a>
+            </div>
+          </Reveal>
+
+          <Reveal delay={90} variant="rise">
+            <ul className="tierCards">
+              {tiers.map((tier, i) => (
+                <li key={tier.name}>
+                  <PixelCard
+                    className={`tierCard${i === top ? " tierCard--top" : ""}`}
+                    theme="dark"
+                    colors={["#ff6a5e", "#ff3b33", "#7a1510"]}
+                    glowColor="#ff3b33"
+                    gap={7}
+                    pixelSize={2}
+                    speed={28}
+                    opacity={i === top ? 0.55 : 0.35}
+                    fade={0.65}
+                    trigger="hover"
+                    radius={20}
+                    clickPulse
+                    intro
+                    introDelay={i * 90}
+                  >
+                    {i === top && <span className="tierCard__badge mono">Paling populer</span>}
+                    <p className="tierCard__name">{tier.name}</p>
+                    <p className="tierCard__price">
+                      {tier.price}
+                      <span className="tierCard__cycle">/ musim</span>
+                    </p>
+                    <p className="tierCard__count mono">
+                      {included(i)} dari {benefits.length} benefit
+                    </p>
+                    <ul className="tierCard__list">
+                      {benefits
+                        .filter((benefit) => benefit.tiers[i])
+                        .map((benefit) => (
+                          <li key={benefit.label}>{benefit.label}</li>
+                        ))}
+                    </ul>
+                    <a
+                      className={`cta ${i === top ? "cta--solid" : ""}`.trim()}
+                      href={waHref(tier.name, tier.price)}
+                    >
+                      Pilih paket
+                    </a>
+                  </PixelCard>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+        </div>
       </div>
 
-      <Reveal delay={60} variant="rise">
-        <ul className="tierCards">
-          {tiers.map((tier, i) => (
-            <li
-              className="tierCard"
-              key={tier.name}
-              data-top={i === top ? "true" : undefined}
-            >
-              {i === top && <span className="tierCard__badge mono">Paling populer</span>}
-              <p className="tierCard__name">{tier.name}</p>
-              <p className="tierCard__price mono">
-                {tier.price}
-                <span className="tierCard__cycle">/ musim</span>
-              </p>
-              <p className="tierCard__count mono">
-                {included(i)} dari {benefits.length} benefit
-              </p>
-              <ul className="tierCard__list">
-                {benefits
-                  .filter((benefit) => benefit.tiers[i])
-                  .map((benefit) => (
-                    <li key={benefit.label}>{benefit.label}</li>
-                  ))}
-              </ul>
-              <a
-                className={`cta ${i === top ? "cta--solid" : ""}`.trim()}
-                href={waHref(tier.name, tier.price)}
-              >
-                Pilih paket
-              </a>
-            </li>
-          ))}
-        </ul>
-      </Reveal>
-
-      <Reveal delay={75}>
-        <details className="matrixDetails">
-          <summary className="mono accent">Lihat detail lengkap benefit</summary>
-          <div className="matrixWrap">
-            <table className="matrix">
-              <caption className="srOnly">Benefit sponsorship per paket</caption>
-              <thead>
-                <tr>
-                  <th scope="col">Benefit</th>
-                  {tiers.map((tier, i) => (
-                    <th
-                      scope="col"
-                      key={tier.name}
-                      data-top={i === top ? "true" : undefined}
-                    >
-                      <span className="matrix__tier">{tier.name}</span>
-                      <span className="matrix__price mono">{tier.price}</span>
-                      <span className="matrix__count mono">
-                        {included(i)} / {benefits.length} benefit
-                      </span>
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {benefits.map((benefit) => (
-                  <tr key={benefit.label}>
-                    <th scope="row">{benefit.label}</th>
-                    {benefit.tiers.map((has, i) => (
-                      <td key={tiers[i].name} data-top={i === top ? "true" : undefined}>
-                        <span
-                          className={has ? "matrix__yes" : "matrix__no"}
-                          aria-hidden="true"
-                        />
-                        <span className="srOnly">
-                          {has ? "Termasuk" : "Tidak termasuk"}
+      <div className="shell">
+        <Reveal delay={75}>
+          <details className="matrixDetails">
+            <summary className="mono accent">Lihat detail lengkap benefit</summary>
+            <div className="matrixWrap">
+              <table className="matrix">
+                <caption className="srOnly">Benefit sponsorship per paket</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Benefit</th>
+                    {tiers.map((tier, i) => (
+                      <th
+                        scope="col"
+                        key={tier.name}
+                        data-top={i === top ? "true" : undefined}
+                      >
+                        <span className="matrix__tier">{tier.name}</span>
+                        <span className="matrix__price mono">{tier.price}</span>
+                        <span className="matrix__count mono">
+                          {included(i)} / {benefits.length} benefit
                         </span>
-                      </td>
+                      </th>
                     ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {benefits.map((benefit) => (
+                    <tr key={benefit.label}>
+                      <th scope="row">{benefit.label}</th>
+                      {benefit.tiers.map((has, i) => (
+                        <td key={tiers[i].name} data-top={i === top ? "true" : undefined}>
+                          <span
+                            className={has ? "matrix__yes" : "matrix__no"}
+                            aria-hidden="true"
+                          />
+                          <span className="srOnly">
+                            {has ? "Termasuk" : "Tidak termasuk"}
+                          </span>
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </details>
+        </Reveal>
+
+        <Reveal delay={90}>
+          <div className="budget">
+            <div className="budget__head">
+              <h3 className="budget__title">Rencana anggaran</h3>
+              <p className="budget__total mono">
+                Total <span className="accent">{rupiah(budgetTotal)}</span>
+              </p>
+            </div>
+
+            <dl className="budget__list">
+              {budget.map((item) => {
+                const share = item.amount / budgetTotal;
+                return (
+                  <div className="budget__row" key={item.label}>
+                    <dt className="budget__label">{item.label}</dt>
+                    <dd className="budget__bar">
+                      {/* Width is data, not decoration: the share of the total. */}
+                      <span style={{ width: `${(share * 100).toFixed(1)}%` }} />
+                    </dd>
+                    <dd className="budget__amount mono">{rupiah(item.amount)}</dd>
+                    <dd className="budget__share mono">
+                      {Math.round(share * 100)}%
+                    </dd>
+                  </div>
+                );
+              })}
+            </dl>
           </div>
-        </details>
-      </Reveal>
+        </Reveal>
 
-      <Reveal delay={90}>
-        <div className="budget">
-          <div className="budget__head">
-            <h3 className="budget__title">Rencana anggaran</h3>
-            <p className="budget__total mono">
-              Total <span className="accent">{rupiah(budgetTotal)}</span>
-            </p>
-          </div>
-
-          <dl className="budget__list">
-            {budget.map((item) => {
-              const share = item.amount / budgetTotal;
-              return (
-                <div className="budget__row" key={item.label}>
-                  <dt className="budget__label">{item.label}</dt>
-                  <dd className="budget__bar">
-                    {/* Width is data, not decoration: the share of the total. */}
-                    <span style={{ width: `${(share * 100).toFixed(1)}%` }} />
-                  </dd>
-                  <dd className="budget__amount mono">{rupiah(item.amount)}</dd>
-                  <dd className="budget__share mono">
-                    {Math.round(share * 100)}%
-                  </dd>
-                </div>
-              );
-            })}
-          </dl>
-        </div>
-      </Reveal>
-
-      <Reveal delay={120} variant="scale">
-        <p className="noteLine mono">
-          Harga dan benefit dapat menyesuaikan hasil diskusi.
-        </p>
-      </Reveal>
+        <Reveal delay={120} variant="scale">
+          <p className="noteLine mono">
+            Harga dan benefit dapat menyesuaikan hasil diskusi.
+          </p>
+        </Reveal>
+      </div>
     </section>
   );
 }

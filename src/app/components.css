@@ -2321,28 +2321,121 @@
     );
 }
 
-/* ---------- sponsorship prospectus ---------- */
+/* ---------- sponsorship pricing band ---------- */
 
-.prospectus {
-  display: grid;
-  gap: clamp(1.5rem, 3vw, 2.5rem);
-  align-items: start;
+/* Full-bleed, unlike the rest of the page: the section it lives in drops the
+   shell constraint so this band can reach the viewport edge, same move as
+   .capsBand. Everything else in Sponsorship keeps its own .shell below. */
+.pricingBand {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  padding-block: clamp(3.5rem, 7vw, 5.5rem) clamp(4rem, 9vw, 6.5rem);
+  background:
+    radial-gradient(70% 55% at 85% 8%, rgba(255, 59, 51, 0.22) 0%, transparent 70%),
+    radial-gradient(60% 45% at 8% 95%, rgba(255, 59, 51, 0.14) 0%, transparent 72%),
+    var(--color-black);
 }
 
-.prospectus__contact {
+/* The band dissolves into the light page below it rather than cutting, same
+   recipe as .capsBand's own fade. */
+.pricingBand::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: clamp(5rem, 12vh, 9rem);
+  pointer-events: none;
+  background: linear-gradient(to top, var(--bg-page) 0%, transparent 100%);
+}
+
+/* Red vector line-art, the same accent as the rings behind the hero's join
+   word: pure decoration, blurred so it reads as atmosphere, not clip-art. */
+.pricingBand__deco {
+  position: absolute;
+  z-index: 0;
+  fill: none;
+  stroke: var(--color-red);
+  pointer-events: none;
+}
+
+.pricingBand__deco--ring {
+  top: -8%;
+  right: -10%;
+  width: min(32rem, 60vw);
+  opacity: 0.22;
+  filter: blur(1px);
+}
+
+.pricingBand__deco--ring circle {
+  stroke-width: 1;
+}
+
+.pricingBand__deco--circuit {
+  left: -6%;
+  bottom: 4%;
+  width: min(20rem, 50vw);
+  opacity: 0.18;
+}
+
+.pricingBand__deco--circuit path {
+  stroke-width: 1.5;
+}
+
+.pricingBand__deco--circuit circle {
+  fill: var(--color-red);
+  stroke: none;
+}
+
+.pricingBand > .shell {
+  position: relative;
+  z-index: 1;
+}
+
+.pricingBand__head {
+  max-width: 44rem;
+  margin-top: clamp(1.25rem, 3vw, 2rem);
+}
+
+.pricingBand__eyebrow {
+  margin-bottom: 0.6rem;
+}
+
+.pricingBand__headline {
+  font-family: var(--font-warm);
+  font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.12;
+  text-transform: none;
+  color: var(--ink);
+}
+
+.pricingBand__sub {
+  margin-top: 0.85rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--ink-2);
+  max-width: 38rem;
+}
+
+.pricingBand__cta {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.75rem;
-  border-top: 2px solid var(--color-red);
-  padding-top: 1.1rem;
+  justify-content: center;
+  margin: clamp(1.75rem, 4vw, 2.5rem) 0 clamp(2.25rem, 5vw, 3rem);
 }
 
-.prospectus__label {
-  flex-basis: 100%;
-  font-size: 0.72rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
+.pricingBand__cta .cta--solid {
+  background: var(--color-red);
+  border-color: var(--color-red);
+  color: var(--color-white);
+  padding-inline: 2.25rem;
+}
+
+.pricingBand__cta .cta--solid:hover {
+  background: var(--color-white);
+  border-color: var(--color-white);
+  color: var(--color-black);
 }
 
 .tierCards {
@@ -2351,37 +2444,52 @@
   list-style: none;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr));
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
-.tierCard {
-  position: relative;
+/* The pixel-card engine centres a single icon by default; our content is a
+   left-aligned stack, so the layout axis is overridden here rather than in
+   the shared component. */
+.pixel-card.tierCard {
   display: flex;
   flex-direction: column;
+  align-items: stretch;
   gap: 0.6rem;
-  border: var(--rule);
-  border-radius: var(--radius);
-  padding: 1.5rem 1.35rem 1.35rem;
-  background: var(--bg);
-  transition: transform 0.25s var(--ease), border-color 0.25s var(--ease),
-    box-shadow 0.25s var(--ease);
+  width: 100%;
+  height: 100%;
+  padding: 1.6rem 1.4rem 1.4rem;
+  text-align: left;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
 }
 
-.tierCard:hover {
-  transform: translateY(-4px);
-  border-color: var(--color-red);
-  box-shadow: 0 18px 32px -20px rgba(217, 43, 34, 0.35);
+/* Depth: a second, tighter shadow stacked under the component's own soft one,
+   so the card reads as sitting above the band instead of flat against it. */
+.pixel-card.tierCard {
+  box-shadow:
+    var(--pixel-card-shadow),
+    0 2px 0 rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
-.tierCard[data-top] {
-  border-color: var(--color-red);
-  box-shadow: 0 18px 32px -20px rgba(217, 43, 34, 0.25);
+.pixel-card.tierCard:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    var(--pixel-card-shadow),
+    0 26px 40px -22px rgba(255, 59, 51, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.pixel-card.tierCard--top {
+  box-shadow:
+    var(--pixel-card-shadow),
+    0 0 0 1px rgba(255, 59, 51, 0.5),
+    0 26px 44px -20px rgba(255, 59, 51, 0.45);
 }
 
 .tierCard__badge {
   position: absolute;
   top: -0.65rem;
-  left: 1.35rem;
+  left: 1.4rem;
   padding: 0.25rem 0.6rem;
   border-radius: 999px;
   background: var(--color-red);
@@ -2396,17 +2504,22 @@
   font-weight: 600;
   letter-spacing: 0.02em;
   text-transform: uppercase;
+  color: var(--ink);
 }
 
 .tierCard__price {
   margin: 0;
-  font-size: 1.3rem;
+  font-family: var(--font-warm);
+  font-size: 1.6rem;
+  font-weight: 700;
   color: var(--ink);
 }
 
 .tierCard__cycle {
   margin-left: 0.3rem;
-  font-size: 0.68rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 400;
   color: var(--ink-3);
 }
 
@@ -2444,13 +2557,28 @@
   background: var(--color-red);
 }
 
-.tierCard .cta {
+.pixel-card.tierCard .cta {
   justify-content: center;
   width: 100%;
 }
 
+/* The ambient .onDark flip turns .cta--solid white-on-black, which washes
+   out against this band's own near-black surface. Red keeps the top tier's
+   button legible and matches the band's single WhatsApp CTA above. */
+.pixel-card.tierCard .cta--solid {
+  background: var(--color-red);
+  border-color: var(--color-red);
+  color: var(--color-white);
+}
+
+.pixel-card.tierCard .cta--solid:hover {
+  background: var(--color-white);
+  border-color: var(--color-white);
+  color: var(--color-black);
+}
+
 .matrixDetails {
-  margin-top: clamp(1.75rem, 3.5vw, 2.75rem);
+  margin-top: clamp(2.5rem, 5vw, 3.5rem);
 }
 
 .matrixDetails summary {
@@ -2618,12 +2746,6 @@
   margin: 1rem 0 0;
   font-size: 0.8rem;
   color: var(--ink-3);
-}
-
-@media (min-width: 900px) {
-  .prospectus {
-    grid-template-columns: 1.4fr 1fr;
-  }
 }
 
 .cta__meta {

@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "src/app/components.css"
+        ],
+        "createdAt": "2026-10-27T15:55:22.189Z",
+        "reason": "predates this session: original matrix top-tier header highlight (inset 3px top rule, not a side border), unrelated to current task"
+      }
+    ]
+  }
+}
