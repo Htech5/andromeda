@@ -2517,24 +2517,24 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
-/* Zamrud means emerald: the one tier that steps outside the red family, in
-   colour, cut and size, so "exclusive" reads at a glance. Muted and gold-
-   leaning rather than a bright mint, so it still sits in the same warm,
-   low-saturation room as the red cards around it instead of fighting them. */
+/* Zamrud means emerald, but the exclusive marker here is champagne, not
+   green or gold: a warm off-white in the same family as the brand's own
+   white, so it reads as premium against red and black without adding a
+   fourth hue the palette has to reconcile. */
 .pixel-card.tierCard--top {
   padding: 2rem 1.7rem 1.7rem;
   box-shadow:
     var(--pixel-card-shadow),
-    0 0 0 1px rgba(201, 163, 90, 0.22),
+    0 0 0 1px rgba(233, 221, 196, 0.22),
     0 20px 36px -22px rgba(0, 0, 0, 0.6);
 }
 
-/* Overrides the generic red hover glow: this card stays in its own muted
-   gold, even on hover, instead of flashing red like the rest for a frame. */
+/* Overrides the generic red hover glow: this card stays in its own
+   champagne accent, even on hover, instead of flashing red for a frame. */
 .pixel-card.tierCard--top:hover {
   box-shadow:
     var(--pixel-card-shadow),
-    0 0 0 1px rgba(201, 163, 90, 0.3),
+    0 0 0 1px rgba(233, 221, 196, 0.3),
     0 22px 38px -20px rgba(0, 0, 0, 0.65);
 }
 
@@ -2555,11 +2555,11 @@
 
 .pixel-card.tierCard--top .tierCard__price {
   font-size: 1.85rem;
-  color: #d9b36c;
+  color: #e9ddc4;
 }
 
 .pixel-card.tierCard--top .tierCard__list li::before {
-  background: #c9a35a;
+  background: #e9ddc4;
 }
 
 .tierCard__badge {
@@ -2575,8 +2575,8 @@
 }
 
 .tierCard--top .tierCard__badge {
-  background: #c9a35a;
-  color: #1b3a2d;
+  background: #e9ddc4;
+  color: #2a1712;
 }
 
 .tierCard__name {
@@ -2663,9 +2663,9 @@
 }
 
 .pixel-card.tierCard--top .cta--solid {
-  background: #c9a35a;
-  border-color: #c9a35a;
-  color: #1b3a2d;
+  background: #e9ddc4;
+  border-color: #e9ddc4;
+  color: #2a1712;
 }
 
 .pixel-card.tierCard--top .cta--solid:hover {
