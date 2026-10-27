@@ -40,9 +40,9 @@ export default function Footer() {
             <a className="cta cta--solid cta--warm" href="/sponsorship">
               Support us
             </a>
-            <a className="cta cta--warm" href={site.proposal} download>
-              Unduh proposal
-              <span className="cta__meta mono">PDF · 13 MB</span>
+            <a className="cta cta--warm" href={`https://wa.me/${site.phoneHref}`}>
+              Hubungi kami
+              <span className="cta__meta mono">WhatsApp</span>
             </a>
           </div>
         </div>

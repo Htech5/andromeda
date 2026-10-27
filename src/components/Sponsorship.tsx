@@ -12,6 +12,11 @@ import { site } from "@/data/site";
 const included = (i: number) =>
   benefits.filter((benefit) => benefit.tiers[i]).length;
 
+const waHref = (tierName: string, price: string) =>
+  `https://wa.me/${site.phoneHref}?text=${encodeURIComponent(
+    `Halo, saya tertarik paket sponsorship ${tierName} (${price}).`,
+  )}`;
+
 export default function Sponsorship() {
   const top = tiers.length - 1;
 
@@ -43,47 +48,85 @@ export default function Sponsorship() {
       </div>
 
       <Reveal delay={60} variant="rise">
-        <div className="matrixWrap">
-          <table className="matrix">
-            <caption className="srOnly">Benefit sponsorship per paket</caption>
-            <thead>
-              <tr>
-                <th scope="col">Benefit</th>
-                {tiers.map((tier, i) => (
-                  <th
-                    scope="col"
-                    key={tier.name}
-                    data-top={i === top ? "true" : undefined}
-                  >
-                    <span className="matrix__tier">{tier.name}</span>
-                    <span className="matrix__price mono">{tier.price}</span>
-                    <span className="matrix__count mono">
-                      {included(i)} / {benefits.length} benefit
-                    </span>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {benefits.map((benefit) => (
-                <tr key={benefit.label}>
-                  <th scope="row">{benefit.label}</th>
-                  {benefit.tiers.map((has, i) => (
-                    <td key={tiers[i].name} data-top={i === top ? "true" : undefined}>
-                      <span
-                        className={has ? "matrix__yes" : "matrix__no"}
-                        aria-hidden="true"
-                      />
-                      <span className="srOnly">
-                        {has ? "Termasuk" : "Tidak termasuk"}
+        <ul className="tierCards">
+          {tiers.map((tier, i) => (
+            <li
+              className="tierCard"
+              key={tier.name}
+              data-top={i === top ? "true" : undefined}
+            >
+              {i === top && <span className="tierCard__badge mono">Paling populer</span>}
+              <p className="tierCard__name">{tier.name}</p>
+              <p className="tierCard__price mono">
+                {tier.price}
+                <span className="tierCard__cycle">/ musim</span>
+              </p>
+              <p className="tierCard__count mono">
+                {included(i)} dari {benefits.length} benefit
+              </p>
+              <ul className="tierCard__list">
+                {benefits
+                  .filter((benefit) => benefit.tiers[i])
+                  .map((benefit) => (
+                    <li key={benefit.label}>{benefit.label}</li>
+                  ))}
+              </ul>
+              <a
+                className={`cta ${i === top ? "cta--solid" : ""}`.trim()}
+                href={waHref(tier.name, tier.price)}
+              >
+                Pilih paket
+              </a>
+            </li>
+          ))}
+        </ul>
+      </Reveal>
+
+      <Reveal delay={75}>
+        <details className="matrixDetails">
+          <summary className="mono accent">Lihat detail lengkap benefit</summary>
+          <div className="matrixWrap">
+            <table className="matrix">
+              <caption className="srOnly">Benefit sponsorship per paket</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Benefit</th>
+                  {tiers.map((tier, i) => (
+                    <th
+                      scope="col"
+                      key={tier.name}
+                      data-top={i === top ? "true" : undefined}
+                    >
+                      <span className="matrix__tier">{tier.name}</span>
+                      <span className="matrix__price mono">{tier.price}</span>
+                      <span className="matrix__count mono">
+                        {included(i)} / {benefits.length} benefit
                       </span>
-                    </td>
+                    </th>
                   ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {benefits.map((benefit) => (
+                  <tr key={benefit.label}>
+                    <th scope="row">{benefit.label}</th>
+                    {benefit.tiers.map((has, i) => (
+                      <td key={tiers[i].name} data-top={i === top ? "true" : undefined}>
+                        <span
+                          className={has ? "matrix__yes" : "matrix__no"}
+                          aria-hidden="true"
+                        />
+                        <span className="srOnly">
+                          {has ? "Termasuk" : "Tidak termasuk"}
+                        </span>
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </details>
       </Reveal>
 
       <Reveal delay={90}>
