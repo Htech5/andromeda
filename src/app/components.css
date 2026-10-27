@@ -2527,8 +2527,17 @@
   padding: 2rem 1.7rem 1.7rem;
   box-shadow:
     var(--pixel-card-shadow),
-    0 0 0 1px rgba(201, 163, 90, 0.4),
-    0 26px 44px -22px rgba(63, 143, 108, 0.38);
+    0 0 0 1px rgba(201, 163, 90, 0.22),
+    0 20px 36px -22px rgba(0, 0, 0, 0.6);
+}
+
+/* Overrides the generic red hover glow: this card stays in its own muted
+   gold, even on hover, instead of flashing red like the rest for a frame. */
+.pixel-card.tierCard--top:hover {
+  box-shadow:
+    var(--pixel-card-shadow),
+    0 0 0 1px rgba(201, 163, 90, 0.3),
+    0 22px 38px -20px rgba(0, 0, 0, 0.65);
 }
 
 @media (min-width: 900px) {

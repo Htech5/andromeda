@@ -87,11 +87,12 @@ export default function Sponsorship() {
                       : ["#ffb199", "#ff3b33"]
                   }
                   glowColor={i === top ? "#c9a35a" : "#ff3b33"}
+                  glow={i === top ? 0.22 : 0.5}
                   shape={i === top ? "diamond" : "square"}
                   gap={i === top ? 9 : 8}
                   pixelSize={2}
-                  speed={i === top ? 20 : 26}
-                  opacity={i === top ? 0.4 : 0.3}
+                  speed={i === top ? 16 : 26}
+                  opacity={i === top ? 0.22 : 0.3}
                   fade={0.65}
                   trigger="hover"
                   radius={20}
@@ -104,7 +105,7 @@ export default function Sponsorship() {
                         ? "linear-gradient(180deg, #16231d 0%, #0d1512 100%)"
                         : "linear-gradient(180deg, #1c110f 0%, #110a09 100%)",
                       "--pixel-card-edge": i === top
-                        ? "rgba(201, 163, 90, 0.22)"
+                        ? "rgba(201, 163, 90, 0.16)"
                         : "rgba(255, 255, 255, 0.07)",
                     } as React.CSSProperties
                   }
