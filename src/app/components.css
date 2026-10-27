@@ -2458,15 +2458,13 @@
   font-weight: 600;
   letter-spacing: 0;
   text-transform: none;
-  box-shadow: 0 16px 36px -16px rgba(255, 59, 51, 0.55);
   transition: background 0.3s var(--ease), border-color 0.3s var(--ease),
-    box-shadow 0.3s var(--ease), transform 0.2s var(--ease);
+    transform 0.2s var(--ease);
 }
 
 .cta--whatsapp:hover {
   background: #ff5349;
   border-color: #ff5349;
-  box-shadow: 0 20px 44px -16px rgba(255, 59, 51, 0.7);
   transform: translateY(-2px);
 }
 
