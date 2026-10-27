@@ -1784,7 +1784,7 @@
 }
 
 .matrix__yes {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23121212' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 8.8l3.6 3.6L13.5 4'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23ffffff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 8.8l3.6 3.6L13.5 4'/%3E%3C/svg%3E");
 }
 
 .matrix__no {
@@ -2326,27 +2326,18 @@
 /* Full-bleed, unlike the rest of the page: the section it lives in drops the
    shell constraint so this band can reach the viewport edge, same move as
    .capsBand. Everything else in Sponsorship keeps its own .shell below. */
+/* The whole page, not just the hero: same black-and-red the footer already
+   uses, so the page reads as one dark surface from the nav down into the
+   footer instead of a dark band sitting on a light page. */
 .pricingBand {
   position: relative;
   isolation: isolate;
   overflow: clip;
   padding-block: clamp(3.5rem, 7vw, 5.5rem) clamp(4rem, 9vw, 6.5rem);
   background:
-    radial-gradient(70% 55% at 85% 8%, rgba(255, 59, 51, 0.22) 0%, transparent 70%),
-    radial-gradient(60% 45% at 8% 95%, rgba(255, 59, 51, 0.14) 0%, transparent 72%),
+    radial-gradient(60% 40% at 85% 6%, rgba(255, 59, 51, 0.22) 0%, transparent 70%),
+    radial-gradient(45% 30% at 8% 30%, rgba(255, 59, 51, 0.12) 0%, transparent 72%),
     var(--color-black);
-}
-
-/* The band dissolves into the light page below it rather than cutting, same
-   recipe as .capsBand's own fade. */
-.pricingBand::after {
-  content: "";
-  position: absolute;
-  inset-inline: 0;
-  bottom: 0;
-  height: clamp(5rem, 12vh, 9rem);
-  pointer-events: none;
-  background: linear-gradient(to top, var(--bg-page) 0%, transparent 100%);
 }
 
 /* Red vector line-art, the same accent as the rings behind the hero's join
@@ -2373,7 +2364,7 @@
 
 .pricingBand__deco--circuit {
   left: -6%;
-  bottom: 4%;
+  top: 46%;
   width: min(20rem, 50vw);
   opacity: 0.18;
 }
@@ -2723,7 +2714,7 @@
   grid-column: 1 / -1;
   grid-row: 2;
   height: 4px;
-  background: rgba(18, 18, 18, 0.08);
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .budget__bar span {

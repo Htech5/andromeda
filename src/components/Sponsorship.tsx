@@ -22,93 +22,89 @@ export default function Sponsorship() {
   const top = tiers.length - 1;
 
   return (
-    <section className="section" id="sponsorship">
-      <div className="pricingBand onDark">
-        <svg className="pricingBand__deco pricingBand__deco--ring" viewBox="0 0 400 400" aria-hidden="true">
-          <circle cx="200" cy="200" r="180" />
-          <circle cx="200" cy="200" r="130" />
-        </svg>
-        <svg className="pricingBand__deco pricingBand__deco--circuit" viewBox="0 0 300 300" aria-hidden="true">
-          <path d="M0 60 H120 L150 90 V200 L180 230 H300" />
-          <circle cx="150" cy="90" r="4" />
-          <circle cx="180" cy="230" r="4" />
-        </svg>
-
-        <div className="shell">
-          <SectionHead title="Sponsorship" />
-
-          <Reveal variant="tilt">
-            <div className="pricingBand__head">
-              <p className="pricingBand__eyebrow mono accent">Divisi Sponsorship</p>
-              <h3 className="pricingBand__headline">
-                Jadikan nama perusahaan Anda melesat bersama robot juara nasional
-              </h3>
-              <p className="pricingBand__sub">
-                Setiap rupiah langsung menjadi komponen robot, seragam tim, dan
-                tiket keberangkatan ke KSTI 2026 — bukan sekadar logo di baliho.
-              </p>
-            </div>
-          </Reveal>
-
-          <Reveal delay={60} variant="scale">
-            <div className="pricingBand__cta">
-              <a className="cta cta--solid" href={`https://wa.me/${site.phoneHref}`}>
-                WhatsApp tim
-              </a>
-            </div>
-          </Reveal>
-
-          <Reveal delay={90} variant="rise">
-            <ul className="tierCards">
-              {tiers.map((tier, i) => (
-                <li key={tier.name}>
-                  <PixelCard
-                    className={`tierCard${i === top ? " tierCard--top" : ""}`}
-                    theme="dark"
-                    colors={["#ff6a5e", "#ff3b33", "#7a1510"]}
-                    glowColor="#ff3b33"
-                    gap={7}
-                    pixelSize={2}
-                    speed={28}
-                    opacity={i === top ? 0.55 : 0.35}
-                    fade={0.65}
-                    trigger="hover"
-                    radius={20}
-                    clickPulse
-                    intro
-                    introDelay={i * 90}
-                  >
-                    {i === top && <span className="tierCard__badge mono">Paling populer</span>}
-                    <p className="tierCard__name">{tier.name}</p>
-                    <p className="tierCard__price">
-                      {tier.price}
-                      <span className="tierCard__cycle">/ musim</span>
-                    </p>
-                    <p className="tierCard__count mono">
-                      {included(i)} dari {benefits.length} benefit
-                    </p>
-                    <ul className="tierCard__list">
-                      {benefits
-                        .filter((benefit) => benefit.tiers[i])
-                        .map((benefit) => (
-                          <li key={benefit.label}>{benefit.label}</li>
-                        ))}
-                    </ul>
-                    <a
-                      className={`cta ${i === top ? "cta--solid" : ""}`.trim()}
-                      href={waHref(tier.name, tier.price)}
-                    >
-                      Pilih paket
-                    </a>
-                  </PixelCard>
-                </li>
-              ))}
-            </ul>
-          </Reveal>
-        </div>
-      </div>
+    <section className="section pricingBand onDark" id="sponsorship">
+      <svg className="pricingBand__deco pricingBand__deco--ring" viewBox="0 0 400 400" aria-hidden="true">
+        <circle cx="200" cy="200" r="180" />
+        <circle cx="200" cy="200" r="130" />
+      </svg>
+      <svg className="pricingBand__deco pricingBand__deco--circuit" viewBox="0 0 300 300" aria-hidden="true">
+        <path d="M0 60 H120 L150 90 V200 L180 230 H300" />
+        <circle cx="150" cy="90" r="4" />
+        <circle cx="180" cy="230" r="4" />
+      </svg>
 
       <div className="shell">
+        <SectionHead title="Sponsorship" />
+
+        <Reveal variant="tilt">
+          <div className="pricingBand__head">
+            <p className="pricingBand__eyebrow mono accent">Divisi Sponsorship</p>
+            <h3 className="pricingBand__headline">
+              Jadikan nama perusahaan Anda melesat bersama robot juara nasional
+            </h3>
+            <p className="pricingBand__sub">
+              Setiap rupiah langsung menjadi komponen robot, seragam tim, dan
+              tiket keberangkatan ke KSTI 2026 — bukan sekadar logo di baliho.
+            </p>
+          </div>
+        </Reveal>
+
+        <Reveal delay={60} variant="scale">
+          <div className="pricingBand__cta">
+            <a className="cta cta--solid" href={`https://wa.me/${site.phoneHref}`}>
+              WhatsApp tim
+            </a>
+          </div>
+        </Reveal>
+
+        <Reveal delay={90} variant="rise">
+          <ul className="tierCards">
+            {tiers.map((tier, i) => (
+              <li key={tier.name}>
+                <PixelCard
+                  className={`tierCard${i === top ? " tierCard--top" : ""}`}
+                  theme="dark"
+                  colors={["#ff6a5e", "#ff3b33", "#7a1510"]}
+                  glowColor="#ff3b33"
+                  gap={7}
+                  pixelSize={2}
+                  speed={28}
+                  opacity={i === top ? 0.55 : 0.35}
+                  fade={0.65}
+                  trigger="hover"
+                  radius={20}
+                  clickPulse
+                  intro
+                  introDelay={i * 90}
+                >
+                  {i === top && <span className="tierCard__badge mono">Paling populer</span>}
+                  <p className="tierCard__name">{tier.name}</p>
+                  <p className="tierCard__price">
+                    {tier.price}
+                    <span className="tierCard__cycle">/ musim</span>
+                  </p>
+                  <p className="tierCard__count mono">
+                    {included(i)} dari {benefits.length} benefit
+                  </p>
+                  <ul className="tierCard__list">
+                    {benefits
+                      .filter((benefit) => benefit.tiers[i])
+                      .map((benefit) => (
+                        <li key={benefit.label}>{benefit.label}</li>
+                      ))}
+                  </ul>
+                  <a
+                    className={`cta ${i === top ? "cta--solid" : ""}`.trim()}
+                    href={waHref(tier.name, tier.price)}
+                  >
+                    Pilih paket
+                  </a>
+                </PixelCard>
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+
         <Reveal delay={75}>
           <details className="matrixDetails">
             <summary className="mono accent">Lihat detail lengkap benefit</summary>
