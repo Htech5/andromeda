@@ -1984,7 +1984,11 @@
       var(--seam-dark) 0%,
       #150f0e 34%,
       #121212 72%,
-      #121212 100%
+      /* Warms back up right before the fade takes over, so the hand-off to
+         .capsBand::after starts from a dark maroon instead of flat black —
+         the fade then has a hue to carry down into the page, not just a
+         greyscale ramp. */
+      var(--seam-dark) 100%
     );
   /* Room under the last row for the fade to run in without touching copy. */
   padding-bottom: clamp(5rem, 12vh, 9.5rem);
@@ -2040,23 +2044,30 @@
    section below is light. Same eased ramp as .sky, for the same reason — a
    straight fade is still dropping where it stops and that slope shows as a
    seam. */
+/* A straight black-to-grey alpha ramp has no hue in it at all — fading a
+   neutral --bg-page down over flat black only ever passes through greys, so
+   however smooth the math is, it reads as a flat fog bank laid over the
+   page rather than a dissolve. Routing the middle of the ramp through the
+   band's own warm maroon (picked up from .capsBand's now-matching bottom
+   edge) gives the eye a colour to follow instead of a value-only wipe, and
+   the taller height spreads the jump in lightness over more scroll. */
 .capsBand::after {
   content: "";
   position: absolute;
   inset-inline: 0;
   bottom: 0;
-  height: clamp(5rem, 14vh, 11rem);
+  height: clamp(7rem, 18vh, 14rem);
   z-index: 1;
   pointer-events: none;
   background: linear-gradient(
     to top,
     var(--bg-page) 0%,
     var(--bg-page) 6%,
-    color-mix(in srgb, var(--bg-page) 78%, transparent) 26%,
-    color-mix(in srgb, var(--bg-page) 52%, transparent) 42%,
-    color-mix(in srgb, var(--bg-page) 28%, transparent) 60%,
-    color-mix(in srgb, var(--bg-page) 11%, transparent) 76%,
-    color-mix(in srgb, var(--bg-page) 3%, transparent) 89%,
+    color-mix(in srgb, var(--bg-page) 80%, transparent) 22%,
+    color-mix(in srgb, var(--bg-page) 55%, var(--seam-dark) 15%) 38%,
+    color-mix(in srgb, var(--seam-dark) 60%, transparent) 55%,
+    color-mix(in srgb, var(--seam-dark) 35%, transparent) 72%,
+    color-mix(in srgb, var(--seam-dark) 14%, transparent) 88%,
     transparent 100%
   );
 }
