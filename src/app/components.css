@@ -2308,7 +2308,7 @@
      than a faint texture, so the board the robot runs on shows through all
      three sections. */
   background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260' viewBox='0 0 260 260'%3E%3Cg fill='none' stroke='%23ff3b33' stroke-opacity='0.22' stroke-width='2.5'%3E%3Cpath d='M0 46 H100 V10 H260'/%3E%3Cpath d='M0 134 H60 V180 H150 V214 H260'/%3E%3Cpath d='M40 260 V206 H110 V134'/%3E%3Cpath d='M180 0 V54 H260'/%3E%3C/g%3E%3Cg fill='%23ff3b33' fill-opacity='0.4'%3E%3Ccircle cx='100' cy='46' r='3.5'/%3E%3Ccircle cx='100' cy='10' r='3.5'/%3E%3Ccircle cx='60' cy='134' r='3.5'/%3E%3Ccircle cx='60' cy='180' r='3.5'/%3E%3Ccircle cx='150' cy='180' r='3.5'/%3E%3Ccircle cx='150' cy='214' r='3.5'/%3E%3Ccircle cx='40' cy='206' r='3.5'/%3E%3Ccircle cx='110' cy='206' r='3.5'/%3E%3Ccircle cx='180' cy='54' r='3.5'/%3E%3C/g%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='560' height='560' viewBox='0 0 560 560'%3E%3Cg fill='none' stroke='%23ff3b33' stroke-opacity='0.2' stroke-width='2.5'%3E%3Cpath d='M0 96 H190 V40 H560'/%3E%3Cpath d='M120 560 V430 H340 V330 H560'/%3E%3C/g%3E%3Cg fill='%23ff3b33' fill-opacity='0.38'%3E%3Ccircle cx='190' cy='96' r='4'/%3E%3Ccircle cx='190' cy='40' r='4'/%3E%3Ccircle cx='340' cy='430' r='4'/%3E%3Ccircle cx='340' cy='330' r='4'/%3E%3C/g%3E%3C/svg%3E"),
     radial-gradient(
       58% 20% at 88% 25%,
       rgba(255, 59, 51, 0.1) 0%,
@@ -2754,7 +2754,9 @@
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.05em;
-  color: rgba(217, 43, 34, 0.08);
+  /* 8% of the light-mode red vanished entirely once the band went black.
+     The brighter dark-band red, carried far enough to read as a number. */
+  color: rgba(255, 59, 51, 0.22);
   /* Lifted off the strip: centred exactly, the digits sat inside the lines of
      type and the years became hard to read. */
   transform: translateY(-9%);
