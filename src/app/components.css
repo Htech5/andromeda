@@ -2308,7 +2308,7 @@
      than a faint texture, so the board the robot runs on shows through all
      three sections. */
   background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='560' height='560' viewBox='0 0 560 560'%3E%3Cg fill='none' stroke='%23ff3b33' stroke-opacity='0.2' stroke-width='2.5'%3E%3Cpath d='M0 96 H190 V40 H560'/%3E%3Cpath d='M120 560 V430 H340 V330 H560'/%3E%3C/g%3E%3Cg fill='%23ff3b33' fill-opacity='0.38'%3E%3Ccircle cx='190' cy='96' r='4'/%3E%3Ccircle cx='190' cy='40' r='4'/%3E%3Ccircle cx='340' cy='430' r='4'/%3E%3Ccircle cx='340' cy='330' r='4'/%3E%3C/g%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='820' height='820' viewBox='0 0 820 820'%3E%3Cg fill='none' stroke='%23ff3b33' stroke-opacity='0.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke-width='2' d='M0 104 H150 l40 40 H372 l40 -40 H820'/%3E%3Cpath stroke-width='3.5' d='M0 574 H246 l44 -44 H470 l44 44 H820'/%3E%3Cpath stroke-width='2' d='M586 0 V178 l44 44 V468 l-44 44 V820'/%3E%3Cpath stroke-width='2.5' d='M268 742 V668 l-38 -38 V520'/%3E%3Cpath stroke-width='3' d='M820 712 H690 l-40 -40 H520'/%3E%3Cpath stroke-width='2' d='M86 326 l36 36 H190'/%3E%3C/g%3E%3Cg fill='%23ff3b33' fill-opacity='0.36'%3E%3Ccircle cx='268' cy='742' r='4.5'/%3E%3Ccircle cx='230' cy='520' r='4'/%3E%3Ccircle cx='520' cy='672' r='5'/%3E%3Ccircle cx='86' cy='326' r='3.5'/%3E%3Ccircle cx='190' cy='362' r='4'/%3E%3C/g%3E%3Cg fill='none' stroke='%23ff3b33' stroke-opacity='0.26' stroke-width='2'%3E%3Ccircle cx='712' cy='250' r='6'/%3E%3Ccircle cx='352' cy='610' r='5'/%3E%3C/g%3E%3C/svg%3E"),
     radial-gradient(
       58% 20% at 88% 25%,
       rgba(255, 59, 51, 0.1) 0%,
