@@ -1824,6 +1824,13 @@
 .robotShot {
   position: relative;
   margin: 0;
+  overflow: hidden;
+  border-radius: var(--radius);
+  /* The render is a dark navy silhouette: on the band's near-black ground
+     it needs a plate under it or it reads as nothing at all. Same subtle
+     wash .caps__frame uses on the same background. */
+  background: rgba(255, 255, 255, 0.045);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07);
 }
 
 /* Sits in the middle of the silhouette, which is dark enough to carry it. */
@@ -2290,34 +2297,31 @@
    either join would show as a line against any other colour. */
 .lightRun {
   position: relative;
-  /* Every radial is held clear of the top and bottom edges. One that reached
-     an edge tinted it, and the neighbour it meets there fades from plain
-     --bg-page: the difference showed as a hard line across the join. */
+  /* Same black-and-red recipe as .capsBand, so robot / team / achievements
+     read as a continuation of "Our Capability" instead of a cut back to
+     paper. */
   background:
     radial-gradient(
       58% 20% at 88% 25%,
-      rgba(217, 43, 34, 0.08) 0%,
+      rgba(255, 59, 51, 0.1) 0%,
       transparent 72%
     ),
     radial-gradient(
       54% 22% at 6% 55%,
-      rgba(217, 43, 34, 0.06) 0%,
+      rgba(255, 59, 51, 0.08) 0%,
       transparent 74%
     ),
     radial-gradient(
       54% 16% at 82% 72%,
-      rgba(217, 43, 34, 0.05) 0%,
+      rgba(255, 59, 51, 0.07) 0%,
       transparent 76%
     ),
     linear-gradient(
-      180deg,
-      var(--bg-page) 0%,
-      var(--bg-page) 7%,
-      #f7efed 28%,
-      #f6eae8 56%,
-      #f7eeec 82%,
-      var(--bg-page) 95%,
-      var(--bg-page) 100%
+      177deg,
+      var(--seam-dark) 0%,
+      #150f0e 30%,
+      #121212 70%,
+      var(--seam-dark) 100%
     );
 }
 
