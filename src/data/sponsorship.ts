@@ -18,15 +18,17 @@ export const tiers: Tier[] = [
 
 export const benefits: { label: string; tiers: boolean[] }[] = [
   { label: "Nama perusahaan di tim", tiers: [false, false, false, false, true] },
-  { label: "Logo pada robot", tiers: [false, true, true, true, true] },
-  { label: "Hak eksklusif research article", tiers: [false, false, false, false, true] },
+  { label: "Logo pada robot", tiers: [false, false, true, true, true] },
+  { label: "Hak eksklusif pada research article", tiers: [false, false, false, false, true] },
   { label: "Pembuatan video konten khusus", tiers: [false, false, true, true, true] },
-  { label: "Laporan progres bulanan", tiers: [false, false, false, true, true] },
+  { label: "Logo pada box storage & robot", tiers: [false, true, true, true, true] },
   { label: "Iklan khusus", tiers: [false, false, false, false, true] },
-  { label: "Logo pada jaket", tiers: [false, true, true, true, true] },
-  { label: "Logo pada baju", tiers: [false, true, true, true, true] },
-  { label: "Logo di postingan media sosial", tiers: [true, true, true, true, true] },
-  { label: "Logo pada banner tim", tiers: [false, false, false, true, true] },
+  { label: "Logo pada website", tiers: [true, true, true, true, true] },
+  { label: "Logo pada LinkedIn", tiers: [false, true, true, true, true] },
+  { label: "Logo media sosial", tiers: [true, true, true, true, true] },
+  { label: "Logo pada banner suporteran tim", tiers: [false, false, true, true, true] },
+  { label: "Laporan pertanggungjawaban penggunaan dana", tiers: [true, true, true, true, true] },
+  { label: "Laporan hasil sponsorship", tiers: [true, true, true, true, true] },
 ];
 
 export const budget = [
