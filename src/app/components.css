@@ -797,7 +797,7 @@
    floor is what does the work here; the ceiling is unchanged. */
 .sky::before {
   --dir: to bottom;
-  --fade: var(--bg-page);
+  --fade: var(--seam-dark);
   top: 0;
   height: clamp(11rem, 26vh, 16rem);
 }
@@ -1819,18 +1819,31 @@
   width: 100%;
   height: auto;
   display: block;
+  position: relative;
+  z-index: 1;
+  /* The render is a dark navy silhouette: lifted a touch so it separates
+     from the band's near-black ground without boxing it in a card. */
+  filter: brightness(1.14) contrast(1.06);
 }
 
 .robotShot {
   position: relative;
   margin: 0;
-  overflow: hidden;
-  border-radius: var(--radius);
-  /* The render is a dark navy silhouette: on the band's near-black ground
-     it needs a plate under it or it reads as nothing at all. Same subtle
-     wash .caps__frame uses on the same background. */
-  background: rgba(255, 255, 255, 0.045);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+}
+
+/* Soft light pooled behind the render, no visible edge: the plate a studio
+   shot sits on, without reading as a card. */
+.robotShot::before {
+  content: "";
+  position: absolute;
+  inset: -8%;
+  z-index: 0;
+  background: radial-gradient(
+    60% 55% at 50% 48%,
+    rgba(255, 59, 51, 0.16) 0%,
+    transparent 70%
+  );
+  filter: blur(40px);
 }
 
 /* Sits in the middle of the silhouette, which is dark enough to carry it. */
@@ -2011,12 +2024,14 @@
    hero and at the shared section scale it read like a label on a list. Stacked
    instead of inline, at display scale, so "CAPABILITY" lands as the statement
    and "OUR" sits above it as the quieter half of the same phrase. */
-.capsBand .sectionHead {
+.capsBand .sectionHead,
+.lightRun .sectionHead {
   display: block;
   margin-bottom: clamp(1.75rem, 4vw, 3.25rem);
 }
 
-.capsBand .sectionTitle {
+.capsBand .sectionTitle,
+.lightRun .sectionTitle {
   font-size: clamp(2.6rem, 7.6vw, 5.5rem);
   font-weight: 800;
   letter-spacing: -0.035em;
@@ -2027,8 +2042,11 @@
 }
 
 /* Drawn, not stated: the same red line the rows are joined with, arriving
-   under the head when the head does. */
-.capsBand .sectionTitle::after {
+   under the head when the head does. Shared by every dark-band section so
+   M31 Enterprise, Andromeda Team and Achievement read as one typographic
+   voice with Our Capability instead of the plain inline default. */
+.capsBand .sectionTitle::after,
+.lightRun .sectionTitle::after {
   content: "";
   display: block;
   width: min(14rem, 60%);
@@ -2038,45 +2056,32 @@
   transform-origin: 0 50%;
 }
 
-.js .capsBand .sectionTitle::after {
+.js .capsBand .sectionTitle::after,
+.js .lightRun .sectionTitle::after {
   transform: scaleX(0);
   transition: transform 0.9s var(--ease) 0.15s;
 }
 
-.js .capsBand .reveal.is-visible .sectionTitle::after {
+.js .capsBand .reveal.is-visible .sectionTitle::after,
+.js .lightRun .reveal.is-visible .sectionTitle::after {
   transform: scaleX(1);
 }
 
-/* The band dissolves into the page ground instead of cutting to it: the
-   section below is light. Same eased ramp as .sky, for the same reason — a
-   straight fade is still dropping where it stops and that slope shows as a
-   seam. */
-/* A straight black-to-grey alpha ramp has no hue in it at all — fading a
-   neutral --bg-page down over flat black only ever passes through greys, so
-   however smooth the math is, it reads as a flat fog bank laid over the
-   page rather than a dissolve. Routing the middle of the ramp through the
-   band's own warm maroon (picked up from .capsBand's now-matching bottom
-   edge) gives the eye a colour to follow instead of a value-only wipe, and
-   the taller height spreads the jump in lightness over more scroll. */
-.capsBand::after {
-  content: "";
-  position: absolute;
-  inset-inline: 0;
-  bottom: 0;
-  height: clamp(7rem, 18vh, 14rem);
-  z-index: 1;
-  pointer-events: none;
-  background: linear-gradient(
-    to top,
-    var(--bg-page) 0%,
-    var(--bg-page) 6%,
-    color-mix(in srgb, var(--bg-page) 80%, transparent) 22%,
-    color-mix(in srgb, var(--bg-page) 55%, var(--seam-dark) 15%) 38%,
-    color-mix(in srgb, var(--seam-dark) 60%, transparent) 55%,
-    color-mix(in srgb, var(--seam-dark) 35%, transparent) 72%,
-    color-mix(in srgb, var(--seam-dark) 14%, transparent) 88%,
-    transparent 100%
-  );
+/* No fade layer here anymore: .lightRun now runs the same black-and-red as
+   this band and starts at the same var(--seam-dark), so the two already
+   meet flat with nothing to dissolve. */
+
+/* Team keeps its centred head — the face lanes bracket it symmetrically —
+   so the shared block/stacked title above gets re-centred here instead of
+   left. */
+.section--stats .sectionTitle {
+  margin-inline: auto;
+  text-align: center;
+}
+
+.section--stats .sectionTitle::after {
+  margin-inline: auto;
+  transform-origin: 50% 50%;
 }
 
 /* Three capabilities, one section. The site this follows gave each of them a
@@ -2299,8 +2304,11 @@
   position: relative;
   /* Same black-and-red recipe as .capsBand, so robot / team / achievements
      read as a continuation of "Our Capability" instead of a cut back to
-     paper. */
+     paper. A tiled PCB-trace vector rides on top, thick and legible rather
+     than a faint texture, so the board the robot runs on shows through all
+     three sections. */
   background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260' viewBox='0 0 260 260'%3E%3Cg fill='none' stroke='%23ff3b33' stroke-opacity='0.22' stroke-width='2.5'%3E%3Cpath d='M0 46 H100 V10 H260'/%3E%3Cpath d='M0 134 H60 V180 H150 V214 H260'/%3E%3Cpath d='M40 260 V206 H110 V134'/%3E%3Cpath d='M180 0 V54 H260'/%3E%3C/g%3E%3Cg fill='%23ff3b33' fill-opacity='0.4'%3E%3Ccircle cx='100' cy='46' r='3.5'/%3E%3Ccircle cx='100' cy='10' r='3.5'/%3E%3Ccircle cx='60' cy='134' r='3.5'/%3E%3Ccircle cx='60' cy='180' r='3.5'/%3E%3Ccircle cx='150' cy='180' r='3.5'/%3E%3Ccircle cx='150' cy='214' r='3.5'/%3E%3Ccircle cx='40' cy='206' r='3.5'/%3E%3Ccircle cx='110' cy='206' r='3.5'/%3E%3Ccircle cx='180' cy='54' r='3.5'/%3E%3C/g%3E%3C/svg%3E"),
     radial-gradient(
       58% 20% at 88% 25%,
       rgba(255, 59, 51, 0.1) 0%,
@@ -2799,12 +2807,16 @@
 
 .road__stop {
   position: relative;
-  opacity: 0.32;
+  /* Tuned against dark ink on light paper; raised now that the band is
+     near-black, or the un-stepped-to stops (most of the strip at rest)
+     nearly disappear — the year most of all, since it carries no other
+     weight to hold it up. */
+  opacity: 0.55;
   transition: opacity 0.45s var(--ease);
 }
 
 .road__stop[data-state="past"] {
-  opacity: 0.6;
+  opacity: 0.78;
 }
 
 .road__stop[data-state="now"] {
@@ -2817,6 +2829,7 @@
 
 .road__year {
   font-size: 1.4rem;
+  font-weight: 700;
   line-height: 1;
   letter-spacing: -0.02em;
   color: var(--ink);
