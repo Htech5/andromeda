@@ -11,7 +11,6 @@
   --pc-ink: #ffffff;
   --pc-red: #ff3b33;
   --pc-deep: #0b0b0b;
-  --pc-panel: #15100f;
   --pc-line: rgba(255, 255, 255, 0.22);
 
   display: grid;
@@ -21,36 +20,34 @@
 
 /* ---------- HUD ---------- */
 
+/* No rules and no dividers: the three readings carry themselves at this size,
+   and the lines were drawing a table around something that is not one. */
 .hud {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--pc-step);
+  gap: clamp(1rem, 3vw, 2rem);
   margin: 0;
-  padding: clamp(0.75rem, 2vw, 1.1rem) 0;
-  border-block: var(--pc-step) solid var(--pc-red);
   text-align: center;
-}
-
-.hud__cell + .hud__cell {
-  border-left: 2px solid var(--pc-line);
 }
 
 .hud dt {
   font-family: var(--font-pixel), var(--font-mono), monospace;
-  font-size: clamp(0.45rem, 1.3vw, 0.56rem);
+  font-size: clamp(0.56rem, 1.7vw, 0.78rem);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--pc-red);
 }
 
 .hud dd {
-  margin: 0.55rem 0 0;
+  margin: 0.8rem 0 0;
   font-family: var(--font-pixel), var(--font-mono), monospace;
-  font-size: clamp(0.9rem, 2.6vw, 1.35rem);
+  font-size: clamp(1.4rem, 4.6vw, 2.6rem);
   line-height: 1;
   color: var(--pc-ink);
   /* The cabinet's phosphor bleed, one pixel step down and to the right. */
-  text-shadow: var(--pc-step) var(--pc-step) 0 rgba(255, 59, 51, 0.45);
+  text-shadow:
+    var(--pc-step) var(--pc-step) 0 rgba(255, 59, 51, 0.5),
+    calc(var(--pc-step) * 2) calc(var(--pc-step) * 2) 0 rgba(255, 59, 51, 0.2);
 }
 
 /* ---------- the boxed figure ---------- */
@@ -109,11 +106,11 @@
   );
 }
 
+/* min-width: 0 on every grid child that holds unbreakable type. A grid item
+   defaults to min-width: auto, so a row of nowrap text widens the item past
+   its track and straight through the side of the box. */
 .fbox__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.4em;
+  min-width: 0;
   padding: calc(var(--fb-w) * 0.028) calc(var(--fb-w) * 0.035);
   background: var(--pc-red);
   color: var(--pc-deep);
@@ -122,24 +119,27 @@
 .fbox__brand,
 .fbox__rank {
   font-family: var(--font-pixel), var(--font-mono), monospace;
-  font-size: calc(var(--fb-w) * 0.04);
   line-height: 1;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  /* Neither of these may wrap: they are printed on a band, and a second line
-     would break out of it. The brand yields first if the box is narrow. */
+  /* Printed on a band, so a second line would break out of it. */
   white-space: nowrap;
 }
 
 .fbox__brand {
-  overflow: hidden;
-  text-overflow: clip;
-  min-width: 0;
+  display: block;
+  font-size: calc(var(--fb-w) * 0.05);
+  text-align: center;
 }
 
+/* Top-left of the window, over the plastic. */
 .fbox__rank {
-  flex: none;
-  padding: 0.25em 0.4em;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  padding: 0.45em 0.6em;
+  font-size: calc(var(--fb-w) * 0.042);
   background: var(--pc-deep);
   color: var(--pc-red);
 }
@@ -216,7 +216,8 @@
    dropped on top of the role in absolute position. */
 .fbox__foot {
   display: grid;
-  grid-template-columns: 1fr auto;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-content: start;
   align-items: end;
   column-gap: calc(var(--fb-w) * 0.04);
@@ -225,6 +226,7 @@
 
 .fbox__name {
   grid-column: 1;
+  min-width: 0;
   font-size: calc(var(--fb-w) * 0.072);
   font-weight: 600;
   line-height: 1.2;
@@ -233,6 +235,7 @@
 
 .fbox__role {
   grid-column: 1;
+  min-width: 0;
   font-family: var(--font-mono);
   font-size: calc(var(--fb-w) * 0.042);
   letter-spacing: 0.1em;
@@ -365,37 +368,23 @@
   justify-self: center;
 }
 
+/* No panel behind a division any more: the boxes sit straight on the page,
+   centred. The clip-path went with the background — it had nothing left to
+   shape and would have cut the spines off the boxes that lean past it. */
 .world {
   display: grid;
   gap: clamp(1.25rem, 3vw, 2rem);
-  padding: clamp(1.5rem, 4vw, 2.5rem);
-  background: var(--pc-panel);
-  /* Same notch as the cards, two steps larger, so the panel reads as the same
-     resolution as the things inside it. */
-  clip-path: polygon(
-    calc(var(--pc-step) * 4) 0,
-    calc(100% - var(--pc-step) * 4) 0,
-    100% calc(var(--pc-step) * 4),
-    100% calc(100% - var(--pc-step) * 4),
-    calc(100% - var(--pc-step) * 4) 100%,
-    calc(var(--pc-step) * 4) 100%,
-    0 calc(100% - var(--pc-step) * 4),
-    0 calc(var(--pc-step) * 4)
-  );
 }
 
 .world__head {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
+  justify-content: center;
   gap: 0.75rem 1rem;
   padding-bottom: clamp(0.75rem, 2vw, 1rem);
   border-bottom: 2px solid var(--pc-line);
-}
-
-.world--flip .world__head {
-  justify-content: flex-end;
-  text-align: right;
+  text-align: center;
 }
 
 .world__stage {
@@ -418,29 +407,21 @@
 }
 
 .world__lead {
-  justify-self: start;
-}
-
-.world--flip .world__lead {
-  justify-self: end;
+  justify-self: center;
 }
 
 /* Fixed columns rather than 1fr: a division with two members should show two
-   cards at card width, not two cards stretched across nine columns. The row
-   then packs to whichever side the panel is leaning. */
+   boxes at box width, not two boxes stretched across nine columns. The row
+   then centres on the page like the rest of the division. */
 .world__crew {
   display: grid;
   grid-template-columns: repeat(auto-fill, 152px);
-  justify-content: start;
+  justify-content: center;
   gap: clamp(1.25rem, 3vw, 2rem);
   margin: 0;
   padding-top: clamp(1rem, 2.5vw, 1.5rem);
   border-top: 2px solid var(--pc-line);
   list-style: none;
-}
-
-.world--flip .world__crew {
-  justify-content: end;
 }
 
 .world__crew > li {
@@ -483,8 +464,9 @@
 
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 0.22em;
+  text-align: center;
   margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
   font-family: var(--font-pixel), var(--font-display), monospace;
   font-size: clamp(1.35rem, 6.2vw, 3.6rem);
@@ -513,14 +495,4 @@
     calc(var(--at-step) * 6) calc(var(--at-step) * 6) 0 var(--at-edge);
 }
 
-/* The second word steps in, the way a stacked arcade logo sets its lines
-   against each other instead of flush. */
-.atitle__line--two {
-  margin-left: 1.8em;
-}
 
-@media (max-width: 560px) {
-  .atitle__line--two {
-    margin-left: 0.9em;
-  }
-}

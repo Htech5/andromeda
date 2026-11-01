@@ -67,10 +67,13 @@ function Card({
         <div className="fbox__face">
           <div className="fbox__header">
             <span className="fbox__brand">Andromeda</span>
-            <span className="fbox__rank">{RANK_LABEL[rank]}</span>
           </div>
 
           <div className="fbox__window">
+            {/* The rank is a sticker on the blister, not a second item in the
+                brand band: the band is too narrow to hold both at a size
+                either can be read at. */}
+            <span className="fbox__rank">{RANK_LABEL[rank]}</span>
             {person.photo ? (
               <Image
                 className="fbox__photo"
@@ -162,8 +165,10 @@ export default function TeamRoster() {
             <Reveal
               as="section"
               key={division.name}
-              className={`world${(b + d) % 2 === 1 ? " world--flip" : ""}`}
+              className="world"
               delay={d * 80}
+              /* Divisions still enter from alternating sides; only the layout
+                 stopped mirroring. */
               variant={(b + d) % 2 === 1 ? "right" : "left"}
             >
               <header className="world__head">
