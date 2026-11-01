@@ -6,10 +6,21 @@ import TeamChart from "@/components/TeamChart";
 import Reveal from "@/components/Reveal";
 import { site } from "@/data/site";
 
+const description =
+  "Susunan pengurus tim Andromeda Robotis Universitas Diponegoro untuk KSTI 2026: leader, manajer, kepala divisi, dan staf.";
+
 export const metadata: Metadata = {
-  title: `Struktur tim — ${site.wordmark}`,
-  description:
-    "Susunan pengurus tim Andromeda Robotis Universitas Diponegoro untuk KSTI 2026: leader, manajer, kepala divisi, dan staf.",
+  title: "Struktur tim",
+  description,
+  alternates: { canonical: "/team" },
+  openGraph: {
+    type: "website",
+    locale: "id_ID",
+    url: `${site.url}/team`,
+    siteName: site.wordmark,
+    title: `Struktur tim — ${site.wordmark}`,
+    description,
+  },
 };
 
 export default function TeamPage() {

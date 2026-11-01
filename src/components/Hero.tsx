@@ -14,7 +14,16 @@ export default function Hero() {
 
       <div className="hero__inner shell">
         <div className="hero__text">
-          <h1 className="hero__title">{site.wordmark}</h1>
+          {/* The visible half stays the wordmark. The rest is read by screen
+              readers and search engines, which otherwise see a one-word h1
+              with no subject in it. Both halves are true of this page. */}
+          <h1 className="hero__title">
+            {site.wordmark}
+            <span className="srOnly">
+              {" "}
+              — tim robot Search and Rescue Universitas Diponegoro
+            </span>
+          </h1>
           <p className="mono hero__tagline">{site.tagline}</p>
           <p className="hero__lede">
             Berdiri 2011 dengan robot pemadam api, sejak 2022 Andromeda beralih

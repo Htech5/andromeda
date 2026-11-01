@@ -6,7 +6,7 @@ export const site = {
   platform: "M31 ENTERPRISE — LEGGED SAR",
   description:
     "Andromeda Robotis Universitas Diponegoro membangun legged robot otonom M31 Enterprise untuk kategori Search and Rescue KSTI 2026.",
-  url: "https://andromeda.vercel.app",
+  url: "https://andromedaundip.org",
   email: "undip.ews.andromeda@gmail.com",
   phone: "+62 895-6201-31429",
   phoneHref: "62895620131429",
