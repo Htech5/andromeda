@@ -14,8 +14,8 @@ pillow_heif.register_heif_opener()
 
 SRC = Path(sys.argv[1])
 OUT = Path(__file__).resolve().parent.parent / "public" / "images" / "gallery"
-HEIGHT = 1100
-QUALITY = 80
+HEIGHT = 700
+QUALITY = 76
 
 OUT.mkdir(parents=True, exist_ok=True)
 n = 0

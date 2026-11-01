@@ -27,8 +27,8 @@ export default function Page() {
         {/* The three light sections share one warm band, so the run from the
             robot to the achievements reads as a single stretch of paper
             rather than three white sections stacked. */}
-        <div className="lightRun onDark">
         <Gallery />
+        <div className="lightRun onDark">
         <RobotArchitecture />
         <section className="section section--stats shell" id="team">
           <div className="statsDeco" aria-hidden="true" />

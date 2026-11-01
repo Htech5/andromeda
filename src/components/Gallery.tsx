@@ -9,6 +9,12 @@ import { gallery } from "@/data/gallery";
  *
  * `captureWheel` is off on purpose — the page scrolls under Lenis, and letting
  * the carousel eat a vertical wheel would trap the reader inside it.
+ *
+ * Two settings are off for weight, not for looks. `autoplay` holds the frame
+ * loop open for as long as the row is on screen; without it the carousel
+ * sleeps between gestures. `dispersion` runs a twelve-tap sample per pixel
+ * along the bent edge, the most expensive thing the shader does, and the bend
+ * reads fine without the rainbow split.
  */
 export default function Gallery() {
   return (
@@ -21,8 +27,7 @@ export default function Gallery() {
         gap={14}
         radius={4}
         squeeze={0.2}
-        autoplay
-        interval={4}
+        dispersion={0}
         captions={false}
         captureWheel={false}
       />

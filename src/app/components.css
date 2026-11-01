@@ -3094,17 +3094,25 @@
 
 /* ---------- gallery ---------- */
 
-/* Full-bleed inside the light run: the carousel draws its own row and bends
-   it past the gutter, so a shell here would only clip the ends. The height is
-   the only thing it needs from us, since the canvas fills its container.
+/* Its own band between .capsBand and .lightRun, full-bleed: the carousel
+   draws its row and bends it past the gutter, so a shell here would only clip
+   the ends.
 
-   No margin, deliberately. As the run's first child a top margin collapses
-   out of .lightRun and pushes the whole band down, which opens a strip of
-   bare page between the capability band and this one. The space above is
-   .capsBand's own padding-bottom and the space below is the robot section's
-   padding-top, so both joins stay on one continuous dark surface. */
+   Flat --seam-dark, which is exactly the colour .capsBand ends on and exactly
+   the colour .lightRun starts on, so both joins land on the same value and
+   neither shows as a line. Plain on purpose: the run's PCB trace would read as
+   clutter behind photographs, and the photographs are the subject here.
+
+   Padding on both sides, never margin. A margin between these two bands
+   collapses and opens a strip of bare page between them; padding is inside the
+   band, so the gaps up to the capability rows and down to the robot section
+   stay dark. content-box keeps that padding off the canvas, which takes its
+   size from the height above. */
 .gallery {
   position: relative;
-  height: clamp(340px, 52vh, 560px);
+  box-sizing: content-box;
+  height: clamp(440px, 68vh, 760px);
+  padding-block: clamp(5rem, 12vh, 9rem);
   margin-block: 0;
+  background: var(--seam-dark);
 }
