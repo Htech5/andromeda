@@ -3091,3 +3091,15 @@
 .dock__glyph {
   display: block;
 }
+
+/* ---------- gallery ---------- */
+
+/* Full-bleed inside the light run: the carousel draws its own row and bends
+   it past the gutter, so a shell here would only clip the ends. The height is
+   the only thing it needs from us, since the canvas fills its container. */
+.gallery {
+  position: relative;
+  height: clamp(340px, 52vh, 560px);
+  padding-block: 0;
+  margin-block: clamp(2rem, 6vw, 4.5rem) clamp(1rem, 3vw, 2rem);
+}

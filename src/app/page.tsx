@@ -2,6 +2,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Capability from "@/components/Capability";
+import Gallery from "@/components/Gallery";
 import RobotArchitecture from "@/components/RobotArchitecture";
 import StatsRow from "@/components/StatsRow";
 import TeamFaces from "@/components/TeamFaces";
@@ -27,6 +28,7 @@ export default function Page() {
             robot to the achievements reads as a single stretch of paper
             rather than three white sections stacked. */}
         <div className="lightRun onDark">
+        <Gallery />
         <RobotArchitecture />
         <section className="section section--stats shell" id="team">
           <div className="statsDeco" aria-hidden="true" />
