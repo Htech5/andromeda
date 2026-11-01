@@ -17,7 +17,7 @@ export default function Gallery() {
         items={gallery}
         preset="liquid"
         intro="rise"
-        cardHeight={0.62}
+        cardHeight={0.74}
         gap={14}
         radius={4}
         squeeze={0.2}

@@ -3096,10 +3096,15 @@
 
 /* Full-bleed inside the light run: the carousel draws its own row and bends
    it past the gutter, so a shell here would only clip the ends. The height is
-   the only thing it needs from us, since the canvas fills its container. */
+   the only thing it needs from us, since the canvas fills its container.
+
+   No margin, deliberately. As the run's first child a top margin collapses
+   out of .lightRun and pushes the whole band down, which opens a strip of
+   bare page between the capability band and this one. The space above is
+   .capsBand's own padding-bottom and the space below is the robot section's
+   padding-top, so both joins stay on one continuous dark surface. */
 .gallery {
   position: relative;
   height: clamp(340px, 52vh, 560px);
-  padding-block: 0;
-  margin-block: clamp(2rem, 6vw, 4.5rem) clamp(1rem, 3vw, 2rem);
+  margin-block: 0;
 }
