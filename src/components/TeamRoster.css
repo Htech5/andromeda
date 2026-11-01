@@ -1,0 +1,429 @@
+/* ---------- team roster: arcade character select ---------- */
+
+/* Scoped to /team. The rest of the site keeps its own quieter language; this
+   page is the one place the cabinet comes out.
+
+   --pc-step is the pixel unit. Every notch, border and block shadow is a
+   multiple of it, so the whole screen reads as one grid resolution instead of
+   a pile of unrelated radii. */
+.roster {
+  --pc-step: 4px;
+  --pc-ink: #ffffff;
+  --pc-red: #ff3b33;
+  --pc-deep: #0b0b0b;
+  --pc-panel: #15100f;
+  --pc-line: rgba(255, 255, 255, 0.22);
+
+  display: grid;
+  gap: clamp(3rem, 7vw, 5.5rem);
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+}
+
+/* ---------- HUD ---------- */
+
+.hud {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--pc-step);
+  margin: 0;
+  padding: clamp(0.75rem, 2vw, 1.1rem) 0;
+  border-block: var(--pc-step) solid var(--pc-red);
+  text-align: center;
+}
+
+.hud__cell + .hud__cell {
+  border-left: 2px solid var(--pc-line);
+}
+
+.hud dt {
+  font-family: var(--font-pixel), var(--font-mono), monospace;
+  font-size: clamp(0.45rem, 1.3vw, 0.56rem);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pc-red);
+}
+
+.hud dd {
+  margin: 0.55rem 0 0;
+  font-family: var(--font-pixel), var(--font-mono), monospace;
+  font-size: clamp(0.9rem, 2.6vw, 1.35rem);
+  line-height: 1;
+  color: var(--pc-ink);
+  /* The cabinet's phosphor bleed, one pixel step down and to the right. */
+  text-shadow: var(--pc-step) var(--pc-step) 0 rgba(255, 59, 51, 0.45);
+}
+
+/* ---------- card ---------- */
+
+.pcard {
+  display: grid;
+  justify-items: center;
+  gap: 0.3rem;
+  text-align: center;
+}
+
+.pcard__meta {
+  display: grid;
+  gap: 0.3rem;
+  justify-items: inherit;
+}
+
+/* The three senior tiers run as a horizontal plate: portrait, then a vertical
+   rank tab, then the name. It is how a select screen presents the character
+   you are on, and it stops a single card from leaving half a panel empty. */
+.pcard--player,
+.pcard--manager,
+.pcard--lead {
+  grid-template-columns: auto auto;
+  align-items: center;
+  justify-items: start;
+  gap: clamp(1rem, 3vw, 1.75rem);
+  text-align: left;
+}
+
+.pcard--player .pcard__frame,
+.pcard--manager .pcard__frame,
+.pcard--lead .pcard__frame {
+  margin-bottom: 0;
+}
+
+/* The rank reads down the gutter between portrait and name, the way a cabinet
+   labels the slot rather than the player. */
+.pcard--player .pcard__rank,
+.pcard--manager .pcard__rank,
+.pcard--lead .pcard__rank {
+  writing-mode: vertical-rl;
+  padding: 0.6em 0.45em;
+  background: var(--pc-red);
+  color: var(--pc-deep);
+}
+
+.pcard--player .pcard__meta,
+.pcard--manager .pcard__meta,
+.pcard--lead .pcard__meta {
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: clamp(0.75rem, 2vw, 1.1rem);
+}
+
+.pcard--player .pcard__name,
+.pcard--manager .pcard__name,
+.pcard--lead .pcard__name {
+  grid-column: 2;
+  max-width: 14ch;
+}
+
+.pcard--player .pcard__role,
+.pcard--manager .pcard__role,
+.pcard--lead .pcard__role {
+  grid-column: 2;
+  grid-row: 2;
+  align-self: start;
+  max-width: 22ch;
+}
+
+/* The vertical tab spans both text rows. */
+.pcard--player .pcard__rank,
+.pcard--manager .pcard__rank,
+.pcard--lead .pcard__rank {
+  grid-row: 1 / span 2;
+  align-self: stretch;
+  display: grid;
+  place-items: center;
+}
+
+@media (max-width: 560px) {
+  .pcard--player,
+  .pcard--manager,
+  .pcard--lead {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .pcard--player .pcard__rank,
+  .pcard--manager .pcard__rank,
+  .pcard--lead .pcard__rank {
+    writing-mode: horizontal-tb;
+    grid-row: auto;
+  }
+
+  .pcard--player .pcard__meta,
+  .pcard--manager .pcard__meta,
+  .pcard--lead .pcard__meta {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .pcard--player .pcard__name,
+  .pcard--manager .pcard__name,
+  .pcard--lead .pcard__name,
+  .pcard--player .pcard__role,
+  .pcard--manager .pcard__role,
+  .pcard--lead .pcard__role {
+    grid-column: 1;
+    grid-row: auto;
+  }
+}
+
+/* Notched corners cut at the pixel unit: an 8-bit frame drawn in CSS rather
+   than shipped as an image, so it stays sharp at any density. */
+.pcard__frame {
+  position: relative;
+  width: var(--pc-size);
+  height: var(--pc-size);
+  margin-bottom: 0.7rem;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: linear-gradient(170deg, #ff3b33, #8f1510);
+  clip-path: polygon(
+    calc(var(--pc-step) * 2) 0,
+    calc(100% - var(--pc-step) * 2) 0,
+    100% calc(var(--pc-step) * 2),
+    100% calc(100% - var(--pc-step) * 2),
+    calc(100% - var(--pc-step) * 2) 100%,
+    calc(var(--pc-step) * 2) 100%,
+    0 calc(100% - var(--pc-step) * 2),
+    0 calc(var(--pc-step) * 2)
+  );
+  transition:
+    transform 0.18s steps(3, end),
+    filter 0.18s steps(3, end);
+}
+
+/* The block shadow lives on a wrapper pseudo-element rather than box-shadow,
+   because clip-path cuts a box-shadow off with the box. */
+.pcard__frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.55);
+  pointer-events: none;
+}
+
+.pcard__photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pcard__initials {
+  font-family: var(--font-pixel), var(--font-mono), monospace;
+  font-size: calc(var(--pc-size) * 0.2);
+  color: var(--pc-ink);
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* Comic halftone: a dot screen that only shows in the shadows, so it reads as
+   print texture rather than a pattern laid on top of a face. */
+.pcard__halftone {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  opacity: 0.14;
+  background-image: radial-gradient(
+    rgba(0, 0, 0, 0.8) 0.5px,
+    transparent 1px
+  );
+  background-size: 3px 3px;
+}
+
+.pcard__scan {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.3;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.42) 0 1px,
+    transparent 1px 3px
+  );
+}
+
+.pcard__rank {
+  font-family: var(--font-pixel), var(--font-mono), monospace;
+  font-size: clamp(0.4rem, 1.1vw, 0.5rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pc-red);
+}
+
+.pcard__name {
+  max-width: 16ch;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--pc-ink);
+}
+
+.pcard__role {
+  max-width: 18ch;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Spider-verse misregistration, and a one-step hop. Both run on steps() so
+   the motion lands on the pixel grid instead of gliding across it. */
+.pcard:hover .pcard__frame,
+.pcard:focus-within .pcard__frame {
+  transform: translate(calc(var(--pc-step) * -1), calc(var(--pc-step) * -1));
+  filter: drop-shadow(2px 0 0 rgba(255, 0, 40, 0.55))
+    drop-shadow(-2px 0 0 rgba(0, 220, 255, 0.45));
+}
+
+.pcard--player .pcard__name {
+  font-size: clamp(1.15rem, 2.6vw, 1.5rem);
+}
+
+.pcard--player .pcard__frame {
+  background: linear-gradient(170deg, #ffd45e, #d92b22 60%, #6d0f0b);
+}
+
+.pcard--crew .pcard__name {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+/* ---------- player one ---------- */
+
+.roster__player {
+  justify-self: center;
+  position: relative;
+  padding-top: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+/* The coin-op flourish above the leader: three blocks, the centre one lit. */
+.roster__player::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: calc(var(--pc-step) * 11);
+  height: var(--pc-step);
+  transform: translateX(-50%);
+  background:
+    linear-gradient(var(--pc-red) 0 0) 0 0 / calc(var(--pc-step) * 3) 100% no-repeat,
+    linear-gradient(#ffd45e 0 0) 50% 0 / calc(var(--pc-step) * 3) 100% no-repeat,
+    linear-gradient(var(--pc-red) 0 0) 100% 0 / calc(var(--pc-step) * 3) 100% no-repeat;
+}
+
+/* ---------- branch and division ---------- */
+
+.branch {
+  display: grid;
+  gap: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.branch__manager {
+  justify-self: center;
+}
+
+.world {
+  display: grid;
+  gap: clamp(1.25rem, 3vw, 2rem);
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  background: var(--pc-panel);
+  /* Same notch as the cards, two steps larger, so the panel reads as the same
+     resolution as the things inside it. */
+  clip-path: polygon(
+    calc(var(--pc-step) * 4) 0,
+    calc(100% - var(--pc-step) * 4) 0,
+    100% calc(var(--pc-step) * 4),
+    100% calc(100% - var(--pc-step) * 4),
+    calc(100% - var(--pc-step) * 4) 100%,
+    calc(var(--pc-step) * 4) 100%,
+    0 calc(100% - var(--pc-step) * 4),
+    0 calc(var(--pc-step) * 4)
+  );
+}
+
+.world__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.75rem 1rem;
+  padding-bottom: clamp(0.75rem, 2vw, 1rem);
+  border-bottom: 2px solid var(--pc-line);
+}
+
+.world--flip .world__head {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.world__stage {
+  font-family: var(--font-pixel), var(--font-mono), monospace;
+  font-size: clamp(0.45rem, 1.2vw, 0.56rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pc-deep);
+  background: var(--pc-red);
+  padding: 0.5em 0.7em;
+}
+
+.world__name {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 4.5vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--pc-ink);
+}
+
+.world__lead {
+  justify-self: start;
+}
+
+.world--flip .world__lead {
+  justify-self: end;
+}
+
+.world--flip .pcard--lead {
+  direction: rtl;
+}
+
+.world--flip .pcard--lead > * {
+  direction: ltr;
+}
+
+.world--flip .pcard--lead .pcard__meta {
+  text-align: right;
+  justify-items: end;
+}
+
+/* Fixed columns rather than 1fr: a division with two members should show two
+   cards at card width, not two cards stretched across nine columns. The row
+   then packs to whichever side the panel is leaning. */
+.world__crew {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 116px);
+  justify-content: start;
+  gap: clamp(1.25rem, 3vw, 2rem);
+  margin: 0;
+  padding-top: clamp(1rem, 2.5vw, 1.5rem);
+  border-top: 2px solid var(--pc-line);
+  list-style: none;
+}
+
+.world--flip .world__crew {
+  justify-content: end;
+}
+
+/* ---------- motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .pcard__frame {
+    transition: none;
+  }
+
+  .pcard:hover .pcard__frame,
+  .pcard:focus-within .pcard__frame {
+    transform: none;
+    filter: none;
+  }
+}

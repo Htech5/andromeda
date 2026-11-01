@@ -16,7 +16,7 @@ type Variant =
 type Props = {
   children: React.ReactNode;
   delay?: number;
-  as?: "div" | "li" | "tr";
+  as?: "div" | "li" | "tr" | "section";
   className?: string;
   variant?: Variant;
 };
