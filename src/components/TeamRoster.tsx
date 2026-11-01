@@ -27,7 +27,8 @@ function initials(name: string) {
     .toUpperCase();
 }
 
-const SIZES = { player: 190, manager: 150, lead: 150, crew: 116 } as const;
+/** Box width per tier. The window, type and side panel all scale off it. */
+const SIZES = { player: 236, manager: 196, lead: 196, crew: 152 } as const;
 
 type Rank = keyof typeof SIZES;
 
@@ -40,7 +41,15 @@ const RANK_LABEL: Record<Rank, string> = {
   crew: "Crew",
 };
 
-function Card({ person, rank }: { person: Person; rank: Rank }) {
+function Card({
+  person,
+  rank,
+  no,
+}: {
+  person: Person;
+  rank: Rank;
+  no: number;
+}) {
   const size = SIZES[rank];
   // The leader and the managers sit above the division sections, so their
   // names are second-level headings; everyone inside a division sits under
@@ -48,32 +57,59 @@ function Card({ person, rank }: { person: Person; rank: Rank }) {
   const Name = rank === "player" || rank === "manager" ? "h2" : "h3";
 
   return (
-    <article className={`pcard pcard--${rank}`}>
-      <div className="pcard__frame" style={{ "--pc-size": `${size}px` } as React.CSSProperties}>
-        {person.photo ? (
-          <Image
-            className="pcard__photo"
-            src={`/images/team/${person.photo}.webp`}
-            alt={`Potret ${person.name}`}
-            width={size}
-            height={size}
-            sizes={`${size}px`}
-          />
-        ) : (
-          <span className="pcard__initials" aria-hidden="true">
-            {initials(person.name)}
-          </span>
-        )}
-        {/* Comic halftone over the portrait, then the cabinet's scanlines over
-            everything. Both decorative, both out of the accessibility tree. */}
-        <span className="pcard__halftone" aria-hidden="true" />
-        <span className="pcard__scan" aria-hidden="true" />
-      </div>
+    <article
+      className={`fbox fbox--${rank}`}
+      style={{ "--fb-w": `${size}px` } as React.CSSProperties}
+    >
+      {/* The turned solid. Only this element is in 3D; everything inside is
+          flat on one of its two faces. */}
+      <div className="fbox__solid">
+        <div className="fbox__face">
+          <div className="fbox__header">
+            <span className="fbox__brand">Andromeda</span>
+            <span className="fbox__rank">{RANK_LABEL[rank]}</span>
+          </div>
 
-      <div className="pcard__meta">
-        <p className="pcard__rank">{RANK_LABEL[rank]}</p>
-        <Name className="pcard__name">{person.name}</Name>
-        <p className="pcard__role">{person.role}</p>
+          <div className="fbox__window">
+            {person.photo ? (
+              <Image
+                className="fbox__photo"
+                src={`/images/team/${person.photo}.webp`}
+                alt={`Potret ${person.name}`}
+                width={size}
+                height={size}
+                sizes={`${size}px`}
+              />
+            ) : (
+              <span className="fbox__initials" aria-hidden="true">
+                {initials(person.name)}
+              </span>
+            )}
+            {/* Comic halftone, cabinet scanlines, then the blister's own
+                reflection across the front. All decorative. */}
+            <span className="fbox__halftone" aria-hidden="true" />
+            <span className="fbox__scan" aria-hidden="true" />
+            <span className="fbox__sheen" aria-hidden="true" />
+          </div>
+
+          <div className="fbox__foot">
+            <Name className="fbox__name">{person.name}</Name>
+            <p className="fbox__role">{person.role}</p>
+            {/* The member's place in the roster of 26, which is what the HUD
+                counts. A real number, not packaging dressing. */}
+            <span className="fbox__no" aria-hidden="true">
+              {String(no).padStart(2, "0")}
+            </span>
+          </div>
+        </div>
+
+        {/* Printed spine. Nothing here carries meaning, so none of it is
+            text a screen reader has to wade through. */}
+        <div className="fbox__side" aria-hidden="true">
+          <span className="fbox__spine">Andromeda</span>
+          <span className="fbox__specs" />
+          <span className="fbox__code" />
+        </div>
       </div>
     </article>
   );
@@ -87,6 +123,11 @@ function stage(branch: number, division: number) {
 export default function TeamRoster() {
   const members = stats.find((s) => s.label === "Anggota")?.value ?? 0;
   const divisions = branches.reduce((n, b) => n + b.divisions.length, 0);
+
+  // One running number across the whole roster, assigned in reading order, so
+  // the figure number on each box means the same thing as the HUD's count.
+  let n = 0;
+  const next = () => (n += 1);
 
   return (
     <div className="roster">
@@ -108,13 +149,13 @@ export default function TeamRoster() {
       </dl>
 
       <Reveal className="roster__player" variant="scale">
-        <Card person={leader} rank="player" />
+        <Card person={leader} rank="player" no={next()} />
       </Reveal>
 
       {branches.map((branch, b) => (
         <section className="branch" key={branch.manager.name}>
           <Reveal className="branch__manager" variant="down">
-            <Card person={branch.manager} rank="manager" />
+            <Card person={branch.manager} rank="manager" no={next()} />
           </Reveal>
 
           {branch.divisions.map((division, d) => (
@@ -131,14 +172,14 @@ export default function TeamRoster() {
               </header>
 
               <div className="world__lead">
-                <Card person={division.head} rank="lead" />
+                <Card person={division.head} rank="lead" no={next()} />
               </div>
 
               {division.staff.length > 0 && (
                 <ol className="world__crew">
                   {division.staff.map((person) => (
                     <li key={person.name}>
-                      <Card person={person} rank="crew" />
+                      <Card person={person} rank="crew" no={next()} />
                     </li>
                   ))}
                 </ol>
