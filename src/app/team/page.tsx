@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Press_Start_2P } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import TeamDecor from "@/components/TeamDecor";
 import Footer from "@/components/Footer";
 import TeamRoster from "@/components/TeamRoster";
 import Reveal from "@/components/Reveal";
@@ -41,16 +42,19 @@ export default function TeamPage() {
       {/* Dark the whole way: the roster sits between a black nav and a black
           footer, and a light band between them would read as a seam. */}
       <main className={`subpage subpage--team onDark ${pixel.variable}`}>
-        <div className="teamDeco" aria-hidden="true" />
+        <TeamDecor />
         <section className="section shell" id="team">
           <Breadcrumbs name="Struktur tim" path="/team" />
 
           {/* h1, not the shared SectionHead: this page had no h1 at all, and
-              the page title is the one heading that should be it. */}
-          <Reveal variant="left">
-            <div className="sectionHead">
-              <h1 className="sectionTitle">Struktur tim</h1>
-            </div>
+              the page title is the one heading that should be it. The two
+              words are separate lines, and the whitespace between the spans is
+              load-bearing — without it the accessible name runs together. */}
+          <Reveal variant="scale">
+            <h1 className="atitle">
+              <span className="atitle__line">Struktur</span>{" "}
+              <span className="atitle__line atitle__line--two">Tim</span>
+            </h1>
           </Reveal>
 
           <Reveal variant="tilt">

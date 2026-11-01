@@ -427,3 +427,61 @@
     filter: none;
   }
 }
+
+/* ---------- arcade title ---------- */
+
+/* The cabinet's attract-screen logo: a light face, a hard pixel outline, and
+   a block extrude falling down-right. All of it is text-shadow, so there is no
+   image to go soft and the whole stack scales with the type.
+   --at-step is the shadow's pixel unit, in em, so the outline stays the same
+   weight relative to the letters at every size. */
+.atitle {
+  --at-step: 0.055em;
+  --at-face: #fff1ef;
+  --at-edge: #0b0b0b;
+  --at-mid: #d92b22;
+  --at-deep: #7d110c;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.22em;
+  margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+  font-family: var(--font-pixel), var(--font-display), monospace;
+  font-size: clamp(1.35rem, 6.2vw, 3.6rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: var(--at-face);
+  text-transform: uppercase;
+  /* Press Start 2P already carries the pixel grid; smoothing it fights that. */
+  -webkit-font-smoothing: none;
+  text-shadow:
+    /* outline, eight directions at one step */
+    var(--at-step) 0 0 var(--at-edge),
+    calc(var(--at-step) * -1) 0 0 var(--at-edge),
+    0 var(--at-step) 0 var(--at-edge),
+    0 calc(var(--at-step) * -1) 0 var(--at-edge),
+    var(--at-step) var(--at-step) 0 var(--at-edge),
+    calc(var(--at-step) * -1) var(--at-step) 0 var(--at-edge),
+    var(--at-step) calc(var(--at-step) * -1) 0 var(--at-edge),
+    calc(var(--at-step) * -1) calc(var(--at-step) * -1) 0 var(--at-edge),
+    /* extrude, stepping away from the face into the shadow */
+    calc(var(--at-step) * 2) calc(var(--at-step) * 2) 0 var(--at-mid),
+    calc(var(--at-step) * 3) calc(var(--at-step) * 3) 0 var(--at-mid),
+    calc(var(--at-step) * 4) calc(var(--at-step) * 4) 0 var(--at-deep),
+    calc(var(--at-step) * 5) calc(var(--at-step) * 5) 0 var(--at-deep),
+    calc(var(--at-step) * 6) calc(var(--at-step) * 6) 0 var(--at-edge);
+}
+
+/* The second word steps in, the way a stacked arcade logo sets its lines
+   against each other instead of flush. */
+.atitle__line--two {
+  margin-left: 1.8em;
+}
+
+@media (max-width: 560px) {
+  .atitle__line--two {
+    margin-left: 0.9em;
+  }
+}

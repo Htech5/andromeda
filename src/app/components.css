@@ -498,19 +498,99 @@
     linear-gradient(168deg, #121212 0%, #190c0b 58%, #250f0d 100%);
 }
 
-/* Orbit rings, off-canvas to the right so the chart keeps the centre line. */
-.teamDeco::before {
-  content: "";
+/* ---------- the web, top right ---------- */
+
+/* Sized off the viewport's long edge so the corner it hangs from is always the
+   corner, whatever the window is doing. `slice` on the SVG keeps the origin
+   pinned to the top right while the far strands run off the page. */
+.teamDeco__web {
   position: absolute;
-  top: 50%;
-  right: -22vmax;
-  width: 68vmax;
-  height: 68vmax;
-  transform: translateY(-50%);
-  opacity: 0.5;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400' fill='none' stroke='%23ff3b33' stroke-width='0.7'%3E%3Ccircle cx='200' cy='200' r='64' stroke-opacity='0.55'/%3E%3Ccircle cx='200' cy='200' r='119' stroke-opacity='0.4' stroke-dasharray='2 10'/%3E%3Ccircle cx='200' cy='200' r='168' stroke-opacity='0.3'/%3E%3Ccircle cx='200' cy='200' r='198' stroke-opacity='0.16' stroke-dasharray='1 14'/%3E%3Ccircle cx='200' cy='32' r='3.5' fill='%23ff3b33' stroke='none'/%3E%3Ccircle cx='319' cy='200' r='2.2' fill='%23ff3b33' stroke='none'/%3E%3C/svg%3E")
-    center / contain no-repeat;
-  animation: orbitSpin 140s linear infinite;
+  top: 0;
+  right: 0;
+  width: min(62vw, 44vmax);
+  height: min(62vw, 44vmax);
+  opacity: 0.8;
+  overflow: visible;
+}
+
+.teamDeco__spokes {
+  stroke: #ff3b33;
+  stroke-opacity: 0.4;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+
+.teamDeco__strands {
+  stroke: #ff3b33;
+  stroke-opacity: 0.26;
+  stroke-width: 1.1;
+  stroke-linecap: round;
+}
+
+.teamDeco__stubs {
+  stroke: #ff3b33;
+  stroke-opacity: 0.34;
+  stroke-width: 1.4;
+  stroke-linejoin: round;
+}
+
+.teamDeco__stubs path {
+  fill: none;
+}
+
+.teamDeco__stubs rect {
+  fill: #ff3b33;
+  fill-opacity: 0.32;
+}
+
+.teamDeco__vias {
+  fill: #0f0b0a;
+  stroke: #ff3b33;
+  stroke-opacity: 0.5;
+  stroke-width: 1.2;
+}
+
+/* ---------- the robot on a thread, top left ---------- */
+
+/* Left offset is at least half the robot's width, so it hangs clear of the
+   viewport edge instead of being cut in half by it. */
+.teamDrop {
+  position: absolute;
+  top: 0;
+  left: clamp(2.75rem, 6vw, 5rem);
+  /* The thread is this element's left border, so it can never part company
+     with the robot hanging off the bottom of it. */
+  height: clamp(4.5rem, 12vh, 8rem);
+  border-left: 2px solid rgba(255, 59, 51, 0.4);
+  transform-origin: top center;
+  animation: teamDropSway 9s ease-in-out infinite;
+}
+
+.teamDrop__bot {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: clamp(64px, 9vw, 120px);
+  transform: translate(-50%, 62%) rotate(-8deg);
+  opacity: 0.62;
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.5));
+}
+
+.teamDrop__bot img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* A long, shallow sway: it should read as hanging, not as swinging. */
+@keyframes teamDropSway {
+  0%,
+  100% {
+    transform: rotate(-2.2deg);
+  }
+  50% {
+    transform: rotate(2.2deg);
+  }
 }
 
 /* Dot field, faded out before it reaches the type. */
@@ -528,12 +608,6 @@
   );
 }
 
-@keyframes orbitSpin {
-  to {
-    transform: translateY(-50%) rotate(360deg);
-  }
-}
-
 /* The band keeps its black: the decor is a child and paints over it, so the
    black stays as the ground if the decor layer ever fails to render. */
 .subpage--team {
@@ -543,16 +617,27 @@
 .subpage--team > .section {
   position: relative;
   z-index: 1;
+  /* Headroom for the robot on its thread. Without it the two occupy the same
+     strip and the portrait reads through the lettering. */
+  padding-top: clamp(7rem, 20vh, 12rem);
 }
 
-/* Narrow screens: the ring crowds the cards and the dots read as noise. */
+/* Narrow screens: the web crowds the cards and the dots read as noise. The
+   robot stays — it is the one piece of the backdrop worth the space. */
 @media (max-width: 700px) {
-  .teamDeco::before {
-    right: -34vmax;
-    opacity: 0.32;
+  .teamDeco__web {
+    opacity: 0.55;
   }
   .teamDeco::after {
     opacity: 0.5;
+  }
+}
+
+/* The sway is decoration; a visitor who asked for stillness gets the robot
+   hanging straight. */
+@media (prefers-reduced-motion: reduce) {
+  .teamDrop {
+    animation: none;
   }
 }
 
