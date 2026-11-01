@@ -63,7 +63,10 @@ const BEND_PRESETS = {
 
 const FIT_ASPECT = { portrait: 0.75, square: 1, landscape: 4 / 3 };
 const TAPS = 12;
-const PIXEL_BUDGET = 4.5e6;
+// Local change: 4.5e6 upstream. Both passes and the scene texture are sized
+// from this, so it sets the real cost of the effect. 2.0e6 holds dpr near 1.5
+// on a full-width band instead of 2, which is 44% fewer pixels to shade.
+const PIXEL_BUDGET = 2.0e6;
 const INTRO_DURATION = { rise: 2.1, bloom: 1.6, spin: 2.2, deal: 1.5, fade: 0.35 };
 
 const wrap = (value, size) => ((((value + size / 2) % size) + size) % size) - size / 2;
@@ -347,11 +350,15 @@ const FlexCarousel = ({
     cardProgram.setBlendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
     const cardMesh = new Mesh(gl, { geometry: new Plane(gl), program: cardProgram });
 
+    // Local change: upstream mipmaps this target and rebuilds the whole chain
+    // every rendered frame, on a texture the size of the band. The lens only
+    // ever displaces the scene by a few pixels, so it samples the base level
+    // in practice and the chain is paid for and thrown away each frame.
     const target = new RenderTarget(gl, {
       width: 2,
       height: 2,
       depth: false,
-      minFilter: gl.LINEAR_MIPMAP_LINEAR,
+      minFilter: gl.LINEAR,
       magFilter: gl.LINEAR
     });
 
@@ -383,7 +390,9 @@ const FlexCarousel = ({
     });
 
     const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
-    const anisotropy = renderer.getExtension('EXT_texture_filter_anisotropic') ? 8 : 0;
+    // Local change: 8 upstream. The cards sit near their native size, so the extra
+// taps buy nothing visible and cost on every sample.
+    const anisotropy = renderer.getExtension('EXT_texture_filter_anisotropic') ? 2 : 0;
 
     let slots = [];
     let width = 1;
@@ -911,8 +920,6 @@ const FlexCarousel = ({
           gl.clear(gl.COLOR_BUFFER_BIT);
         }
         renderer.bindFramebuffer();
-        target.texture.bind();
-        gl.generateMipmap(gl.TEXTURE_2D);
 
         lensUniforms.uResolution.value = [width, height];
         lensUniforms.uDpr.value = dpr;
