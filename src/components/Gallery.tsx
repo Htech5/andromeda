@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import FlexCarousel from "./FlexCarousel";
 import { gallery } from "@/data/gallery";
 
@@ -15,8 +16,54 @@ import { gallery } from "@/data/gallery";
  * sleeps between gestures. `dispersion` runs a twelve-tap sample per pixel
  * along the bent edge, the most expensive thing the shader does, and the bend
  * reads fine without the rainbow split.
+ *
+ * Indexing these photographs is not this component's job. The carousel uploads
+ * them as WebGL textures, so they never enter the DOM, and every way of
+ * putting a second copy in the markup either shows through the transparent
+ * canvas or hides the images from the crawler it was added for. They are
+ * listed in the image sitemap instead, which is what that part of the sitemap
+ * protocol is for.
  */
 export default function Gallery() {
+  // Rendered on the server and on the first client pass so the markup matches;
+  // the check runs after, and only a device that fails it ever sees the grid.
+  const [canRender, setCanRender] = useState(true);
+
+  useEffect(() => {
+    const probe = document.createElement("canvas");
+    const gl = probe.getContext("webgl2");
+    if (gl) gl.getExtension("WEBGL_lose_context")?.loseContext();
+    else setCanRender(false);
+  }, []);
+
+  if (!canRender) {
+    return (
+      <section
+        className="gallery gallery--plain"
+        aria-label="Dokumentasi tim Andromeda"
+      >
+        <ul className="gallery__grid">
+          {gallery.map((item) => (
+            <li key={item.src}>
+              {/* Plain <img>: already sized and encoded by
+                  scripts/make_gallery.py, and this path only runs on hardware
+                  that could not do the carousel in the first place. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={item.src}
+                alt={item.alt}
+                width={1000}
+                height={700}
+                loading="lazy"
+                decoding="async"
+              />
+            </li>
+          ))}
+        </ul>
+      </section>
+    );
+  }
+
   return (
     <section className="gallery" aria-label="Dokumentasi tim Andromeda">
       <FlexCarousel

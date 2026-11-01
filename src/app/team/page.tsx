@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import Footer from "@/components/Footer";
 import SectionHead from "@/components/SectionHead";
 import TeamChart from "@/components/TeamChart";
@@ -32,6 +33,7 @@ export default function TeamPage() {
       <main className="subpage subpage--team onDark">
         <div className="teamDeco" aria-hidden="true" />
         <section className="section shell" id="team">
+          <Breadcrumbs name="Struktur tim" path="/team" />
           <SectionHead title="Struktur tim" />
           <Reveal variant="tilt">
             <p className="lede lede--bar">

@@ -3116,3 +3116,86 @@
   margin-block: 0;
   background: var(--seam-dark);
 }
+
+/* ---------- breadcrumbs ---------- */
+
+/* Quiet by design: a trail, not a heading. It has to be on the page for the
+   BreadcrumbList to describe something real, so it earns its space by being
+   small rather than by being hidden. */
+.crumbs {
+  margin-bottom: clamp(1rem, 2.5vw, 1.75rem);
+}
+
+.crumbs__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* The separator is drawn, not typed, so it is never read out as a word. */
+.crumbs__item + .crumbs__item::before {
+  content: "";
+  display: inline-block;
+  width: 0.75rem;
+  height: 1px;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+  background: currentColor;
+  opacity: 0.4;
+}
+
+.crumbs__link {
+  color: inherit;
+  opacity: 0.55;
+  text-decoration: none;
+  transition: opacity 0.2s var(--ease);
+}
+
+.crumbs__link:hover,
+.crumbs__link:focus-visible {
+  opacity: 1;
+  color: var(--color-red);
+}
+
+.crumbs__here {
+  opacity: 0.85;
+}
+
+/* Shown only where WebGL2 is missing, so the band is a gallery instead of a
+   hole. It sets its own height: the carousel's fixed band is the wrong shape
+   for a grid that wraps. */
+.gallery--plain {
+  height: auto;
+}
+
+.gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding-inline: var(--gutter);
+  list-style: none;
+}
+
+.gallery__grid img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 10 / 7;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* The sponsorship trail sits above the pricing band rather than inside it, so
+   it needs the band's own top spacing to not crowd the nav. */
+.crumbs__host {
+  padding-top: clamp(1.5rem, 4vw, 2.5rem);
+}

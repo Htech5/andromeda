@@ -20,6 +20,13 @@ export default function BootScreen() {
   const [state, setState] = useState<"hold" | "opening" | "gone">("hold");
 
   useEffect(() => {
+    // HeroVideo already honours this; the overlay did not. A visitor who asked
+    // for reduced motion gets the page, not a black panel that splits apart.
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+      setState("gone");
+      return;
+    }
+
     const started = performance.now();
     let settled = false;
     let open = 0;
