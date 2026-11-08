@@ -179,3 +179,105 @@ export const branches: Branch[] = [
     ],
   },
 ];
+
+/** Public profiles, keyed by name. A member missing here, or missing one
+    of the two, simply shows fewer links on the back of their box. */
+export const socials: Record<
+  string,
+  { linkedin?: string; instagram?: string }
+> = {
+  "Aqyal Ghana Zein": {
+    linkedin: "https://www.linkedin.com/in/aqyal-ghana-zein-5a2a71337",
+    instagram: "https://www.instagram.com/eqiagz",
+  },
+  "Aftito Nur Faturohim": {
+    linkedin: "https://www.linkedin.com/in/aftito-nur-faturohim",
+    instagram: "https://www.instagram.com/aftitonf",
+  },
+  "Damaraudia": {
+    linkedin: "https://www.linkedin.com/in/damaraudia",
+    instagram: "https://www.instagram.com/rdamrs",
+  },
+  "Hafid Indra Pramana": {
+    linkedin: "https://www.linkedin.com/in/hafid-indra-pramana-b55998316",
+    instagram: "https://www.instagram.com/hainpra",
+  },
+  "Ahya Rochim Aminudin": {
+    linkedin: "https://www.linkedin.com/in/ahya-rochim-aminudin",
+    instagram: "https://www.instagram.com/ahyarochim_",
+  },
+  "Fadly Nabil Liantama": {
+    linkedin: "https://www.linkedin.com/in/fadly-nabil-liantama-550284371",
+    instagram: "https://www.instagram.com/subtlr_",
+  },
+  "Arya Faiz Daulla": {
+    linkedin: "https://www.linkedin.com/in/arya-faiz-daulla-85a760380",
+    instagram: "https://www.instagram.com/aryafaiz____",
+  },
+  "Hisyam Abdul Hanif": {
+    linkedin: "https://www.linkedin.com/in/hisyam-abdul-hanif-984ab0380",
+    instagram: "https://www.instagram.com/hisyam.a.hnf",
+  },
+  "Valentino Rio Ferdinand": {
+    instagram: "https://www.instagram.com/dadlentt",
+  },
+  "Danu Rahmat Alfiyan": {
+    linkedin: "https://www.linkedin.com/in/danu-rahmat-alfiyan-5350422b9",
+    instagram: "https://www.instagram.com/danurahmatalfiyan_",
+  },
+  "Muhammad Rifky Guntur Syahputra": {
+    instagram: "https://www.instagram.com/g._rifky",
+  },
+  "Andrian Maulana": {
+    linkedin: "https://www.linkedin.com/in/andrianmaulana",
+    instagram: "https://www.instagram.com/theblackestblackstar_",
+  },
+  "Ganda Rejeki Sitompul": {
+    linkedin: "https://www.linkedin.com/in/ganda-rejeki-sitompul-b52a13317",
+    instagram: "https://www.instagram.com/gandaars",
+  },
+  "Ismail Arief At Thoriq": {
+    linkedin: "https://www.linkedin.com/in/ismail-arief-at-thoriq-33154437a",
+    instagram: "https://www.instagram.com/ariefaththoriq._",
+  },
+  "Muhammad Aria Pratama": {
+    linkedin: "https://www.linkedin.com/in/muhammad-aria-pratama-436469398",
+    instagram: "https://www.instagram.com/ariaprtmaa",
+  },
+  "Nur Azizah": {
+    linkedin: "https://www.linkedin.com/in/nur-azizah-8a638a398",
+    instagram: "https://www.instagram.com/qnaz.ii",
+  },
+  "Muhammad Najamuddin": {
+    linkedin: "https://www.linkedin.com/in/muhammad-najamuddin-894635385",
+    instagram: "https://www.instagram.com/muh.najam_old",
+  },
+  "Habib Mukhlis Triatmojo": {
+    linkedin: "https://www.linkedin.com/in/habib-mukhlis-triatmojo",
+    instagram: "https://www.instagram.com/moechlist._",
+  },
+  "Ghifar Ihsan Rinaldi": {
+    linkedin: "https://www.linkedin.com/in/ghifari-ihsan-rinaldi-92b034350",
+    instagram: "https://www.instagram.com/2ghaby",
+  },
+  "Aun Nurofiq Fuadi": {
+    linkedin: "https://www.linkedin.com/in/aunnurofiqfuadi",
+    instagram: "https://www.instagram.com/nurofiqaunf",
+  },
+  "Saffanah Rahmah Sheehan": {
+    linkedin: "https://www.linkedin.com/in/saffanahrs",
+    instagram: "https://www.instagram.com/sa_rah_se",
+  },
+  "Ina Ria Kamilah": {
+    linkedin: "https://www.linkedin.com/in/ina-ria-kamilah-95474628b",
+    instagram: "https://www.instagram.com/inarqq",
+  },
+  "Kenno Galang Dharma Manikaira": {
+    linkedin: "https://www.linkedin.com/in/kenno-galang-dharma-manikaira-88706533a",
+    instagram: "https://www.instagram.com/kenno_galang",
+  },
+  "Endra Maulana": {
+    linkedin: "https://www.linkedin.com/in/endra-maulana-5b853a290",
+    instagram: "https://www.instagram.com/doughlesslekker",
+  },
+};

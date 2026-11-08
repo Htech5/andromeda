@@ -77,8 +77,15 @@
   position: relative;
   height: 100%;
   transform-style: preserve-3d;
-  transform: rotateY(var(--fb-turn));
-  transition: transform 0.25s steps(4, end);
+  /* The turn on the shelf and the half turn to the back are separate terms,
+     so hovering a box that is already turned over still lifts it instead of
+     fighting the flip. */
+  transform: rotateY(calc(var(--fb-turn) + var(--fb-flip, 0deg)));
+  transition: transform 0.3s steps(6, end);
+}
+
+.fbox--flipped {
+  --fb-flip: 180deg;
 }
 
 /* ---------- front panel ---------- */
@@ -87,6 +94,8 @@
   position: relative;
   height: 100%;
   display: grid;
+  /* Two printed faces on one piece of card: neither shows through the other. */
+  backface-visibility: hidden;
   /* The window keeps its square; the footer is the row that grows. */
   grid-template-rows: auto auto 1fr;
   gap: calc(var(--fb-w) * 0.04);
@@ -257,6 +266,103 @@
   -webkit-text-stroke: 1px rgba(255, 59, 51, 0.75);
 }
 
+/* ---------- the back of the box ---------- */
+
+/* Where a real package prints its barcode and small print, this one prints
+   the two places you can go and find the person. */
+.fbox__turn {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  /* The label is for screen readers; sighted users read the box itself. */
+  font: inherit;
+  color: transparent;
+}
+
+.fbox__back {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: calc(var(--fb-w) * 0.07);
+  padding: calc(var(--fb-w) * 0.08);
+  background: linear-gradient(168deg, #1d0f0e 0%, #140b0a 60%, #231312 100%);
+  border: 2px solid rgba(255, 59, 51, 0.5);
+  /* Same cut corners as the front: it is the same piece of card. */
+  clip-path: polygon(
+    var(--pc-step) 0,
+    calc(100% - var(--pc-step)) 0,
+    100% var(--pc-step),
+    100% calc(100% - var(--pc-step)),
+    calc(100% - var(--pc-step)) 100%,
+    var(--pc-step) 100%,
+    0 calc(100% - var(--pc-step)),
+    0 var(--pc-step)
+  );
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
+}
+
+.fbox__backname {
+  margin: 0;
+  font-family: var(--font-pixel), var(--font-mono), monospace;
+  font-size: calc(var(--fb-w) * 0.045);
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.fbox__links {
+  display: flex;
+  gap: calc(var(--fb-w) * 0.06);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fbox__links a {
+  display: grid;
+  place-items: center;
+  width: calc(var(--fb-w) * 0.26);
+  height: calc(var(--fb-w) * 0.26);
+  color: var(--pc-ink);
+  background: rgba(255, 59, 51, 0.14);
+  border: 2px solid rgba(255, 59, 51, 0.5);
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}
+
+.fbox__links a:hover,
+.fbox__links a:focus-visible {
+  color: var(--pc-deep);
+  background: var(--pc-red);
+}
+
+.fbox__links svg {
+  width: 56%;
+  height: 56%;
+}
+
+.fbox__return {
+  padding: 0.5em 0.9em;
+  font-family: var(--font-pixel), var(--font-mono), monospace;
+  font-size: calc(var(--fb-w) * 0.04);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--pc-deep);
+  background: var(--pc-red);
+  border: 0;
+  cursor: pointer;
+}
+
 /* ---------- printed spine ---------- */
 
 /* Hinged on the front panel's right edge and swung back a quarter turn, so it
@@ -319,7 +425,8 @@
    so the hand picks it up and angles it. steps() keeps the turn on the grid. */
 .fbox:hover .fbox__solid,
 .fbox:focus-within .fbox__solid {
-  transform: rotateY(calc(var(--fb-turn) * 1.9)) translateY(calc(var(--pc-step) * -1));
+  transform: rotateY(calc(var(--fb-turn) * 1.9 + var(--fb-flip, 0deg)))
+    translateY(calc(var(--pc-step) * -1));
 }
 
 .fbox:hover .fbox__face,
@@ -464,7 +571,8 @@
      stops moving and the colour fringe comes off. */
   .fbox:hover .fbox__solid,
   .fbox:focus-within .fbox__solid {
-    transform: rotateY(var(--fb-turn));
+    /* The half turn stays: it is the state the box is in, not a flourish. */
+    transform: rotateY(calc(var(--fb-turn) + var(--fb-flip, 0deg)));
   }
 
   .fbox:hover .fbox__photo,
