@@ -155,12 +155,21 @@ export default function TeamRoster() {
         <Card person={leader} rank="player" no={next()} />
       </Reveal>
 
+      {/* Both managers read as one tier under the leader, so they sit in one
+          row rather than each heading its own branch far down the page. */}
+      <Reveal className="roster__managers" variant="down">
+        {branches.map((branch) => (
+          <Card
+            key={branch.manager.name}
+            person={branch.manager}
+            rank="manager"
+            no={next()}
+          />
+        ))}
+      </Reveal>
+
       {branches.map((branch, b) => (
         <section className="branch" key={branch.manager.name}>
-          <Reveal className="branch__manager" variant="down">
-            <Card person={branch.manager} rank="manager" no={next()} />
-          </Reveal>
-
           {branch.divisions.map((division, d) => (
             <Reveal
               as="section"

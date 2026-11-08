@@ -179,7 +179,11 @@ export const branches: Branch[] = [
             role: "Staff",
             photo: "adha-naifah-khairunnisa",
           },
-          { name: "Endra Maulana", role: "Staff" },
+          {
+            name: "Endra Maulana",
+            role: "Staff",
+            photo: "endra-maulana",
+          },
         ],
       },
     ],

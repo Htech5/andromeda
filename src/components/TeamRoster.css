@@ -364,8 +364,14 @@
   gap: clamp(2.5rem, 6vw, 4.5rem);
 }
 
-.branch__manager {
-  justify-self: center;
+/* The two managers share one tier, so they share one row. Wraps to a column
+   on narrow screens rather than squeezing the boxes below box width. */
+.roster__managers {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+  gap: clamp(1.5rem, 5vw, 3rem);
 }
 
 /* No panel behind a division any more: the boxes sit straight on the page,
