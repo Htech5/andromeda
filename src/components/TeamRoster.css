@@ -81,7 +81,9 @@
      so hovering a box that is already turned over still lifts it instead of
      fighting the flip. */
   transform: rotateY(calc(var(--fb-turn) + var(--fb-flip, 0deg)));
-  transition: transform 0.3s steps(6, end);
+  /* Smooth, not stepped: four frozen frames read fine across a 17 degree
+     nudge, but across a half turn they read as a stutter. */
+  transition: transform 0.28s cubic-bezier(0.33, 0, 0.2, 1);
 }
 
 .fbox--flipped {
@@ -287,10 +289,13 @@
   position: absolute;
   inset: 0;
   display: grid;
-  align-content: center;
+  /* Band, the contact block centred in what is left, barcode at the foot:
+     the front panel's own three rows, read from the other side. */
+  grid-template-rows: auto 1fr auto;
+  align-items: center;
   justify-items: center;
-  gap: calc(var(--fb-w) * 0.07);
-  padding: calc(var(--fb-w) * 0.08);
+  gap: calc(var(--fb-w) * 0.05);
+  padding: calc(var(--fb-w) * 0.05);
   background: linear-gradient(168deg, #1d0f0e 0%, #140b0a 60%, #231312 100%);
   border: 2px solid rgba(255, 59, 51, 0.5);
   /* Same cut corners as the front: it is the same piece of card. */
@@ -304,8 +309,24 @@
     0 calc(100% - var(--pc-step)),
     0 var(--pc-step)
   );
-  transform: rotateY(180deg);
+  /* Pushed back by the depth of the box, which is where the far edge of the
+     spine already is. Without it the panel sits in the front panel's own
+     plane and the solid reads as a loose flap beside a wall. */
+  transform: translateZ(calc(var(--fb-depth) * -1)) rotateY(180deg);
   backface-visibility: hidden;
+}
+
+/* The band and the barcode run the full width of the panel; only the contact
+   block in between is centred. */
+.fbox__back > .fbox__header,
+.fbox__back > .fbox__code {
+  justify-self: stretch;
+}
+
+.fbox__contact {
+  display: grid;
+  justify-items: center;
+  gap: calc(var(--fb-w) * 0.07);
 }
 
 .fbox__backname {
@@ -319,7 +340,10 @@
   color: rgba(255, 255, 255, 0.62);
 }
 
+/* Above the panel's own turn button, which covers the whole back. */
 .fbox__links {
+  position: relative;
+  z-index: 1;
   display: flex;
   gap: calc(var(--fb-w) * 0.06);
   margin: 0;
@@ -349,18 +373,6 @@
 .fbox__links svg {
   width: 56%;
   height: 56%;
-}
-
-.fbox__return {
-  padding: 0.5em 0.9em;
-  font-family: var(--font-pixel), var(--font-mono), monospace;
-  font-size: calc(var(--fb-w) * 0.04);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--pc-deep);
-  background: var(--pc-red);
-  border: 0;
-  cursor: pointer;
 }
 
 /* ---------- printed spine ---------- */

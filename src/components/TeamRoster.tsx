@@ -133,9 +133,9 @@ function Card({
             </span>
           </div>
 
-          {/* The whole front panel is the handle that turns the box. A member
-              with nothing to link to keeps a box that does not turn, rather
-              than one that turns to an empty back. */}
+          {/* Either panel is the handle that turns the box, so a second click
+              puts it back. A member with nothing to link to keeps a box that
+              does not turn, rather than one that turns to an empty back. */}
           {hasLinks && (
             <button
               type="button"
@@ -148,42 +148,51 @@ function Card({
 
         {hasLinks && (
           <div className="fbox__back" inert={!flipped}>
-            <p className="fbox__backname">{person.name}</p>
-
-            <ul className="fbox__links">
-              {social?.linkedin && (
-                <li>
-                  <a
-                    href={social.linkedin}
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label={`LinkedIn ${person.name}`}
-                  >
-                    <LinkedInMark />
-                  </a>
-                </li>
-              )}
-              {social?.instagram && (
-                <li>
-                  <a
-                    href={social.instagram}
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label={`Instagram ${person.name}`}
-                  >
-                    <InstagramMark />
-                  </a>
-                </li>
-              )}
-            </ul>
-
             <button
               type="button"
-              className="fbox__return"
+              className="fbox__turn"
+              aria-label={`Tutup kontak ${person.name}`}
               onClick={() => setFlipped(false)}
-            >
-              Kembali
-            </button>
+            />
+
+            {/* The same brand band and barcode as the front, so the turned
+                box still reads as one object rather than a bare panel. */}
+            <div className="fbox__header">
+              <span className="fbox__brand">Andromeda</span>
+            </div>
+
+            <div className="fbox__contact">
+              <p className="fbox__backname">{person.name}</p>
+
+              <ul className="fbox__links">
+                {social?.linkedin && (
+                  <li>
+                    <a
+                      href={social.linkedin}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label={`LinkedIn ${person.name}`}
+                    >
+                      <LinkedInMark />
+                    </a>
+                  </li>
+                )}
+                {social?.instagram && (
+                  <li>
+                    <a
+                      href={social.instagram}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label={`Instagram ${person.name}`}
+                    >
+                      <InstagramMark />
+                    </a>
+                  </li>
+                )}
+              </ul>
+            </div>
+
+            <span className="fbox__code" aria-hidden="true" />
           </div>
         )}
 
