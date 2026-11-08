@@ -28,7 +28,7 @@ function initials(name: string) {
 }
 
 /** Box width per tier. The window, type and side panel all scale off it. */
-const SIZES = { player: 236, manager: 196, lead: 196, crew: 152 } as const;
+const SIZES = { player: 236, manager: 196, lead: 220, crew: 152 } as const;
 
 type Rank = keyof typeof SIZES;
 
@@ -185,19 +185,29 @@ export default function TeamRoster() {
                 <h2 className="world__name">{division.name}</h2>
               </header>
 
-              <div className="world__lead">
-                <Card person={division.head} rank="lead" no={next()} />
-              </div>
-
-              {division.staff.length > 0 && (
-                <ol className="world__crew">
-                  {division.staff.map((person) => (
-                    <li key={person.name}>
-                      <Card person={person} rank="crew" no={next()} />
-                    </li>
-                  ))}
-                </ol>
-              )}
+              {/* One row per division: half the crew, the lead, the rest.
+                  The lead stays first in the DOM so the roster numbers keep
+                  counting the division head first; CSS `order` does the
+                  placing. Wings are not forced to equal widths — an uneven
+                  crew leaves the lead off the centre line by half a box,
+                  which reads better than wrapping the larger wing. */}
+              <ol className="world__members">
+                <li className="world__member world__member--lead">
+                  <Card person={division.head} rank="lead" no={next()} />
+                </li>
+                {division.staff.map((person, i) => (
+                  <li
+                    key={person.name}
+                    className={`world__member world__member--${
+                      i < Math.floor(division.staff.length / 2)
+                        ? "left"
+                        : "right"
+                    }`}
+                  >
+                    <Card person={person} rank="crew" no={next()} />
+                  </li>
+                ))}
+              </ol>
             </Reveal>
           ))}
         </section>
