@@ -198,6 +198,10 @@ function Card({
 
         {/* Printed spine. Nothing here carries meaning, so none of it is
             text a screen reader has to wade through. */}
+        {/* The far wall. Hidden behind the front panel until the box is
+            turned over, and then it is what gives the back its thickness. */}
+        <span className="fbox__flank" aria-hidden="true" />
+
         <div className="fbox__side" aria-hidden="true">
           <span className="fbox__spine">Andromeda</span>
           <span className="fbox__specs" />

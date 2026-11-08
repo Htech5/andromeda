@@ -379,6 +379,21 @@
 
 /* Hinged on the front panel's right edge and swung back a quarter turn, so it
    recedes exactly as far as the box is deep. */
+/* The left wall, hinged on the front panel's left edge and swung back the
+   same quarter turn. No print on it: it is the wall the spine is not. */
+.fbox__flank {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--fb-depth);
+  height: 100%;
+  background: linear-gradient(168deg, #2d1512, #120909);
+  border: 2px solid rgba(255, 59, 51, 0.32);
+  border-right: 0;
+  transform-origin: left center;
+  transform: rotateY(90deg);
+}
+
 .fbox__side {
   position: absolute;
   top: 0;
