@@ -1,5 +1,5 @@
 export const stats = [
-  { value: 26, suffix: "", label: "Anggota" },
+  { value: 24, suffix: "", label: "Anggota" },
   { value: 10, suffix: "+", label: "Tahun berkarya" },
   { value: 5, suffix: "+", label: "Penghargaan" },
   { value: 20, suffix: "+", label: "Inovasi karya" },
@@ -164,21 +164,11 @@ export const branches: Branch[] = [
       {
         name: "Sponsorship",
         head: {
-          name: "Rara Wiri Tanaya",
+          name: "Kenno Galang Dharma Manikaira",
           role: "Head of Sponsorship",
-          photo: "rara-wiri-tanaya",
+          photo: "kenno-galang-dharma-manikaira",
         },
         staff: [
-          {
-            name: "Kenno Galang Dharma Manikaira",
-            role: "Staff",
-            photo: "kenno-galang-dharma-manikaira",
-          },
-          {
-            name: "Adha Naifah Khairunnisa",
-            role: "Staff",
-            photo: "adha-naifah-khairunnisa",
-          },
           {
             name: "Endra Maulana",
             role: "Staff",

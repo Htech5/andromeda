@@ -98,7 +98,7 @@ function Card({
           <div className="fbox__foot">
             <Name className="fbox__name">{person.name}</Name>
             <p className="fbox__role">{person.role}</p>
-            {/* The member's place in the roster of 26, which is what the HUD
+            {/* The member's place in the roster, which is what the HUD
                 counts. A real number, not packaging dressing. */}
             <span className="fbox__no" aria-hidden="true">
               {String(no).padStart(2, "0")}
