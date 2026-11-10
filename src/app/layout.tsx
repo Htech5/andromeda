@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Oxanium, JetBrains_Mono, Outfit } from "next/font/google";
+import { Oxanium, JetBrains_Mono, Outfit, Silkscreen } from "next/font/google";
 import BootScreen from "@/components/BootScreen";
 import SmoothScroll from "@/components/SmoothScroll";
 import StructuredData from "@/components/StructuredData";
@@ -22,6 +22,14 @@ const invite = Outfit({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-warm",
+});
+
+// Pixel voice for the robot garage only.
+const pixel = Silkscreen({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
+  variable: "--font-pixel",
 });
 
 const mono = JetBrains_Mono({
@@ -95,7 +103,7 @@ export default function RootLayout({
     // <html> before React hydrates, so server and client markup differ by design.
     <html
       lang="id"
-      className={`${display.variable} ${invite.variable} ${mono.variable}`}
+      className={`${display.variable} ${invite.variable} ${mono.variable} ${pixel.variable}`}
       suppressHydrationWarning
     >
       <head>
