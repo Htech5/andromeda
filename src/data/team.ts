@@ -136,9 +136,9 @@ export const branches: Branch[] = [
             photo: "habib-mukhlis-triatmojo",
           },
           {
-            name: "Ghifar Ihsan Rinaldi",
+            name: "Ghifari Ihsan Rinaldi",
             role: "Staff",
-            photo: "ghifar-ihsan-rinaldi",
+            photo: "ghifari-ihsan-rinaldi",
           },
           {
             name: "Aun Nurofiq Fuadi",

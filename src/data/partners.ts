@@ -116,6 +116,8 @@ export const sponsors: Partner[] = [
     logo: "/logos/sponsors/dynamixel.png",
     href: "https://www.robotis.us/dynamixel",
   },
+  { name: "Rekam Semarang", logo: "/logos/sponsors/rekam-semarang.png" },
+  { name: "Deviti Hair & Body Treatment", logo: "/logos/sponsors/deviti.png" },
 ];
 
 export const mediaPartners: Partner[] = [];
