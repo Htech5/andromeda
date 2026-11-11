@@ -20,6 +20,7 @@ export default function RobotGarage() {
   const shot = { src: variant?.src ?? unit.src, width: variant?.width ?? unit.width, height: variant?.height ?? unit.height };
   const years = variant?.years ?? unit.years;
   const stats = variant?.stats ?? unit.stats;
+  const pointed = stats?.filter((s): s is typeof s & { point: { x: number; y: number } } => !!s.point);
 
   return (
     <div
@@ -49,6 +50,45 @@ export default function RobotGarage() {
             priority={unit.soon}
           />
           {unit.soon && <figcaption className="garage__soon pixel">See you soon</figcaption>}
+
+          {/* Mobile only (CSS-gated): the same features as leader-line
+             callouts on the photo instead of the card list, which the CSS
+             moves off-screen (not display:none) so it stays in the
+             accessibility tree at every width. */}
+          {pointed && pointed.length > 0 && (
+            <>
+              <svg
+                className="garage__callouts"
+                viewBox="0 0 100 100"
+                preserveAspectRatio="none"
+                aria-hidden="true"
+              >
+                {pointed.map((s) => (
+                  <line
+                    key={s.label}
+                    x1={s.point.x}
+                    y1={s.point.y}
+                    x2={s.point.x < 50 ? 3 : 97}
+                    y2={s.point.y}
+                  />
+                ))}
+                {pointed.map((s) => (
+                  <circle key={s.label} cx={s.point.x} cy={s.point.y} r="1.3" />
+                ))}
+              </svg>
+              <div className="garage__calloutLabels" aria-hidden="true">
+                {pointed.map((s) => (
+                  <span
+                    key={s.label}
+                    className={`garage__calloutLabel garage__calloutLabel--${s.point.x < 50 ? "left" : "right"}`}
+                    style={{ top: `${s.point.y}%` }}
+                  >
+                    {s.label}
+                  </span>
+                ))}
+              </div>
+            </>
+          )}
         </figure>
 
         <div className="garage__panel" aria-live="polite">

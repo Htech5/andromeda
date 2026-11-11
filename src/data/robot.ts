@@ -6,7 +6,15 @@ export const robot = {
   weight: "± 3,7 kg",
 } as const;
 
-export type Stat = { label: string; body: string; icon: string };
+export type Stat = {
+  label: string;
+  body: string;
+  icon: string;
+  /** Percent position on the unit's own photo — the mobile view draws a
+     leader line from here out to the label. Eyeballed against the photo,
+     not from a CAD source, so nudge freely if one lands off its part. */
+  point?: { x: number; y: number };
+};
 
 /** A physical build sharing one generation slot — Perseus Ultimate's "Core
    Andro Bot" and "Fun Bot" are the same Gen 06, not two different robots. */
@@ -52,10 +60,10 @@ export const garage: Unit[] = [
     era: "Langkah Pertama",
     years: "2020 - 2021",
     stats: [
-      { label: "Penggerak Empat Kaki", body: "Robot menggunakan konfigurasi quadruped dengan masing-masing tiga servo untuk menggerakkan satu kaki.", icon: "quadruped" },
-      { label: "Navigasi Dinding", body: "Sensor ultrasonik yang mengelilingi dapat membaca jarak terhadap dinding saat bergerak di arena.", icon: "sonar" },
-      { label: "Deteksi Api", body: "Sensor UVTRON dirancang untuk menemukan nyala lilin sebagai sasaran misi pemadaman.", icon: "flame" },
-      { label: "Pemadam Api", body: "Tabung CO2 dan aktuator pelepasnya dirancang untuk memadamkan api setelah robot mencapai sasaran.", icon: "extinguisher" },
+      { label: "Penggerak Empat Kaki", body: "Robot menggunakan konfigurasi quadruped dengan masing-masing tiga servo untuk menggerakkan satu kaki.", icon: "quadruped", point: { x: 82, y: 75 } },
+      { label: "Navigasi Dinding", body: "Sensor ultrasonik yang mengelilingi dapat membaca jarak terhadap dinding saat bergerak di arena.", icon: "sonar", point: { x: 45, y: 52 } },
+      { label: "Deteksi Api", body: "Sensor UVTRON dirancang untuk menemukan nyala lilin sebagai sasaran misi pemadaman.", icon: "flame", point: { x: 46, y: 22 } },
+      { label: "Pemadam Api", body: "Tabung CO2 dan aktuator pelepasnya dirancang untuk memadamkan api setelah robot mencapai sasaran.", icon: "extinguisher", point: { x: 58, y: 68 } },
     ],
   },
   {
@@ -68,9 +76,9 @@ export const garage: Unit[] = [
     era: "Mulai Melihat dan Menyelamatkan",
     years: "2021 - 2022",
     stats: [
-      { label: "Misi Ganda", body: "Robot dikembangkan untuk memadamkan api sekaligus memindahkan korban menuju zona aman.", icon: "dual-mission" },
-      { label: "Pembaruan Kamera", body: "Pixy2 cam ditambahkan untuk mengenali objek berdasarkan citra untuk mencari korban.", icon: "camera" },
-      { label: "Rangka Robot", body: "Lebih tertata dan kokoh, serta memberi ruang bagi pengembangan yang baru.", icon: "frame" },
+      { label: "Misi Ganda", body: "Robot dikembangkan untuk memadamkan api sekaligus memindahkan korban menuju zona aman.", icon: "dual-mission", point: { x: 20, y: 22 } },
+      { label: "Pembaruan Kamera", body: "Pixy2 cam ditambahkan untuk mengenali objek berdasarkan citra untuk mencari korban.", icon: "camera", point: { x: 68, y: 22 } },
+      { label: "Rangka Robot", body: "Lebih tertata dan kokoh, serta memberi ruang bagi pengembangan yang baru.", icon: "frame", point: { x: 42, y: 58 } },
     ],
   },
   {
@@ -83,9 +91,9 @@ export const garage: Unit[] = [
     era: "Menjawab Tantangan Medan",
     years: "2022 - 2023",
     stats: [
-      { label: "Awal Hexapod", body: "Mekanisme enam kaki dikembangkan untuk meningkatkan kestabilan saat melewati rintangan.", icon: "hexapod" },
-      { label: "Upgrade Sensor Jarak", body: "Double ping laser kanan kiri diletakkan agar robot lebih peka terhadap posisi dinding.", icon: "laser" },
-      { label: "Program dan Mechanical", body: "Terdapat perubahan yang lumayan signifikan karena transisi dari quadruped ke hexapod.", icon: "gear" },
+      { label: "Awal Hexapod", body: "Mekanisme enam kaki dikembangkan untuk meningkatkan kestabilan saat melewati rintangan.", icon: "hexapod", point: { x: 10, y: 62 } },
+      { label: "Upgrade Sensor Jarak", body: "Double ping laser kanan kiri diletakkan agar robot lebih peka terhadap posisi dinding.", icon: "laser", point: { x: 85, y: 80 } },
+      { label: "Program dan Mechanical", body: "Terdapat perubahan yang lumayan signifikan karena transisi dari quadruped ke hexapod.", icon: "gear", point: { x: 48, y: 45 } },
     ],
   },
   {
@@ -98,9 +106,9 @@ export const garage: Unit[] = [
     era: "Kendali yang Lebih Presisi",
     years: "2023 - 2024",
     stats: [
-      { label: "Smart Actuator", body: "Penggerak kaki beralih dari servo KST ke Dynamixel AX-18A agar pergerakan lebih presisi dan terkontrol.", icon: "servo" },
-      { label: "Dua Tipe Capit", body: "Capit aktif mengambil korban, sementara capit pasif menjadi tempat korban selama robot bergerak.", icon: "claw" },
-      { label: "Dual Dev Board", body: "Dua STM32F4 diterapkan untuk mengelola sistem robot terstruktur dan cepat.", icon: "chip" },
+      { label: "Smart Actuator", body: "Penggerak kaki beralih dari servo KST ke Dynamixel AX-18A agar pergerakan lebih presisi dan terkontrol.", icon: "servo", point: { x: 56, y: 14 } },
+      { label: "Dua Tipe Capit", body: "Capit aktif mengambil korban, sementara capit pasif menjadi tempat korban selama robot bergerak.", icon: "claw", point: { x: 26, y: 30 } },
+      { label: "Dual Dev Board", body: "Dua STM32F4 diterapkan untuk mengelola sistem robot terstruktur dan cepat.", icon: "chip", point: { x: 72, y: 80 } },
     ],
   },
   {
@@ -119,7 +127,7 @@ export const garage: Unit[] = [
         height: 1200,
         years: "2025 - 2026",
         stats: [
-          { label: "Core Andro Bot", body: "Jauh lebih ringan, tambahan mini computer (Raspberry Pi), perpaduan STM32H7 dan minimum system, serta Dynamixel X Series.", icon: "mini-pc" },
+          { label: "Core Andro Bot", body: "Jauh lebih ringan, tambahan mini computer (Raspberry Pi), perpaduan STM32H7 dan minimum system, serta Dynamixel X Series.", icon: "mini-pc", point: { x: 50, y: 45 } },
         ],
       },
       {
@@ -130,7 +138,7 @@ export const garage: Unit[] = [
         height: 1200,
         years: "2025",
         stats: [
-          { label: "Fun Bot", body: "Robot demonstrasi yang bertujuan untuk have fun dan menghibur melalui berbagai mode gerak unik saat tampil di acara.", icon: "star" },
+          { label: "Fun Bot", body: "Robot demonstrasi yang bertujuan untuk have fun dan menghibur melalui berbagai mode gerak unik saat tampil di acara.", icon: "star", point: { x: 42, y: 40 } },
         ],
       },
     ],
