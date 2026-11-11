@@ -582,7 +582,9 @@
   height: auto;
   max-height: clamp(22rem, 68vh, 46rem);
   object-fit: contain;
-  image-rendering: pixelated;
+  /* These are real photos, not pixel art — nearest-neighbor scaling here
+     was making every unit look blocky/low-res. Let the browser scale them
+     smoothly instead. */
   filter: drop-shadow(6px 6px 0 rgba(18, 18, 18, 0.5));
   /* Dimmed until the new frame's photo actually finishes loading (see
      .garage__shotLoading), instead of popping in the instant it's ready. */
@@ -906,7 +908,6 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  image-rendering: pixelated;
 }
 
 .garage__slot:hover {
