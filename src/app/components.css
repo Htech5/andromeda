@@ -614,11 +614,17 @@
   margin-inline: auto;
 }
 
+/* Fixed height regardless of how many features a unit has — Fun Bot (2
+   stats) and Perseus 1.0 (4 stats) read as the same size card. The stat list
+   is the one part that scrolls internally when it doesn't fit; the title
+   block above it never moves. */
 .garage__card {
   position: relative;
   overflow: hidden;
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 1.3rem;
+  height: clamp(26rem, 58vh, 34rem);
   padding: clamp(1.5rem, 3vw, 2.25rem);
   border-radius: 1rem;
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -695,10 +701,21 @@
    divided by hairlines instead of boxed so the card stays one surface. */
 .garage__stats {
   display: grid;
+  align-content: start;
   gap: 0;
   padding-top: 1rem;
   border-top: 1px solid var(--hairline);
+  /* The scrollable part: shrinks instead of pushing the card taller. */
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-red) transparent;
 }
+
+.garage__stats::-webkit-scrollbar { width: 6px; }
+.garage__stats::-webkit-scrollbar-thumb { background: var(--color-red); }
+.garage__stats::-webkit-scrollbar-track { background: transparent; }
 
 .garage__stat {
   display: grid;
