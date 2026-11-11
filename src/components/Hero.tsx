@@ -36,7 +36,7 @@ export default function Hero() {
           </p>
           <div className="hero__actions">
             <a className="cta cta--solid" href="#robot">
-              Lihat robotnya
+              OUR ROBOT
             </a>
             <a className="cta" href="/sponsorship">
               Support Us
