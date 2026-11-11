@@ -539,51 +539,56 @@
 .garage__era { font-size: 0.8rem; color: var(--color-red); }
 .garage__years { font-size: 0.7rem; color: var(--ink-2); }
 
-/* Character-sheet stat block: one plate per unit, same hard-edge offset
-   shadow language as .garage__plate, divided by hairlines instead of boxed
-   per row so it doesn't turn into the banned card-in-a-card stack. */
+/* Character-sheet stat sheet: a label/value table banded like a ranked-match
+   HUD readout, built from the dl/dt/dd the component already renders — each
+   .garage__stat row is itself the grid, dt and dd are its two columns. */
 .garage__stats {
   display: grid;
-  gap: 0;
   width: min(100%, 36rem);
   margin: 0 auto;
-  padding: 1.1rem 1.4rem;
+  padding: 0.6rem;
   border: 3px solid var(--ink);
   background: var(--surface);
   box-shadow: 6px 6px 0 var(--color-red);
 }
 
 .garage__stat {
-  padding-block: 0.85rem;
-  border-bottom: 1px solid var(--hairline);
-}
-
-.garage__stat:last-child {
-  padding-bottom: 0;
-  border-bottom: none;
-}
-
-.garage__stat:first-child {
-  padding-top: 0;
+  display: grid;
+  grid-template-columns: minmax(6.5rem, 34%) 1fr;
+  align-items: stretch;
 }
 
 .garage__statLabel {
-  display: block;
-  font-size: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  text-align: right;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.62rem;
   color: var(--color-red);
-  margin-bottom: 0.4rem;
 }
 
 .garage__statBody {
   margin: 0;
+  padding: 0.6rem 0.9rem;
+  background: rgba(255, 255, 255, 0.03);
   color: var(--ink-2);
-  font-size: 0.9rem;
-  line-height: 1.6;
+  font-size: 0.85rem;
+  line-height: 1.5;
 }
 
+.garage__stat:nth-child(even) .garage__statBody {
+  background: rgba(255, 59, 51, 0.08);
+}
+
+/* Fanned hand of unit cards: each slot rotates from a shared bottom pivot,
+   so the spread comes free from rotate() + a common transform-origin —
+   no per-card translateY trig needed. Angles only apply from 641px up;
+   the mobile override below flattens the fan rather than cramp it. */
 .garage__row {
   display: flex;
   justify-content: center;
+  align-items: flex-end;
   flex-wrap: wrap;
   gap: 0.75rem;
 }
@@ -596,7 +601,19 @@
   background: var(--surface);
   cursor: pointer;
   opacity: 0.6;
-  transition: opacity 0.1s, border-color 0.1s, transform 0.1s steps(2);
+  transform-origin: bottom center;
+  transform: rotate(var(--r, 0deg));
+  transition: opacity 0.1s, border-color 0.1s, transform 0.15s steps(3);
+}
+
+@media (min-width: 641px) {
+  .garage__slot:nth-child(1) { --r: -18deg; }
+  .garage__slot:nth-child(2) { --r: -12deg; }
+  .garage__slot:nth-child(3) { --r: -6deg; }
+  .garage__slot:nth-child(4) { --r: 0deg; }
+  .garage__slot:nth-child(5) { --r: 6deg; }
+  .garage__slot:nth-child(6) { --r: 12deg; }
+  .garage__slot:nth-child(7) { --r: 18deg; }
 }
 
 .garage__slot img {
@@ -606,12 +623,16 @@
   image-rendering: pixelated;
 }
 
-.garage__slot:hover { opacity: 1; transform: translateY(-3px); }
+.garage__slot:hover {
+  opacity: 1;
+  transform: rotate(var(--r, 0deg)) translateY(-6px);
+}
 
 .garage__slot[aria-selected="true"] {
   opacity: 1;
   border-color: var(--color-red);
   box-shadow: 4px 4px 0 var(--color-red);
+  transform: rotate(var(--r, 0deg)) translateY(-10px) scale(1.08);
 }
 
 .garage__slot:focus-visible,
