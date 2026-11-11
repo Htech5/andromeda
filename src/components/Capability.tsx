@@ -102,10 +102,7 @@ export default function Capability() {
               </div>
 
               <div className="caps__copy">
-                <span className="caps__stage pixel">
-                  Stage {String(i + 1).padStart(2, "0")}
-                </span>
-                <h3 className="caps__title pixel">{cap.title}</h3>
+                <h3 className="caps__title">{cap.title}</h3>
                 <p className="caps__body">{cap.body}</p>
               </div>
             </article>
