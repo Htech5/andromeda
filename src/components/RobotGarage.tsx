@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { garage } from "@/data/robot";
 import RobotStatIcon from "./RobotStatIcon";
 
@@ -10,6 +10,16 @@ export default function RobotGarage() {
   const [i, setI] = useState(garage.length - 1);
   const unit = garage[i];
   const step = (d: number) => setI((n) => (n + d + garage.length) % garage.length);
+
+  // Same generation, two builds — Perseus Ultimate's Core Andro Bot and Fun
+  // Bot share this one slot, picked with a small tab row instead of each
+  // getting its own carousel stop.
+  const [vi, setVi] = useState(0);
+  useEffect(() => setVi(0), [i]);
+  const variant = unit.variants?.[vi];
+  const shot = { src: variant?.src ?? unit.src, width: variant?.width ?? unit.width, height: variant?.height ?? unit.height };
+  const years = variant?.years ?? unit.years;
+  const stats = variant?.stats ?? unit.stats;
 
   return (
     <div
@@ -29,12 +39,12 @@ export default function RobotGarage() {
           ◀
         </button>
 
-        <figure className={`garage__shot${unit.soon ? " garage__shot--soon" : ""}`} key={unit.id}>
+        <figure className={`garage__shot${unit.soon ? " garage__shot--soon" : ""}`} key={`${unit.id}-${vi}`}>
           <Image
-            src={unit.src}
-            alt={`Robot ${unit.name}`}
-            width={unit.width}
-            height={unit.height}
+            src={shot.src}
+            alt={`Robot ${variant?.name ?? unit.name}`}
+            width={shot.width}
+            height={shot.height}
             sizes="(min-width: 900px) 46vw, 90vw"
             priority={unit.soon}
           />
@@ -45,13 +55,30 @@ export default function RobotGarage() {
           <div className="garage__plate pixel">
             <span className="garage__tag">{unit.tag}</span>
             <span className="garage__name">{unit.name}</span>
-            {unit.years && <span className="garage__years">{unit.years}</span>}
+            {years && <span className="garage__years">{years}</span>}
             {unit.era && <span className="garage__era">{unit.era}</span>}
           </div>
 
-          {unit.stats && (
+          {unit.variants && (
+            <div className="garage__variants pixel" role="tablist" aria-label="Pilih varian">
+              {unit.variants.map((v, n) => (
+                <button
+                  key={v.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={n === vi}
+                  className="garage__variantTab"
+                  onClick={() => setVi(n)}
+                >
+                  {v.name}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {stats && (
             <dl className="garage__stats">
-              {unit.stats.map((s) => (
+              {stats.map((s) => (
                 <div className="garage__stat" key={s.label}>
                   <dt className="garage__statIcon">
                     <RobotStatIcon name={s.icon} />

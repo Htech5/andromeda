@@ -8,6 +8,18 @@ export const robot = {
 
 export type Stat = { label: string; body: string; icon: string };
 
+/** A physical build sharing one generation slot — Perseus Ultimate's "Core
+   Andro Bot" and "Fun Bot" are the same Gen 06, not two different robots. */
+export type Variant = {
+  id: string;
+  name: string;
+  src: string;
+  width: number;
+  height: number;
+  years?: string;
+  stats?: Stat[];
+};
+
 export type Unit = {
   id: string;
   name: string;
@@ -23,15 +35,17 @@ export type Unit = {
   years?: string;
   /** Character-sheet stat block, label + body, poster order. */
   stats?: Stat[];
+  /** Picked with a small tab row in the panel; falls back to the unit's own
+     src/years/stats when absent. */
+  variants?: Variant[];
 };
 
 /** Garage order = generation order, oldest first. */
 export const garage: Unit[] = [
-  { id: "fun-bot", name: "Fun Bot", tag: "Gen 01", src: "/images/robot/fun-bot.png", width: 954, height: 1200 },
   {
     id: "perseus-1-0",
     name: "Perseus 1.0",
-    tag: "Gen 02",
+    tag: "Gen 01",
     src: "/images/robot/perseus-1-0.png",
     width: 1118,
     height: 1200,
@@ -47,7 +61,7 @@ export const garage: Unit[] = [
   {
     id: "perseus-1-1",
     name: "Perseus 1.1",
-    tag: "Gen 03",
+    tag: "Gen 02",
     src: "/images/robot/perseus-1-1.png",
     width: 1187,
     height: 1200,
@@ -62,7 +76,7 @@ export const garage: Unit[] = [
   {
     id: "perseus-2-0",
     name: "Perseus 2.0",
-    tag: "Gen 04",
+    tag: "Gen 03",
     src: "/images/robot/perseus-2-0.png",
     width: 1200,
     height: 1174,
@@ -77,7 +91,7 @@ export const garage: Unit[] = [
   {
     id: "perseus-3-0",
     name: "Perseus 3.0",
-    tag: "Gen 05",
+    tag: "Gen 04",
     src: "/images/robot/perseus-3-0.png",
     width: 1200,
     height: 1125,
@@ -92,15 +106,34 @@ export const garage: Unit[] = [
   {
     id: "perseus-ultimate",
     name: "Perseus Ultimate",
-    tag: "Gen 06",
+    tag: "Gen 05",
     src: "/images/robot/perseus-ultimate.png",
     width: 1123,
     height: 1200,
-    years: "2025 - 2026",
-    stats: [
-      { label: "Core Andro Bot", body: "Jauh lebih ringan, tambahan mini computer (Raspberry Pi), perpaduan STM32H7 dan minimum system, serta Dynamixel X Series.", icon: "mini-pc" },
-      { label: "Fun Bot", body: "Robot demonstrasi yang bertujuan untuk have fun dan menghibur melalui berbagai mode gerak unik saat tampil di acara.", icon: "star" },
+    variants: [
+      {
+        id: "core-andro-bot",
+        name: "Core Andro Bot",
+        src: "/images/robot/perseus-ultimate.png",
+        width: 1123,
+        height: 1200,
+        years: "2025 - 2026",
+        stats: [
+          { label: "Core Andro Bot", body: "Jauh lebih ringan, tambahan mini computer (Raspberry Pi), perpaduan STM32H7 dan minimum system, serta Dynamixel X Series.", icon: "mini-pc" },
+        ],
+      },
+      {
+        id: "fun-bot",
+        name: "Fun Bot",
+        src: "/images/robot/fun-bot.png",
+        width: 954,
+        height: 1200,
+        years: "2025",
+        stats: [
+          { label: "Fun Bot", body: "Robot demonstrasi yang bertujuan untuk have fun dan menghibur melalui berbagai mode gerak unik saat tampil di acara.", icon: "star" },
+        ],
+      },
     ],
   },
-  { id: "m31", name: "M31 Enterprise", tag: "Gen 07 · 2026", src: "/images/m31-iso.webp", width: 930, height: 1200, soon: true },
+  { id: "m31", name: "M31 Enterprise", tag: "Gen 06 · 2026", src: "/images/m31-iso.webp", width: 930, height: 1200, soon: true },
 ];

@@ -459,6 +459,9 @@
      pseudo escapes to .lightRun's context and paints behind its background
      instead of over it. */
   z-index: 0;
+  /* Extra room under the carousel before Team starts, on top of the normal
+     section rhythm — this join needed more air than the others. */
+  padding-bottom: calc(var(--section-y) + clamp(2rem, 6vw, 4.5rem));
 }
 
 .section--garage::before {
@@ -469,7 +472,18 @@
   left: 50%;
   width: 100vw;
   transform: translateX(-50%);
-  background: var(--seam-dark);
+  /* Darker than plain --seam-dark through the middle, but both edges fade to
+     transparent instead of stopping on a hard line — at full transparency
+     what shows through is .lightRun's own gradient underneath, which is
+     already the exact colour Gallery ends on (top) and already the colour
+     Team's band starts on (bottom), so both joins blend instead of cutting. */
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    color-mix(in srgb, var(--seam-dark), black 35%) 14%,
+    color-mix(in srgb, var(--seam-dark), black 35%) 82%,
+    transparent 100%
+  );
   z-index: -1;
 }
 
@@ -589,6 +603,36 @@
 .garage__name { font-size: clamp(1.4rem, 3.4vw, 2.1rem); font-weight: 700; }
 .garage__years { font-size: 0.8rem; color: var(--ink-2); }
 .garage__era { font-size: 0.85rem; font-weight: 600; color: var(--color-red); }
+
+/* Variant tabs: two builds sharing one generation slot (Core Andro Bot /
+   Fun Bot), so this is a tab switch, not a second carousel stop. */
+.garage__variants {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.garage__variantTab {
+  padding: 0.35rem 0.8rem;
+  border: 2px solid var(--hairline);
+  background: transparent;
+  color: var(--ink-2);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: color 0.1s, border-color 0.1s, background 0.1s;
+}
+
+.garage__variantTab[aria-selected="true"] {
+  color: var(--color-white);
+  background: var(--color-red);
+  border-color: var(--color-red);
+}
+
+@media (min-width: 900px) {
+  .garage__variants { justify-content: flex-start; }
+}
 
 /* Character-sheet stat cards: small and concise on purpose — a hex icon
    badge, a bold label, one clamped line of body copy. Wraps to as many
