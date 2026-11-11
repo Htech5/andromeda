@@ -46,11 +46,12 @@
   transform: translateY(0.85rem);
   min-height: 3.75rem;
   background: var(--color-black);
-  border-color: rgba(255, 108, 100, 0.28);
-  border-radius: 999px;
+  /* Pixel panel: hard white edge, red offset block, no rounding. */
+  border: 3px solid var(--color-white);
+  border-radius: 0;
   padding-inline: clamp(1.25rem, 3vw, 2rem);
   max-width: min(var(--page-max), calc(100vw - 2 * var(--gutter)));
-  box-shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.9);
+  box-shadow: 6px 6px 0 var(--color-red);
 }
 
 .nav__mark {
@@ -86,13 +87,32 @@
      monospace face are the stiffest thing a page can open with. The labels
      are already written in title case, so dropping the transform is enough
      to make them read as words. */
-  font-family: var(--font-warm);
-  font-size: 0.95rem;
-  font-weight: 500;
-  letter-spacing: 0.01em;
+  font-family: var(--font-pixel), monospace;
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   white-space: nowrap;
   color: rgba(255, 255, 255, 0.86);
   transition: color 0.25s var(--ease);
+}
+
+/* Game-menu cursor: a red block that pops in before the hovered item. */
+.nav__link::before {
+  content: "";
+  position: absolute;
+  left: -0.9rem;
+  top: 50%;
+  width: 0.45rem;
+  height: 0.45rem;
+  margin-top: -0.225rem;
+  background: var(--color-red);
+  opacity: 0;
+  transition: opacity 0.1s steps(2);
+}
+
+.nav__link:hover::before {
+  opacity: 1;
 }
 
 .nav__link::after {
@@ -101,11 +121,11 @@
   left: 0;
   bottom: 0;
   width: 100%;
-  height: 1px;
+  height: 2px;
   background: var(--color-red);
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 0.3s var(--ease);
+  transition: transform 0.15s steps(3);
 }
 
 .nav__link:hover {
@@ -119,27 +139,29 @@
 .nav__cta {
   padding: 0.6rem 1.1rem;
   background: var(--color-red);
-  border: 1px solid var(--color-red);
-  border-radius: var(--radius);
+  border: 2px solid var(--color-red);
+  border-radius: 0;
+  box-shadow: 3px 3px 0 var(--color-white);
   /* White on #ff3b33 is about 3.3:1. Near-black on the same red is about 7:1,
      and the label is 13px, so it needs the contrast. */
   color: var(--color-black);
-  font-family: var(--font-warm);
-  font-size: 0.9rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  font-family: var(--font-pixel), monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   white-space: nowrap;
-  transition: background 0.3s var(--ease), color 0.3s var(--ease),
-    border-radius 0.45s var(--ease);
+  transition: transform 0.1s steps(2), box-shadow 0.1s steps(2);
 }
 
 .nav__cta:hover {
-  background: transparent;
-  color: var(--color-red);
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--color-white);
 }
 
-.nav--pill .nav__cta {
-  border-radius: 999px;
+.nav__cta:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--color-white);
 }
 
 /* ---------- mobile dock host ---------- */
@@ -165,9 +187,10 @@
   background: var(--color-black);
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
+  border-radius: 0;
   box-shadow:
-    inset 0 0 0 1px rgba(255, 108, 100, 0.28),
-    0 18px 40px -18px rgba(0, 0, 0, 0.9);
+    inset 0 0 0 3px var(--color-white),
+    6px 6px 0 var(--color-red);
 }
 
 /* The dock's own transform is driven per frame by its script; the lift for the

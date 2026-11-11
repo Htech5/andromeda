@@ -138,7 +138,7 @@ export const branches: Branch[] = [
           {
             name: "Ghifari Ihsan Rinaldi",
             role: "Staff",
-            photo: "ghifari-ihsan-rinaldi",
+            photo: "ghifar-ihsan-rinaldi",
           },
           {
             name: "Aun Nurofiq Fuadi",
@@ -256,7 +256,7 @@ export const socials: Record<
     linkedin: "https://www.linkedin.com/in/habib-mukhlis-triatmojo",
     instagram: "https://www.instagram.com/moechlist._",
   },
-  "Ghifar Ihsan Rinaldi": {
+  "Ghifari Ihsan Rinaldi": {
     linkedin: "https://www.linkedin.com/in/ghifari-ihsan-rinaldi-92b034350",
     instagram: "https://www.instagram.com/2ghaby",
   },
