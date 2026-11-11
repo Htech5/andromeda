@@ -11,7 +11,11 @@ export default function SmoothScroll() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    let lenis: { raf: (t: number) => void; destroy: () => void } | null = null;
+    let lenis: {
+      raf: (t: number) => void;
+      destroy: () => void;
+      scrollTo: (target: number | string | HTMLElement, opts?: Record<string, unknown>) => void;
+    } | null = null;
     let frame = 0;
     let cancelled = false;
 
@@ -25,6 +29,10 @@ export default function SmoothScroll() {
       if (cancelled) return;
       // offset matches html { scroll-padding-top: 5rem } so anchors clear the navbar.
       lenis = new Lenis({ anchors: { offset: -80 } });
+      // Exposed so a pinned-scroll component (RobotGarage's thumbnail jump)
+      // can drive Lenis's own scrollTo instead of a raw window.scrollTo,
+      // which Lenis would otherwise immediately fight back to its own target.
+      (window as unknown as { __lenis: unknown }).__lenis = lenis;
       frame = requestAnimationFrame(raf);
     });
 
@@ -32,6 +40,7 @@ export default function SmoothScroll() {
       cancelled = true;
       cancelAnimationFrame(frame);
       lenis?.destroy();
+      delete (window as unknown as { __lenis?: unknown }).__lenis;
     };
   }, []);
 

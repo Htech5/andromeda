@@ -487,39 +487,54 @@
   z-index: -1;
 }
 
+/* Pinned, like RoadStrip's timeline: the wrapper is tall, the view inside it
+   sticks, and the travel underneath is spent stepping one frame (a unit, or
+   one of Perseus Ultimate's two builds) per slice. Scroll down to advance,
+   up to go back, run off either end and the page scroll carries on past it. */
 .garage {
-  display: grid;
-  gap: 1.5rem;
   margin-top: clamp(1.5rem, 4vh, 3rem);
+  height: calc(100vh + (var(--frames) - 1) * 52vh);
 }
 
-/* Mobile/default: arrows flank the shot, the stat panel stacks full-width
-   below it. From 900px up, the panel moves beside the shot (named areas
-   switch layout without touching the DOM). */
+.garage__pin {
+  position: sticky;
+  top: 4.5rem;
+  height: calc(100vh - 4.5rem);
+  display: grid;
+  align-content: center;
+  gap: 1.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .garage {
+    height: auto;
+  }
+  .garage__pin {
+    position: static;
+    height: auto;
+  }
+}
+
 .garage__stage {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-areas:
-    "prev shot next"
-    "panel panel panel";
+    "shot"
+    "panel";
   align-items: center;
   gap: clamp(0.75rem, 3vw, 2rem);
   width: min(100%, 46rem);
   margin-inline: auto;
 }
 
-.garage__arrow--prev { grid-area: prev; }
-.garage__arrow--next { grid-area: next; }
 .garage__shot { grid-area: shot; }
 .garage__panel { grid-area: panel; }
 
-/* Desktop: the panel sits beside the shot and "next" moves to its far edge,
-   past the spec sheet, so the prev/next pair still brackets the whole unit
-   instead of splitting the image from its own stats. */
+/* Desktop: the panel sits beside the shot instead of stacking under it. */
 @media (min-width: 900px) {
   .garage__stage {
-    grid-template-columns: auto minmax(0, 1.1fr) minmax(0, 1fr) auto;
-    grid-template-areas: "prev shot panel next";
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    grid-template-areas: "shot panel";
     width: min(100%, 84rem);
   }
 }
@@ -529,10 +544,6 @@
   z-index: 0;
   margin: 0 auto;
   width: min(100%, 44rem);
-  /* Horizontal drag is read in JS as a swipe (prev/next); this just stops
-     the browser's own back/forward swipe nav from fighting it, vertical
-     page scroll still passes through untouched. */
-  touch-action: pan-y;
   /* Showroom floor: a pixel-stepped band under the unit, no card edge. */
   background: linear-gradient(
     to top,
@@ -541,10 +552,6 @@
     transparent 8px
   );
   animation: garageIn 0.25s steps(4) both;
-}
-
-.garage__shot--tappable {
-  cursor: pointer;
 }
 
 /* Spotlight: a soft circular wash centred behind the unit, like it's lit
@@ -646,21 +653,6 @@
   text-shadow: 3px 3px 0 var(--color-black);
 }
 
-.garage__arrow {
-  width: 3rem;
-  height: 3rem;
-  border: 3px solid var(--ink);
-  background: var(--bg);
-  color: var(--ink);
-  font-size: 1rem;
-  cursor: pointer;
-  box-shadow: 4px 4px 0 var(--color-red);
-  transition: transform 0.1s steps(2), box-shadow 0.1s steps(2);
-}
-
-.garage__arrow:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--color-red); }
-.garage__arrow:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--color-red); }
-
 /* One big spec card beside the shot, not a borderless HUD sidebar — slightly
    rounded, a quiet corner stripe and a red glow bleeding off the near edge. */
 .garage__panel {
@@ -720,36 +712,6 @@
 
 .garage__years { font-size: 0.85rem; font-style: italic; color: var(--ink-2); }
 .garage__era { font-size: 0.95rem; font-weight: 600; color: var(--color-red); }
-
-/* Variant tabs: two builds sharing one generation slot (Core Andro Bot /
-   Fun Bot), so this is a tab switch, not a second carousel stop. */
-.garage__variants {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-}
-
-.garage__variantTab {
-  padding: 0.35rem 0.8rem;
-  border: 2px solid var(--hairline);
-  background: transparent;
-  color: var(--ink-2);
-  font-size: 0.68rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  cursor: pointer;
-  transition: color 0.1s, border-color 0.1s, background 0.1s;
-}
-
-.garage__variantTab[aria-selected="true"] {
-  color: var(--color-white);
-  background: var(--color-red);
-  border-color: var(--color-red);
-}
-
-@media (min-width: 900px) {
-  .garage__variants { justify-content: flex-start; }
-}
 
 /* Character-sheet stat rows: one column, generous type — legible first,
    divided by hairlines instead of boxed so the card stays one surface. */
@@ -906,24 +868,17 @@
 }
 
 .garage__slot[aria-selected="true"] {
+  position: relative;
+  z-index: 1;
   opacity: 1;
   border-color: var(--color-red);
-  box-shadow: 4px 4px 0 var(--color-red);
-  transform: rotate(var(--r, 0deg)) translateY(-10px) scale(1.08);
+  box-shadow: 6px 6px 0 var(--color-red);
+  transform: rotate(var(--r, 0deg)) translateY(-16px) scale(1.45);
 }
 
-.garage__slot:focus-visible,
-.garage__arrow:focus-visible {
+.garage__slot:focus-visible {
   outline: 3px solid var(--color-red);
   outline-offset: 2px;
-}
-
-@media (max-width: 640px) {
-  .garage__stage {
-    grid-template-columns: 1fr;
-    grid-template-areas: "shot" "panel";
-  }
-  .garage__arrow { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
