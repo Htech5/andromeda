@@ -53,7 +53,20 @@ export default function RobotGarage() {
       <div className="garage__plate pixel" aria-live="polite">
         <span className="garage__tag">{unit.tag}</span>
         <span className="garage__name">{unit.name}</span>
+        {unit.era && <span className="garage__era">{unit.era}</span>}
+        {unit.years && <span className="garage__years">{unit.years}</span>}
       </div>
+
+      {unit.stats && (
+        <dl className="garage__stats" aria-live="polite">
+          {unit.stats.map((s) => (
+            <div className="garage__stat" key={s.label}>
+              <dt className="garage__statLabel pixel">{s.label}</dt>
+              <dd className="garage__statBody">{s.body}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
 
       <div className="garage__row" role="tablist" aria-label="Pilih robot">
         {garage.map((u, n) => (

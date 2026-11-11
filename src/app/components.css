@@ -536,6 +536,50 @@
 
 .garage__tag { font-size: 0.7rem; color: var(--ink-2); }
 .garage__name { font-size: clamp(1rem, 2.6vw, 1.5rem); font-weight: 700; }
+.garage__era { font-size: 0.8rem; color: var(--color-red); }
+.garage__years { font-size: 0.7rem; color: var(--ink-2); }
+
+/* Character-sheet stat block: one plate per unit, same hard-edge offset
+   shadow language as .garage__plate, divided by hairlines instead of boxed
+   per row so it doesn't turn into the banned card-in-a-card stack. */
+.garage__stats {
+  display: grid;
+  gap: 0;
+  width: min(100%, 36rem);
+  margin: 0 auto;
+  padding: 1.1rem 1.4rem;
+  border: 3px solid var(--ink);
+  background: var(--surface);
+  box-shadow: 6px 6px 0 var(--color-red);
+}
+
+.garage__stat {
+  padding-block: 0.85rem;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.garage__stat:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.garage__stat:first-child {
+  padding-top: 0;
+}
+
+.garage__statLabel {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--color-red);
+  margin-bottom: 0.4rem;
+}
+
+.garage__statBody {
+  margin: 0;
+  color: var(--ink-2);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
 
 .garage__row {
   display: flex;
