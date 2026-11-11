@@ -1,12 +1,12 @@
 /** M31 Enterprise 2026/2027. Sumber: proposal sponsorship, halaman spesifikasi robot. */
 export const robot = {
-  model: "M31 ENTERPRISE",
+  model: "Andromeda Garage",
   generation: "2026 / 2027 MODEL",
   dimensions: "± 30 × 30 × 30 cm",
   weight: "± 3,7 kg",
 } as const;
 
-export type Stat = { label: string; body: string };
+export type Stat = { label: string; body: string; icon: string };
 
 export type Unit = {
   id: string;
@@ -38,10 +38,10 @@ export const garage: Unit[] = [
     era: "Langkah Pertama",
     years: "2020 - 2021",
     stats: [
-      { label: "Penggerak Empat Kaki", body: "Robot menggunakan konfigurasi quadruped dengan masing-masing tiga servo untuk menggerakkan satu kaki." },
-      { label: "Navigasi Dinding", body: "Sensor ultrasonik yang mengelilingi dapat membaca jarak terhadap dinding saat bergerak di arena." },
-      { label: "Deteksi Api", body: "Sensor UVTRON dirancang untuk menemukan nyala lilin sebagai sasaran misi pemadaman." },
-      { label: "Pemadam Api", body: "Tabung CO2 dan aktuator pelepasnya dirancang untuk memadamkan api setelah robot mencapai sasaran." },
+      { label: "Penggerak Empat Kaki", body: "Robot menggunakan konfigurasi quadruped dengan masing-masing tiga servo untuk menggerakkan satu kaki.", icon: "quadruped" },
+      { label: "Navigasi Dinding", body: "Sensor ultrasonik yang mengelilingi dapat membaca jarak terhadap dinding saat bergerak di arena.", icon: "sonar" },
+      { label: "Deteksi Api", body: "Sensor UVTRON dirancang untuk menemukan nyala lilin sebagai sasaran misi pemadaman.", icon: "flame" },
+      { label: "Pemadam Api", body: "Tabung CO2 dan aktuator pelepasnya dirancang untuk memadamkan api setelah robot mencapai sasaran.", icon: "extinguisher" },
     ],
   },
   {
@@ -54,9 +54,9 @@ export const garage: Unit[] = [
     era: "Mulai Melihat dan Menyelamatkan",
     years: "2021 - 2022",
     stats: [
-      { label: "Misi Ganda", body: "Robot dikembangkan untuk memadamkan api sekaligus memindahkan korban menuju zona aman." },
-      { label: "Pembaruan Kamera", body: "Pixy2 cam ditambahkan untuk mengenali objek berdasarkan citra untuk mencari korban." },
-      { label: "Rangka Robot", body: "Lebih tertata dan kokoh, serta memberi ruang bagi pengembangan yang baru." },
+      { label: "Misi Ganda", body: "Robot dikembangkan untuk memadamkan api sekaligus memindahkan korban menuju zona aman.", icon: "dual-mission" },
+      { label: "Pembaruan Kamera", body: "Pixy2 cam ditambahkan untuk mengenali objek berdasarkan citra untuk mencari korban.", icon: "camera" },
+      { label: "Rangka Robot", body: "Lebih tertata dan kokoh, serta memberi ruang bagi pengembangan yang baru.", icon: "frame" },
     ],
   },
   {
@@ -69,9 +69,9 @@ export const garage: Unit[] = [
     era: "Menjawab Tantangan Medan",
     years: "2022 - 2023",
     stats: [
-      { label: "Awal Hexapod", body: "Mekanisme enam kaki dikembangkan untuk meningkatkan kestabilan saat melewati rintangan." },
-      { label: "Upgrade Sensor Jarak", body: "Double ping laser kanan kiri diletakkan agar robot lebih peka terhadap posisi dinding." },
-      { label: "Program dan Mechanical", body: "Terdapat perubahan yang lumayan signifikan karena transisi dari quadruped ke hexapod." },
+      { label: "Awal Hexapod", body: "Mekanisme enam kaki dikembangkan untuk meningkatkan kestabilan saat melewati rintangan.", icon: "hexapod" },
+      { label: "Upgrade Sensor Jarak", body: "Double ping laser kanan kiri diletakkan agar robot lebih peka terhadap posisi dinding.", icon: "laser" },
+      { label: "Program dan Mechanical", body: "Terdapat perubahan yang lumayan signifikan karena transisi dari quadruped ke hexapod.", icon: "gear" },
     ],
   },
   {
@@ -84,9 +84,9 @@ export const garage: Unit[] = [
     era: "Kendali yang Lebih Presisi",
     years: "2023 - 2024",
     stats: [
-      { label: "Smart Actuator", body: "Penggerak kaki beralih dari servo KST ke Dynamixel AX-18A agar pergerakan lebih presisi dan terkontrol." },
-      { label: "Dua Tipe Capit", body: "Capit aktif mengambil korban, sementara capit pasif menjadi tempat korban selama robot bergerak." },
-      { label: "Dual Dev Board", body: "Dua STM32F4 diterapkan untuk mengelola sistem robot terstruktur dan cepat." },
+      { label: "Smart Actuator", body: "Penggerak kaki beralih dari servo KST ke Dynamixel AX-18A agar pergerakan lebih presisi dan terkontrol.", icon: "servo" },
+      { label: "Dua Tipe Capit", body: "Capit aktif mengambil korban, sementara capit pasif menjadi tempat korban selama robot bergerak.", icon: "claw" },
+      { label: "Dual Dev Board", body: "Dua STM32F4 diterapkan untuk mengelola sistem robot terstruktur dan cepat.", icon: "chip" },
     ],
   },
   {
@@ -98,8 +98,8 @@ export const garage: Unit[] = [
     height: 1200,
     years: "2025 - 2026",
     stats: [
-      { label: "Core Andro Bot", body: "Jauh lebih ringan, tambahan mini computer (Raspberry Pi), perpaduan STM32H7 dan minimum system, serta Dynamixel X Series." },
-      { label: "Fun Bot", body: "Robot demonstrasi yang bertujuan untuk have fun dan menghibur melalui berbagai mode gerak unik saat tampil di acara." },
+      { label: "Core Andro Bot", body: "Jauh lebih ringan, tambahan mini computer (Raspberry Pi), perpaduan STM32H7 dan minimum system, serta Dynamixel X Series.", icon: "mini-pc" },
+      { label: "Fun Bot", body: "Robot demonstrasi yang bertujuan untuk have fun dan menghibur melalui berbagai mode gerak unik saat tampil di acara.", icon: "star" },
     ],
   },
   { id: "m31", name: "M31 Enterprise", tag: "Gen 07 · 2026", src: "/images/m31-iso.webp", width: 930, height: 1200, soon: true },

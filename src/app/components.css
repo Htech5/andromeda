@@ -447,6 +447,32 @@
   letter-spacing: 0.04em;
 }
 
+/* Flat, dark, full-bleed, same recipe as .gallery — not the PCB-trace
+   pattern the rest of .lightRun carries, so the garage reads as one quiet
+   dark floor instead of competing with the carousel above it. The ::before
+   breaks out of the section's own .shell to reach the viewport edge without
+   giving up the shell for its content. */
+.section--garage {
+  position: relative;
+  /* z-index:0 (not just position:relative) is what traps the ::before's
+     z-index:-1 inside this section's own stacking context — without it the
+     pseudo escapes to .lightRun's context and paints behind its background
+     instead of over it. */
+  z-index: 0;
+}
+
+.section--garage::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  background: var(--seam-dark);
+  z-index: -1;
+}
+
 .garage {
   display: grid;
   gap: 1.5rem;
@@ -473,10 +499,13 @@
 .garage__shot { grid-area: shot; }
 .garage__panel { grid-area: panel; }
 
+/* Desktop: the panel sits beside the shot and "next" moves to its far edge,
+   past the spec sheet, so the prev/next pair still brackets the whole unit
+   instead of splitting the image from its own stats. */
 @media (min-width: 900px) {
   .garage__stage {
-    grid-template-columns: auto minmax(0, 1.15fr) auto minmax(0, 1fr);
-    grid-template-areas: "prev shot next panel";
+    grid-template-columns: auto minmax(0, 1.15fr) minmax(0, 1fr) auto;
+    grid-template-areas: "prev shot panel next";
     width: min(100%, 72rem);
   }
 }
@@ -561,12 +590,13 @@
 .garage__years { font-size: 0.8rem; color: var(--ink-2); }
 .garage__era { font-size: 0.85rem; font-weight: 600; color: var(--color-red); }
 
-/* Character-sheet stat list: a hex icon badge + bold label + short line,
-   each row divided by a hairline instead of boxed, so it reads as part of
-   the panel rather than another nested card. */
+/* Character-sheet stat cards: small and concise on purpose — a hex icon
+   badge, a bold label, one clamped line of body copy. Wraps to as many
+   columns as the panel's width allows. */
 .garage__stats {
   display: grid;
-  gap: 0;
+  grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr));
+  gap: 0.6rem;
   padding-top: 0.9rem;
   border-top: 1px solid var(--hairline);
 }
@@ -574,43 +604,46 @@
 .garage__stat {
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: 0.9rem;
+  gap: 0.6rem;
   align-items: center;
-  padding-block: 0.85rem;
-}
-
-.garage__stat + .garage__stat {
-  border-top: 1px solid var(--hairline);
+  padding: 0.55rem 0.7rem;
+  border: 2px solid var(--hairline);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .garage__statIcon {
   display: grid;
   place-items: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2rem;
+  height: 2rem;
   color: var(--color-red);
   background: rgba(255, 59, 51, 0.12);
-  border: 2px solid var(--color-red);
+  border: 1.5px solid var(--color-red);
   clip-path: polygon(25% 3%, 75% 3%, 100% 50%, 75% 97%, 25% 97%, 0% 50%);
 }
 
 .garage__statIcon svg {
-  width: 1.2rem;
-  height: 1.2rem;
+  width: 1rem;
+  height: 1rem;
 }
 
 .garage__statText {
   display: grid;
-  gap: 0.2rem;
+  gap: 0.1rem;
   text-align: left;
+  min-width: 0;
 }
 
-.garage__statLabel { font-weight: 700; }
+.garage__statLabel { font-size: 0.82rem; font-weight: 700; }
 
 .garage__statBody {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
   color: var(--ink-2);
-  font-size: 0.85rem;
-  line-height: 1.5;
+  font-size: 0.72rem;
+  line-height: 1.4;
 }
 
 @media (min-width: 900px) {

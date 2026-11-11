@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Reveal from "./Reveal";
 
 export default function SectionHead({
@@ -5,7 +6,7 @@ export default function SectionHead({
   title,
 }: {
   index?: string;
-  title: string;
+  title: ReactNode;
 }) {
   return (
     <Reveal variant="left">
