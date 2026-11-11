@@ -630,37 +630,6 @@
   }
 }
 
-@media (max-width: 899px) {
-  /* No card chrome on mobile — the name plate sits bare right under the
-     photo, the border/fill/corner stripe are a desktop-only affordance. */
-  .garage__card {
-    height: auto;
-    padding: 1rem 0 0;
-    border: none;
-    border-radius: 0;
-    background: none;
-  }
-
-  .garage__cardAccent {
-    display: none;
-  }
-
-  /* Visually hidden, not display:none — a mobile screen reader still gets
-     the full feature list; a sighted mobile visitor sees the callouts on
-     the photo instead. */
-  .garage__stats {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    padding: 0;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
-}
-
 @keyframes garageIn {
   from { opacity: 0; transform: translateX(24px); }
   to { opacity: 1; transform: none; }
@@ -849,6 +818,39 @@
   color: var(--ink-2);
   font-size: 0.92rem;
   line-height: 1.6;
+}
+
+/* No card chrome on mobile — the name plate sits bare right under the
+   photo, the border/fill/corner stripe are a desktop-only affordance.
+   Placed after every base .garage__card/.garage__stats rule above so it
+   actually wins the cascade instead of losing to them by source order. */
+@media (max-width: 899px) {
+  .garage__card {
+    height: auto;
+    padding: 1rem 0 0;
+    border: none;
+    border-radius: 0;
+    background: none;
+  }
+
+  .garage__cardAccent {
+    display: none;
+  }
+
+  /* Visually hidden, not display:none — a mobile screen reader still gets
+     the full feature list; a sighted mobile visitor sees the callouts on
+     the photo instead. */
+  .garage__stats {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
 }
 
 @media (min-width: 900px) {
