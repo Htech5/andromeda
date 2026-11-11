@@ -584,6 +584,45 @@
   object-fit: contain;
   image-rendering: pixelated;
   filter: drop-shadow(6px 6px 0 rgba(18, 18, 18, 0.5));
+  /* Dimmed until the new frame's photo actually finishes loading (see
+     .garage__shotLoading), instead of popping in the instant it's ready. */
+  opacity: 0.2;
+  transition: opacity 0.4s var(--ease);
+}
+
+.garage__shot img.is-loaded {
+  opacity: 1;
+}
+
+.garage__shotLoading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  transition: opacity 0.2s var(--ease);
+  pointer-events: none;
+}
+
+.garage__shotLoading.is-visible {
+  opacity: 1;
+}
+
+.garage__spinner {
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 3px solid rgba(255, 255, 255, 0.15);
+  border-top-color: var(--color-red);
+  border-radius: 50%;
+  animation: garageSpin 0.8s linear infinite;
+}
+
+@keyframes garageSpin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .garage__spinner { animation: none; }
 }
 
 /* The M31 render is a dark navy silhouette: lifted so it reads on black. */
@@ -674,7 +713,11 @@
   padding: clamp(1.5rem, 3vw, 2.25rem);
   border-radius: 1rem;
   border: 1px solid rgba(255, 255, 255, 0.08);
+  /* A faint hazard-stripe texture (same angle/language as .garage__cardAccent)
+     keeps a one- or two-stat card from reading as a mostly empty box — it's
+     barely there, just enough to stop the surface going dead flat. */
   background:
+    repeating-linear-gradient(115deg, rgba(255, 59, 51, 0.035) 0, rgba(255, 59, 51, 0.035) 2px, transparent 2px, transparent 26px),
     radial-gradient(130% 100% at 100% 15%, rgba(255, 59, 51, 0.16) 0%, transparent 55%),
     var(--surface);
 }
@@ -717,7 +760,11 @@
    divided by hairlines instead of boxed so the card stays one surface. */
 .garage__stats {
   display: grid;
-  align-content: start;
+  /* Spreads evenly rather than bunching at the top — a unit with only one
+     or two stats (Perseus Ultimate's variants) fills the card instead of
+     leaving the bottom half blank. Harmless once the list overflows: with
+     no spare room, space-evenly behaves like start. */
+  align-content: space-evenly;
   gap: 0;
   padding-top: 1rem;
   border-top: 1px solid var(--hairline);

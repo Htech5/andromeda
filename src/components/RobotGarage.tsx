@@ -29,6 +29,10 @@ export default function RobotGarage() {
   const { unit, unitIndex, variant } = frames[frame];
 
   const shot = { src: variant?.src ?? unit.src, width: variant?.width ?? unit.width, height: variant?.height ?? unit.height };
+  // Dims the photo and shows a spinner between a frame change and the new
+  // image actually finishing its load, instead of a hard pop once it's done.
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => setLoaded(false), [shot.src]);
   const years = variant?.years ?? unit.years;
   const stats = variant?.stats ?? unit.stats;
   const pointed = useMemo(
@@ -133,7 +137,12 @@ export default function RobotGarage() {
               height={shot.height}
               sizes="(min-width: 900px) 46vw, 90vw"
               priority={unit.soon}
+              className={loaded ? "is-loaded" : undefined}
+              onLoad={() => setLoaded(true)}
             />
+            <div className={`garage__shotLoading${loaded ? "" : " is-visible"}`} aria-hidden="true">
+              <span className="garage__spinner" />
+            </div>
             {unit.soon && <figcaption className="garage__soon pixel">See you soon</figcaption>}
 
             {/* Mobile only (CSS-gated): the same features as leader-line
