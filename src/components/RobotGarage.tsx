@@ -52,45 +52,60 @@ export default function RobotGarage() {
         </figure>
 
         <div className="garage__panel" aria-live="polite">
-          <div className="garage__plate pixel">
-            <span className="garage__tag">{unit.tag}</span>
-            <span className="garage__name">{unit.name}</span>
-            {years && <span className="garage__years">{years}</span>}
-            {unit.era && <span className="garage__era">{unit.era}</span>}
-          </div>
+          <div className="garage__card">
+            <div className="garage__cardAccent" aria-hidden="true" />
 
-          {unit.variants && (
-            <div className="garage__variants pixel" role="tablist" aria-label="Pilih varian">
-              {unit.variants.map((v, n) => (
-                <button
-                  key={v.id}
-                  type="button"
-                  role="tab"
-                  aria-selected={n === vi}
-                  className="garage__variantTab"
-                  onClick={() => setVi(n)}
-                >
-                  {v.name}
-                </button>
-              ))}
+            <div className="garage__plate">
+              <span className="garage__tag">{unit.tag}</span>
+              <h3 className="garage__name">
+                {(() => {
+                  const words = unit.name.split(" ");
+                  const last = words.pop();
+                  return (
+                    <>
+                      {words.length > 0 && words.join(" ") + " "}
+                      <span className="garage__name__accent">{last}</span>
+                    </>
+                  );
+                })()}
+              </h3>
+              {years && <span className="garage__years">{years}</span>}
+              {unit.era && <span className="garage__era">{unit.era}</span>}
             </div>
-          )}
 
-          {stats && (
-            <dl className="garage__stats">
-              {stats.map((s) => (
-                <div className="garage__stat" key={s.label}>
-                  <dt className="garage__statIcon">
-                    <RobotStatIcon name={s.icon} />
-                  </dt>
-                  <dd className="garage__statText">
-                    <strong className="garage__statLabel">{s.label}</strong>
-                    <span className="garage__statBody">{s.body}</span>
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          )}
+            {unit.variants && (
+              <div className="garage__variants pixel" role="tablist" aria-label="Pilih varian">
+                {unit.variants.map((v, n) => (
+                  <button
+                    key={v.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={n === vi}
+                    className="garage__variantTab"
+                    onClick={() => setVi(n)}
+                  >
+                    {v.name}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {stats && (
+              <dl className="garage__stats">
+                {stats.map((s) => (
+                  <div className="garage__stat" key={s.label}>
+                    <dt className="garage__statIcon">
+                      <RobotStatIcon name={s.icon} />
+                    </dt>
+                    <dd className="garage__statText">
+                      <strong className="garage__statLabel">{s.label}</strong>
+                      <span className="garage__statBody">{s.body}</span>
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            )}
+          </div>
         </div>
 
         <button
