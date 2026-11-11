@@ -529,6 +529,10 @@
   z-index: 0;
   margin: 0 auto;
   width: min(100%, 44rem);
+  /* Horizontal drag is read in JS as a swipe (prev/next); this just stops
+     the browser's own back/forward swipe nav from fighting it, vertical
+     page scroll still passes through untouched. */
+  touch-action: pan-y;
   /* Showroom floor: a pixel-stepped band under the unit, no card edge. */
   background: linear-gradient(
     to top,
@@ -537,6 +541,10 @@
     transparent 8px
   );
   animation: garageIn 0.25s steps(4) both;
+}
+
+.garage__shot--tappable {
+  cursor: pointer;
 }
 
 /* Spotlight: a soft circular wash centred behind the unit, like it's lit
@@ -623,8 +631,18 @@
 }
 
 @media (max-width: 899px) {
+  /* No card chrome on mobile — the name plate sits bare right under the
+     photo, the border/fill/corner stripe are a desktop-only affordance. */
   .garage__card {
     height: auto;
+    padding: 1rem 0 0;
+    border: none;
+    border-radius: 0;
+    background: none;
+  }
+
+  .garage__cardAccent {
+    display: none;
   }
 
   /* Visually hidden, not display:none — a mobile screen reader still gets

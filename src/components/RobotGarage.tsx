@@ -1,9 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { garage } from "@/data/robot";
 import RobotStatIcon from "./RobotStatIcon";
+
+/** Px of horizontal travel before a touch reads as a swipe, not a tap. */
+const SWIPE_THRESHOLD = 40;
 
 /** Game-style unit select: one on the stage, the rest in a row below. */
 export default function RobotGarage() {
@@ -13,10 +16,41 @@ export default function RobotGarage() {
 
   // Same generation, two builds — Perseus Ultimate's Core Andro Bot and Fun
   // Bot share this one slot, picked with a small tab row instead of each
-  // getting its own carousel stop.
+  // getting its own carousel stop. Tapping the photo cycles through them too.
   const [vi, setVi] = useState(0);
   useEffect(() => setVi(0), [i]);
   const variant = unit.variants?.[vi];
+  const cycleVariant = () => {
+    if (unit.variants) setVi((n) => (n + 1) % unit.variants!.length);
+  };
+
+  // Touch swipe on the photo steps to the prev/next robot, same as the arrow
+  // buttons. A swipe also fires a trailing click in some browsers, so
+  // touchEnd flags it and the click handler below bails instead of also
+  // toggling the variant.
+  const touchX = useRef<number | null>(null);
+  const didSwipe = useRef(false);
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchX.current = e.touches[0].clientX;
+    didSwipe.current = false;
+  };
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchX.current === null) return;
+    const dx = e.changedTouches[0].clientX - touchX.current;
+    if (Math.abs(dx) > SWIPE_THRESHOLD) {
+      didSwipe.current = true;
+      step(dx < 0 ? 1 : -1);
+    }
+    touchX.current = null;
+  };
+  const handleShotClick = () => {
+    if (didSwipe.current) {
+      didSwipe.current = false;
+      return;
+    }
+    cycleVariant();
+  };
+
   const shot = { src: variant?.src ?? unit.src, width: variant?.width ?? unit.width, height: variant?.height ?? unit.height };
   const years = variant?.years ?? unit.years;
   const stats = variant?.stats ?? unit.stats;
@@ -40,7 +74,13 @@ export default function RobotGarage() {
           ◀
         </button>
 
-        <figure className={`garage__shot${unit.soon ? " garage__shot--soon" : ""}`} key={`${unit.id}-${vi}`}>
+        <figure
+          className={`garage__shot${unit.soon ? " garage__shot--soon" : ""}${unit.variants ? " garage__shot--tappable" : ""}`}
+          key={`${unit.id}-${vi}`}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          onClick={handleShotClick}
+        >
           <Image
             src={shot.src}
             alt={`Robot ${variant?.name ?? unit.name}`}
