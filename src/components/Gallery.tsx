@@ -28,12 +28,24 @@ export default function Gallery() {
   // Rendered on the server and on the first client pass so the markup matches;
   // the check runs after, and only a device that fails it ever sees the grid.
   const [canRender, setCanRender] = useState(true);
+  // liquid's lensHeight scales off container width. Desktop's band is wide
+  // and short, so the lens stays near the edges; mobile's band is near
+  // square, so the same lens swallows the whole card. Shrink it there.
+  const [isNarrow, setIsNarrow] = useState(false);
 
   useEffect(() => {
     const probe = document.createElement("canvas");
     const gl = probe.getContext("webgl2");
     if (gl) gl.getExtension("WEBGL_lose_context")?.loseContext();
     else setCanRender(false);
+  }, []);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 640px)");
+    setIsNarrow(mq.matches);
+    const onChange = (e: MediaQueryListEvent) => setIsNarrow(e.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
   }, []);
 
   if (!canRender) {
@@ -77,6 +89,8 @@ export default function Gallery() {
         dispersion={0}
         captions={false}
         captureWheel={false}
+        lensHeight={isNarrow ? 0.55 : undefined}
+        bend={isNarrow ? 0.18 : undefined}
       />
     </section>
   );
