@@ -178,6 +178,14 @@
   color: var(--color-red);
 }
 
+/* Below 900px the dock at the bottom owns navigation; the top bar only ever
+   showed the wordmark there, so drop it instead of floating an empty pill. */
+@media (max-width: 899px) {
+  .nav {
+    display: none;
+  }
+}
+
 @media (min-width: 900px) {
   .nav__links {
     display: flex;
